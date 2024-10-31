@@ -8,18 +8,45 @@
 
 #include "Shape3D.h"
 
+//MacOS
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+//Windows
+//#include <GL/freeglut.h>
+
+#define BLOCK_SIZE 1
+
 class Block : public Shape3D {
 public:
     Block();
     Block(float x, float y, float z, float w, float h) : width(w), height(h) {
-        this->setCenter(x,y,z);
+        setCenter(x,y,z);
     };
     void setWidth(float w);
     void setHeight(float h);
+    void setPassable(bool v);
+    
     float getWidth() const;
     float getHeight() const;
-    virtual void draw() const;
+    bool isPassable() const;
+    
+    virtual void draw() const{
+        if(isPassable()){
+            glPushMatrix();
+            glTranslatef(center.x, center.y, center.z);
+            glShadeModel(GL_SMOOTH);
+            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.emission);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.ambient);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.diffuse);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.specular);
+            glMaterialfv(GL_FRONT, GL_SHININESS, mtl.shininess);
+            glutSolidCube(BLOCK_SIZE);
+            glPopMatrix();
+        }
+    };
     
 private:
     float width, height;
+    bool bPassable;
 };

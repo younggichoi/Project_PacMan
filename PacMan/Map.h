@@ -11,10 +11,10 @@
 #include <array>
 using namespace std;
 
-#define NUM_COL = 320;
-#define NUM_ROW = 320;
-#define LEFT_BOUNDARY = -NUM_COL/2;
-#define TOP_BOUNDARY = NUM_ROW/2
+#define NUM_COL 9
+#define NUM_ROW 9
+#define LEFT_BOUNDARY -160
+#define TOP_BOUNDARY 160
 
 class Map{
 public:
@@ -24,5 +24,4 @@ public:
     void draw() const;
 private:
     array<array<Block, NUM_COL>, NUM_ROW> blocks;
-    //std::array<std::array<Block, NUM_COL>, NUM_ROW> blocks;
 };

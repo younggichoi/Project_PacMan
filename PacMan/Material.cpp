@@ -7,6 +7,14 @@
 
 #include "Material.h"
 
+Material::Material(){
+    setEmission(0.0f, 0.0f, 0.0f, 0.0f);
+    setAmbient(0.0f, 0.0f, 0.0f, 0.0f);
+    setDiffuse(0.0f, 0.0f, 0.0f, 0.0f);
+    setSpecular(0.0f, 0.0f, 0.0f, 0.0f);
+    setShininess(0.0f);
+}
+
 void Material::setEmission(float r, float g, float b, float a){
     this->emission[0] = r; this->emission[1] = g; this->emission[2] = b; this->emission[3] = a;
 }

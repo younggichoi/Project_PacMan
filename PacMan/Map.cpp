@@ -4,6 +4,9 @@
 //
 //  Created by 이현우 on 10/31/24.
 //
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
 
 #include "Map.h"
 
@@ -18,16 +21,13 @@ void Map::createMap() {
         }
     }
 }
-const Block& getBlock(int r, int c) const;
+const Block& Map::getBlock(int r, int c) const{
+    return blocks[r][c];
+}
 void Map::draw() const{
-    glPushMatrix();
-    glTranslatef(center.x, center.y, center.z);
-    glShadeModel(GL_SMOOTH);
-    glMaterialfv(GL_FRONT, GL_EMISSION, this->mtl.emission);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, this->mtl.ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, this->mtl.diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, this->mtl.specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, this->mtl.shininess);
-    glutSolidCube(this->size);
-    glPopMatrix();
+    for (int i = 0; i < blocks.size(); i++) {
+        for (int j = 0; j < blocks[i].size(); j++) {
+            getBlock(i, j).draw();
+        }
+    }
 }

@@ -13,7 +13,15 @@
 #include <GLUT/glut.h>
 //Windows
 //#include <GL/freeglut.h>
-
+Shape3D::Shape3D(){
+    setCenter(0.0f, 0.0f, 0.0f);
+    setVelocity(0.0f, 0.0f, 0.0f);
+    mtl.setEmission(0.0f, 0.0f, 0.0f, 0.0f);
+    mtl.setAmbient(0.0f, 0.0f, 0.0f, 0.0f);
+    mtl.setDiffuse(0.0f, 0.0f, 0.0f, 0.0f);
+    mtl.setSpecular(0.0f, 0.0f, 0.0f, 0.0f);
+    mtl.setShininess(0.0f);
+};
 void Shape3D::setCenter(float x, float y, float z){
     center.setVector(x, y, z);
 }
