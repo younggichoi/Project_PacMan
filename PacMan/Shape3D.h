@@ -25,6 +25,7 @@ Material mtl;
 
 */
 #pragma once
+#include "Vector3f.h"
 #include "Material.h"
 /*
 enum SHAPE {
@@ -32,27 +33,33 @@ enum SHAPE {
     RHOMBIC_DODECAHEDRON, SIERPINSKI_SPONGE, CYLINDER, TEACUP, TEASPOON
 };
  */
-struct Vector3f {
-    float data[3];
-    float &x = data[0];
-    float &y = data[1];
-    float &z = data[2];
+class Vector3f {
+public:
+    Vector3f() : x(0), y(0), z(0) {};
+    Vector3f(float a, float b, float c) : x(a), y(b), z(c) {};
+    Vector3f operator+(const Vector3f& a){
+        return Vector3f(x + a.x, y + a.y, z + a.z);
+    }
+    void setVector(float a, float b, float c);
+    void setVector(const Vector3f& v);
+    
+protected:
+    float x, y, z;
 };
 
 class Shape3D{
 public:
     //void setShape(SHAPE shp);
-    Shape3D();
     /*
     void setPos(float x, float y, float z);
     void setAngleOfSpin(float ang);
     void setAngleOfRevolution(float ang);
     void setSize(float s);
-    void setMTL(const Material& m);
     void increaseAngleOfSpin(float ang);
     void increaseAngleOfvolution(float ang);
     void draw() const;
      */
+    Shape3D();
     Shape3D(float x, float y, float z);
     void setCenter(float x, float y, float z);
     void setCenter(const Vector3f& c);
@@ -64,6 +71,7 @@ public:
     const Material& getMTL() const;
     void move();
     virtual void draw() const = 0;
+    
 protected:
     Vector3f center;
     Vector3f velocity;
