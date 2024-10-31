@@ -4,7 +4,7 @@
 //
 //  Created by 이현우 on 10/31/24.
 //
-
+#include <vector>
 #include <iostream>
 
 int main(int argc, const char * argv[]) {
