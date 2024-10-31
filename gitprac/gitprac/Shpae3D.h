@@ -41,6 +41,7 @@ struct Vector3f {
 class Shape3D{
 public:
     //void setShape(SHAPE shp);
+    Shape3D();
     void setPos(float x, float y, float z);
     void setAngleOfSpin(float ang);
     void setAngleOfRevolution(float ang);
