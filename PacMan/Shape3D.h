@@ -68,12 +68,5 @@ protected:
     Vector3f center;
     Vector3f velocity;
     Material mtl;
-    
-    
-    //SHAPE shape;
-    float pos[3];
-    float angleOfSpin;
-    float angleOfRevolution;
-    float size;
-    Material mtl;
+
 };
