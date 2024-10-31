@@ -16,6 +16,5 @@ public:
     void setVector(float a, float b, float c);
     void setVector(const Vector3f& v);
     
-protected:
     float x, y, z;
 };
