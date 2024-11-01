@@ -78,7 +78,6 @@ void keyboard(unsigned char key, int x, int y)
 
 void specialkey(int key, int x, int y)
 {
-	// keys : GLUT_KEY_LEFT, GLUT_KEY_RIGHT, GLUT_KEY_UP, GLUT_KEY_DOWN
 	if (windowState == MAIN)
 	{
 		specialkey_main(key, x, y);
@@ -103,8 +102,6 @@ void specialkey(int key, int x, int y)
 
 void mouse(int button, int state, int x, int y)
 {
-	// buttons : GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON
-	// states : GLUT_DOWN, GLUT_UP
 	if (windowState == MAIN)
 	{
 		mouse_main(button, state, x, y);
