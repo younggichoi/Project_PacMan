@@ -49,19 +49,19 @@ void Sphere::updateDirection(){
     currDirection = nextDirection;
 }
 void Sphere::move(){
-    if(DIRECTION == NONE){
+    if(currDirection == NONE){
+        //velocity 만져서 center = center + velocity 쓰면 될듯
+    }
+    else if (currDirection == LEFT){
         
     }
-    else if (DIRECTION == LEFT){
+    else if (currDirection == UP){
         
     }
-    else if (DIRECTION == UP){
+    else if (currDirection == RIGHT){
         
     }
-    else if (DIRECTION == RIGHT){
-        
-    }
-    else if (DIRECTION == DOWN){
+    else if (currDirection == DOWN){
         
     }
 }
