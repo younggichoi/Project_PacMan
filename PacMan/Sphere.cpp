@@ -49,6 +49,20 @@ void Sphere::updateDirection(){
     currDirection = nextDirection;
 }
 void Sphere::move(){
-    if(DIRECTION == )
+    if(DIRECTION == NONE){
+        
+    }
+    else if (DIRECTION == LEFT){
+        
+    }
+    else if (DIRECTION == UP){
+        
+    }
+    else if (DIRECTION == RIGHT){
+        
+    }
+    else if (DIRECTION == DOWN){
+        
+    }
 }
 

@@ -8,13 +8,23 @@
 
 class Vector3f {
 public:
-    Vector3f() : x(0), y(0), z(0) {};
-    Vector3f(float a, float b, float c) : x(a), y(b), z(c) {};
-    Vector3f operator+(const Vector3f& a){
-        return Vector3f(x + a.x, y + a.y, z + a.z);
-    }
-    void setVector(float a, float b, float c);
-    void setVector(const Vector3f& v);
+    Vector3f();
+    Vector3f(float a, float b, float c);
     
-    float x, y, z;
+    float getX() const;
+    float getY() const;
+    float getZ() const;
+    
+    Vector3f& operator=(const Vector3f& v);
+    Vector3f operator+(const Vector3f& a);
+    Vector3f operator*(float s) const;
+    float& operator[](const int i);
+    float operator[](const int i) const;
+    //TODO: 아마 다른 operator들도 구현해두는게 좋을듯
+    
+    void setPos(float a, float b, float c);
+    void setPos(const Vector3f& v);
+    
+private:
+    float pos[3];
 };

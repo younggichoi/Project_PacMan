@@ -23,19 +23,19 @@ Shape3D::Shape3D(){
     mtl.setShininess(0.0f);
 };
 void Shape3D::setCenter(float x, float y, float z){
-    center.setVector(x, y, z);
+    center.setPos(x, y, z);
 }
 void Shape3D::setCenter(const Vector3f& c){
-    center.setVector(c);
+    center.setPos(c);
 }
 Vector3f Shape3D::getCenter() const{
     return center;
 }
 void Shape3D::setVelocity(float x, float y, float z){
-    velocity.setVector(x, y, z);
+    velocity.setPos(x, y, z);
 }
 void Shape3D::setVelocity(const Vector3f& v){
-    velocity.setVector(v);
+    velocity.setPos(v);
 }
 Vector3f Shape3D::getVelocity() const{
     return velocity;
