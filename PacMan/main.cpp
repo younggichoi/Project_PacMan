@@ -1,5 +1,9 @@
 #include <GL/freeglut.h>
 #include "display.h"
+#include "idle.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "specialkey.h"
 
 // can be modified if needed
 #define WINDOW_POS_X 300
@@ -25,7 +29,6 @@ void initialize()
 
 void display()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if (windowState == MAIN)
 	{
 		display_main();
@@ -51,27 +54,101 @@ void display()
 
 void keyboard(unsigned char key, int x, int y)
 {
-
+	if (windowState == MAIN)
+	{
+		keyboard_main(key, x, y);
+	}
+	else if (windowState == INGAME)
+	{
+		keyboard_ingame(key, x, y);
+	}
+	else if (windowState == END)
+	{
+		keyboard_end(key, x, y);
+	}
+	else if (windowState == SAVE_SCORE)
+	{
+		keyboard_savescore(key, x, y);
+	}
+	else if (windowState == SCORE_BOARD)
+	{
+		keyboard_scoreboard(key, x, y);
+	}
 }
 
 void specialkey(int key, int x, int y)
 {
 	// keys : GLUT_KEY_LEFT, GLUT_KEY_RIGHT, GLUT_KEY_UP, GLUT_KEY_DOWN
+	if (windowState == MAIN)
+	{
+		specialkey_main(key, x, y);
+	}
+	else if (windowState == INGAME)
+	{
+		specialkey_ingame(key, x, y);
+	}
+	else if (windowState == END)
+	{
+		specialkey_end(key, x, y);
+	}
+	else if (windowState == SAVE_SCORE)
+	{
+		specialkey_savescore(key, x, y);
+	}
+	else if (windowState == SCORE_BOARD)
+	{
+		specialkey_scoreboard(key, x, y);
+	}
 }
 
 void mouse(int button, int state, int x, int y)
 {
 	// buttons : GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON
 	// states : GLUT_DOWN, GLUT_UP
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	if (windowState == MAIN)
 	{
-		// Change state
+		mouse_main(button, state, x, y);
+	}
+	else if (windowState == INGAME)
+	{
+		mouse_ingame(button, state, x, y);
+	}
+	else if (windowState == END)
+	{
+		mouse_end(button, state, x, y);
+	}
+	else if (windowState == SAVE_SCORE)
+	{
+		mouse_savescore(button, state, x, y);
+	}
+	else if (windowState == SCORE_BOARD)
+	{
+		mouse_scoreboard(button, state, x, y);
 	}
 }
 
 void idle()
 {
-
+	if (windowState == MAIN)
+	{
+		idle_main();
+	}
+	else if (windowState == INGAME)
+	{
+		idle_ingame();
+	}
+	else if (windowState == END)
+	{
+		idle_end();
+	}
+	else if (windowState == SAVE_SCORE)
+	{
+		idle_savescore();
+	}
+	else if (windowState == SCORE_BOARD)
+	{
+		idle_scoreboard();
+	}
 }
 
 int main(int argc, char** argv)
