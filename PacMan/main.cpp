@@ -1,15 +1,18 @@
 #include <GL/freeglut.h>
+#include "display.h"
 
-#define WINDOW_POS_X 120
-#define WINDOW_POS_Y 55
+// can be modified if needed
+#define WINDOW_POS_X 300
+#define WINDOW_POS_Y 40
 
-#define WINDOW_WIDTH 400
-#define WINDOW_HEIGHT 300
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 700
 
 enum WINDOW_STATE {
-	START,
+	MAIN,
 	INGAME,
 	END,
+	SAVE_SCORE,
 	SCORE_BOARD
 };
 
@@ -17,27 +20,31 @@ WINDOW_STATE windowState;
 
 void initialize()
 {
-	windowState = START;
+	windowState = MAIN;
 }
 
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if (windowState == START)
+	if (windowState == MAIN)
 	{
-		// TO DO
+		display_main();
 	}
 	else if (windowState == INGAME)
 	{
-		// TO DO
+		display_ingame();
 	}
 	else if (windowState == END)
 	{
-		// TO DO
+		display_end();
+	}
+	else if (windowState == SAVE_SCORE)
+	{
+		display_savescore();
 	}
 	else if (windowState == SCORE_BOARD)
 	{
-		// TO DO
+		display_scoreboard();
 	}
 	glutSwapBuffers();
 }
@@ -45,6 +52,11 @@ void display()
 void keyboard(unsigned char key, int x, int y)
 {
 
+}
+
+void specialkey(int key, int x, int y)
+{
+	// keys : GLUT_KEY_LEFT, GLUT_KEY_RIGHT, GLUT_KEY_UP, GLUT_KEY_DOWN
 }
 
 void mouse(int button, int state, int x, int y)
@@ -70,11 +82,14 @@ int main(int argc, char** argv)
 	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("PacMan");
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(-WINDOW_WIDTH / 2, WINDOW_WIDTH / 2, -WINDOW_HEIGHT / 2, WINDOW_HEIGHT / 2, -1.f, 50.f);
 	initialize();
 
 	// register callbacks
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
+	glutSpecialFunc(specialkey);
 	glutMouseFunc(mouse);
 	glutIdleFunc(idle);
 
