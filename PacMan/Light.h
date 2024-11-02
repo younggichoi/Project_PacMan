@@ -10,6 +10,13 @@
 #include "Vector3f.h"
 #include "Vector4f.h"
 
+//MacOS
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+//Windows
+//#include <GL/freeglut.h>
+
 class Light
 {
 public:

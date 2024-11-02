@@ -35,11 +35,10 @@ public:
             glPushMatrix();
             glTranslatef(center[0], center[1], center[2]);
             glShadeModel(GL_SMOOTH);
-            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.emission);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.ambient);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.diffuse);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.specular);
-            glMaterialfv(GL_FRONT, GL_SHININESS, mtl.shininess);
+            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
             glutSolidCube(BLOCK_SIZE);
             glPopMatrix();
         }

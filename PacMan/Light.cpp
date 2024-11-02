@@ -34,3 +34,11 @@ Vector4f Light::getSpecular() const{
 int Light::getID() const{
     return lightID;
 }
+oid Light::draw() const{
+    //glEnable(lightID);
+    glLightfv(lightID, GL_AMBIENT, ambient.pos);
+    glLightfv(lightID, GL_DIFFUSE, diffuse.pos);
+    glLightfv(lightID, GL_SPECULAR, specular.pos);
+    glLightfv(lightID, GL_POSITION, pos.pos);
+    //glDisable(lightID);
+}

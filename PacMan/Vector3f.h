@@ -26,6 +26,6 @@ public:
     void setPos(float a, float b, float c);
     void setPos(const Vector3f& v);
     
-private:
+
     float pos[3];
 };

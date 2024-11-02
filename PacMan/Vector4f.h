@@ -16,6 +16,6 @@ public:
     float& operator[](const int i);
     float operator[](const int i) const;
 
-private:
+
     float pos[4];
 };
