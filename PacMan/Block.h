@@ -6,6 +6,7 @@
 //
 #pragma once
 
+#include "Constants.h"
 #include "Shape3D.h"
 
 //MacOS
@@ -14,8 +15,6 @@
 #include <GLUT/glut.h>
 //Windows
 //#include <GL/freeglut.h>
-
-#define BLOCK_SIZE 1
 
 class Block : public Shape3D {
 public:

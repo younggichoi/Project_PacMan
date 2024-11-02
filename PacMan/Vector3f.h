@@ -5,6 +5,7 @@
 //  Created by 이현우 on 10/31/24.
 //
 #pragma once
+#include "Constants.h"
 
 class Vector3f {
 public:

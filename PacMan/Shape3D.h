@@ -27,8 +27,17 @@ Material mtl;
 #pragma once
 #include "Vector3f.h"
 #include "Material.h"
+#include "Constants.h"
 
-#define SPEED
+//MacOS
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+//Windows
+//#include <GL/freeglut.h>
+
+//#define SPEED
+
 /*
 enum SHAPE {
     SPHERE, CUBE, TEAPOT, CONE, TORUS, DODECAHEDRON, ICOSAHEDRON, OCTAHEDRON, TETRAHEDRON,

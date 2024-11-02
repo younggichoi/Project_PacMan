@@ -7,14 +7,10 @@
 
 #pragma once
 
+#include "Constants.h"
 #include "Block.h"
 #include <array>
 using namespace std;
-
-#define NUM_COL 9
-#define NUM_ROW 9
-#define LEFT_BOUNDARY -160
-#define TOP_BOUNDARY 160
 
 class Map{
 public:

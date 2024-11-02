@@ -7,11 +7,12 @@
 #pragma once
 
 #include "Shape3D.h"
-
-enum DIRECTION { NONE, LEFT, UP, RIGHT, DOWN };
+#include "Constants.h"
 
 class Sphere : public Shape3D {
 public:
+    enum DIRECTION { NONE, LEFT, UP, RIGHT, DOWN };
+    
     Sphere(float r, int sl, int st);
     
     void setRadius(float r);

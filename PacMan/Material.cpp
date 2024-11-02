@@ -29,6 +29,21 @@ void Material::setSpecular(float r, float g, float b, float a){
     this->specular[0] = r; this->specular[1] = g; this->specular[2] = b; this->specular[3] = a;
 }
 void Material::setShininess(float sh){
-    this->shininess[0] = sh;
+    this->shininess = sh;
 }
 
+Vector4f Material::getEmission() const{
+    return emission;
+}
+Vector4f Material::getAmbient() const{
+    return ambient;
+}
+Vector4f Material::getDiffuse() const{
+    return diffuse;
+}
+Vector4f Material::getSpecular() const{
+    return specular;
+}
+float Material::getShininess() const{
+    return shininess;
+}
