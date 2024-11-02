@@ -34,7 +34,7 @@ public:
     virtual void draw() const{
         if(isPassable()){
             glPushMatrix();
-            glTranslatef(center.x, center.y, center.z);
+            glTranslatef(center[0], center[1], center[2]);
             glShadeModel(GL_SMOOTH);
             glMaterialfv(GL_FRONT, GL_EMISSION, mtl.emission);
             glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.ambient);

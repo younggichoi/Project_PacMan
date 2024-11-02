@@ -22,6 +22,9 @@ Shape3D::Shape3D(){
     mtl.setSpecular(0.0f, 0.0f, 0.0f, 0.0f);
     mtl.setShininess(0.0f);
 };
+Shape3D::Shape3D(float x, float y, float z){
+    setCenter(x,y,z);
+}
 void Shape3D::setCenter(float x, float y, float z){
     center.setPos(x, y, z);
 }

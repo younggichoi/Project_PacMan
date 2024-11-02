@@ -27,6 +27,8 @@ Material mtl;
 #pragma once
 #include "Vector3f.h"
 #include "Material.h"
+
+#define SPEED
 /*
 enum SHAPE {
     SPHERE, CUBE, TEAPOT, CONE, TORUS, DODECAHEDRON, ICOSAHEDRON, OCTAHEDRON, TETRAHEDRON,

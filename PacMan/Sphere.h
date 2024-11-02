@@ -13,6 +13,7 @@ enum DIRECTION { NONE, LEFT, UP, RIGHT, DOWN };
 class Sphere : public Shape3D {
 public:
     Sphere(float r, int sl, int st);
+    
     void setRadius(float r);
     float getRadius() const;
     void setSlice(int sl);

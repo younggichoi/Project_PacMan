@@ -10,6 +10,7 @@
 
 #include "Map.h"
 
+
 void Map::createMap() {
     float x = LEFT_BOUNDARY;
     float y = TOP_BOUNDARY;

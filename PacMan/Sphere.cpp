@@ -7,6 +7,10 @@
 
 #include "Sphere.h"
 
+Sphere::Sphere(float r, int sl, int st){
+    radius = r; slice = sl; stack = st;
+}
+
 void Sphere::setRadius(float r){
     radius = r;
 }
