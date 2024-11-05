@@ -4,6 +4,7 @@
 void idle_main()
 {
 	// TO DO
+	glutPostRedisplay();
 }
 
 void idle_ingame()

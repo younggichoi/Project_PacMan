@@ -4,27 +4,23 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "specialkey.h"
+#include "constant.h"
 
 // can be modified if needed
-#define WINDOW_POS_X 300
-#define WINDOW_POS_Y 40
+const float WINDOW_POS_X = 300.f;
+const float WINDOW_POS_Y = 40.f;
 
-#define WINDOW_WIDTH 600
-#define WINDOW_HEIGHT 700
-
-enum WINDOW_STATE {
-	MAIN,
-	INGAME,
-	END,
-	SAVE_SCORE,
-	SCORE_BOARD
-};
+const float WINDOW_WIDTH = 600.f;
+const float WINDOW_HEIGHT = 700.f;
 
 WINDOW_STATE windowState;
 
 void initialize()
 {
 	windowState = MAIN;
+	PLAY_MENU.centeredText();
+	SCOREBOARD_MENU.centeredText();
+	QUIT_MENU.centeredText();
 }
 
 void display()
@@ -49,7 +45,6 @@ void display()
 	{
 		display_scoreboard();
 	}
-	glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -156,8 +151,8 @@ int main(int argc, char** argv)
 	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("PacMan");
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-WINDOW_WIDTH / 2, WINDOW_WIDTH / 2, -WINDOW_HEIGHT / 2, WINDOW_HEIGHT / 2, -1.f, 50.f);
+	// glMatrixMode(GL_PROJECTION);
+	// glOrtho(-WINDOW_WIDTH / 2, WINDOW_WIDTH / 2, -WINDOW_HEIGHT / 2, WINDOW_HEIGHT / 2, -1.f, 50.f);
 	initialize();
 
 	// register callbacks
