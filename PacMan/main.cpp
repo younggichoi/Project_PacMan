@@ -10,8 +10,8 @@
 const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
 
-const float WINDOW_WIDTH = 600.f;
-const float WINDOW_HEIGHT = 700.f;
+const float WINDOW_WIDTH = 640.f;
+const float WINDOW_HEIGHT = 640.f;
 
 WINDOW_STATE windowState;
 
