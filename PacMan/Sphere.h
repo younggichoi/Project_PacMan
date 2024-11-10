@@ -84,13 +84,14 @@ public:
 
 private:
     bool bCollided;
+    int life;
 };
 
 /* Ghost class */
 class Ghost : public Sphere
 {
 public:
-    enum STATE { CHASE, SCATTER };
+    enum STATE { CHASE, SCATTER, FRIGHTENED, EATEN };
 
     Ghost(float r, int sl, int st, STATE s);
 
@@ -99,4 +100,36 @@ public:
 
 private:
     STATE state;
+};
+
+
+/* Dots */
+
+class Dot : public Sphere{
+public:
+    enum DOTSIZE { SMALL = 5, LARGE = 2 };
+    //main에서 dot의 radius 설정해서 선언할 때 radius = (pacman radius) / dotSize 식으로 사용
+    //CollisionDetector, CollisionHandler에 pacman과 dot 충돌 관련 내용 추가해야.
+    
+    Dot(float r, int sl, int st, DOTSIZE ds);
+    
+    void setEaten(bool iE);
+    
+    virtual void draw() const{
+        GLfloat sh = mtl.getShininess();
+        glPushMatrix();
+        glTranslatef(center[0], center[1], center[2]);
+        glShadeModel(GL_SMOOTH);
+        glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
+        glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
+        glutSolidSphere(radius, slice, stack);
+        glPopMatrix();
+    }
+    
+private:
+    DOTSIZE dotSize;
+    bool isEaten;
 };

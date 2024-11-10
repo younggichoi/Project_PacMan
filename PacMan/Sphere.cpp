@@ -148,6 +148,7 @@ void Sphere::move(){
 
 PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
     bCollided = bCol;
+    life = 3;
 }
 void PacMan::setCollided(bool bCol){
     bCollided = bCol;
@@ -162,4 +163,15 @@ void Ghost::setState(STATE s){
 }
 Ghost::STATE Ghost::getState() const{
     return state;
+}
+
+
+
+Dot::Dot(float r, int sl, int st, DOTSIZE ds) : Sphere(r, sl, st){
+    dotSize = ds;
+    isEaten = false;
+}
+
+void Dot::setEaten(bool iE){
+    isEaten = iE;
 }
