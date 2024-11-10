@@ -1,6 +1,6 @@
 //
 //  Vector4f.h
-//  PacMan
+//  Mission10
 //
 //  Created by 이현우 on 11/3/24.
 //
@@ -12,6 +12,7 @@ public:
     Vector4f();
     Vector4f(float x, float y, float z, float w);
     void setPos(float x, float y, float z, float w);
+    
 
     float& operator[](const int i);
     float operator[](const int i) const;

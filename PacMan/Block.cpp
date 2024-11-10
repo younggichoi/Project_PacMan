@@ -1,9 +1,10 @@
 //
 //  Block.cpp
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 10/31/24.
+//  Created by 이현우 on 11/3/24.
 //
+
 #include "Block.h"
 
 Block::Block(){
@@ -18,9 +19,11 @@ void Block::setWidth(float w){
 void Block::setHeight(float h){
     height = h;
 }
+
 void Block::setPassable(bool v){
     bPassable = v;
 }
+
 
 float Block::getWidth() const{
     return width;
@@ -28,6 +31,8 @@ float Block::getWidth() const{
 float Block::getHeight() const{
     return height;
 }
+
 bool Block::isPassable() const{
     return bPassable;
 }
+

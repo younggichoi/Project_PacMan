@@ -1,6 +1,6 @@
 //
 //  Light.cpp
-//  PacMan
+//  Mission10
 //
 //  Created by 이현우 on 11/3/24.
 //
@@ -34,7 +34,8 @@ Vector4f Light::getSpecular() const{
 int Light::getID() const{
     return lightID;
 }
-oid Light::draw() const{
+
+void Light::draw() const{
     //glEnable(lightID);
     glLightfv(lightID, GL_AMBIENT, ambient.pos);
     glLightfv(lightID, GL_DIFFUSE, diffuse.pos);

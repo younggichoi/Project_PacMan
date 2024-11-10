@@ -1,6 +1,6 @@
 //
 //  Light.h
-//  PacMan
+//  Mission10
 //
 //  Created by 이현우 on 11/3/24.
 //
@@ -9,13 +9,9 @@
 
 #include "Vector3f.h"
 #include "Vector4f.h"
-
-//MacOS
 #define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
-//Windows
-//#include <GL/freeglut.h>
 
 class Light
 {

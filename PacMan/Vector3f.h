@@ -1,9 +1,10 @@
 //
 //  Vector3f.h
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 10/31/24.
+//  Created by 이현우 on 11/3/24.
 //
+
 #pragma once
 #include "Constants.h"
 
@@ -19,9 +20,9 @@ public:
     Vector3f& operator=(const Vector3f& v);
     Vector3f operator+(const Vector3f& a);
     Vector3f operator*(float s) const;
+    Vector3f operator-(const Vector3f& v);
     float& operator[](const int i);
     float operator[](const int i) const;
-    //TODO: 아마 다른 operator들도 구현해두는게 좋을듯
     
     void setPos(float a, float b, float c);
     void setPos(const Vector3f& v);

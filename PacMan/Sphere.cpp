@@ -1,14 +1,16 @@
 //
 //  Sphere.cpp
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 11/1/24.
+//  Created by 이현우 on 11/3/24.
 //
 
 #include "Sphere.h"
 
 Sphere::Sphere(float r, int sl, int st){
     radius = r; slice = sl; stack = st;
+    center[0] = 0.0f; center[1] = 0.0f; center[2] = 0.0f;
+    currDirection = NONE;
 }
 
 void Sphere::setRadius(float r){
@@ -25,8 +27,6 @@ void Sphere::setStack(int st){
 }
 void Sphere::setIndexPosition(int x, int y){
     idxPos[0] = x; idxPos[1] = y;
-    //bInxPosUpdated = true;
-    //언제 다시 false로 만들 건지 나중에 생각
 }
 bool Sphere::isIndexPositionUpdated() const{
     return bInxPosUpdated;
@@ -43,30 +43,123 @@ void Sphere::setCurrentDirection(DIRECTION d){
 void Sphere::setNextDirection(DIRECTION d){
     nextDirection = d;
 }
-DIRECTION Sphere::getCurrentDirection() const{
+Sphere::DIRECTION Sphere::getCurrentDirection() const{
     return currDirection;
 }
-DIRECTION Sphere::getNextDirection() const{
+Sphere::DIRECTION Sphere::getNextDirection() const{
     return nextDirection;
 }
+
 void Sphere::updateDirection(){
-    currDirection = nextDirection;
+        currDirection = nextDirection;
 }
-void Sphere::move(){
-    if(currDirection == NONE){
-        //velocity 만져서 center = center + velocity 쓰면 될듯
+
+void Sphere::updateIndexPosition(){
+    float xFromIdx = LEFT_BOUNDARY + idxPos[0] * BLOCK_SIZE;
+    float yFromIdx = TOP_BOUNDARY  - idxPos[1] * BLOCK_SIZE;
+    if (velocity[0] > 0.0f){
+        if (center[0] - radius * 2.0f >= xFromIdx) {
+            if (idxPos[0] < NUM_COL - 1)
+                setIndexPosition(idxPos[0] + 1, idxPos[1]);
+            else {
+                setIndexPosition(0, idxPos[1]);
+                this->setCenter(LEFT_BOUNDARY + idxPos[0] * BLOCK_SIZE, yFromIdx, 0.0f);
+                cout << xFromIdx << endl;
+            }
+            bInxPosUpdated = true;
+        }
+        else {
+            bInxPosUpdated = false;
+        }
     }
-    else if (currDirection == LEFT){
-        
+    else if (velocity[0] < 0.0f){
+        if (center[0] + radius * 2.0f <= xFromIdx) {
+            if (idxPos[0] > 0)
+                setIndexPosition(idxPos[0] - 1, idxPos[1]);
+            else {
+                setIndexPosition(NUM_COL - 1, idxPos[1]);
+                this->setCenter(LEFT_BOUNDARY + idxPos[0] * BLOCK_SIZE, yFromIdx, 0.0f);
+            }
+            bInxPosUpdated = true;
+        }
+        else {
+            bInxPosUpdated = false;
+        }
     }
-    else if (currDirection == UP){
-        
+    else if (velocity[1] > 0.0f){
+        if (center[1] - radius * 2.0f >= yFromIdx) {
+            if (idxPos[1] > 0)
+                setIndexPosition(idxPos[0], idxPos[1] - 1);
+            else {
+                setIndexPosition(idxPos[0], NUM_ROW - 1);
+                this->setCenter(xFromIdx, TOP_BOUNDARY  - idxPos[1] * BLOCK_SIZE, 0.0f);
+            }
+            bInxPosUpdated = true;
+        }
+        else {
+            bInxPosUpdated = false;
+        }
     }
-    else if (currDirection == RIGHT){
-        
+    else if (velocity[1] < 0.0f){
+        if (center[1] + radius * 2.0f <= yFromIdx) {
+            if (idxPos[1] < NUM_ROW - 1)
+                setIndexPosition(idxPos[0], idxPos[1] + 1);
+            else {
+                setIndexPosition(idxPos[0], 0);
+                this->setCenter(xFromIdx, TOP_BOUNDARY  - idxPos[1] * BLOCK_SIZE, 0.0f);
+            }
+            bInxPosUpdated = true;
+        }
+        else {
+            bInxPosUpdated = false;
+        }
     }
-    else if (currDirection == DOWN){
-        
+    else {
+        bInxPosUpdated = false;
     }
 }
 
+void Sphere::move(){
+    
+    updateIndexPosition();
+    
+    if (currDirection == LEFT){
+        this->setVelocity(-MOVE_SPEED, 0.0f, 0.0f);
+    }
+    else if (currDirection == RIGHT){
+        this->setVelocity(MOVE_SPEED, 0.0f, 0.0f);
+    }
+    else if (currDirection == UP){
+        this->setVelocity(0.0f, MOVE_SPEED, 0.0f);
+    }
+    else if (currDirection == DOWN){
+        this->setVelocity(0.0f, -MOVE_SPEED, 0.0f);
+    }
+    else{
+        this->setVelocity(0.0f, 0.0f, 0.0f);
+    }
+    
+    center = center + velocity;
+    
+    //updateIndexPosition();
+    
+    //cout << "[" << this->getXIndex() << ", " << this->getYIndex() << "]"  << " (" << xFromIdx << ", " << yFromIdx << ")" << endl;
+}
+
+PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
+    bCollided = bCol;
+}
+void PacMan::setCollided(bool bCol){
+    bCollided = bCol;
+}
+
+
+Ghost::Ghost(float r, int sl, int st, STATE s) : Sphere(r, sl, st){
+    state = s;
+}
+void Ghost::setState(STATE s){
+    state = s;
+}
+Ghost::STATE Ghost::getState() const{
+    return state;
+}

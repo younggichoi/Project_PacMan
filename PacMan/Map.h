@@ -1,15 +1,16 @@
 //
 //  Map.h
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 10/31/24.
+//  Created by 이현우 on 11/3/24.
 //
 
 #pragma once
 
-#include "Constants.h"
 #include "Block.h"
 #include <array>
+#include "Constants.h"
+
 using namespace std;
 
 class Map{

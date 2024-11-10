@@ -1,8 +1,8 @@
 //
 //  Material.cpp
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 10/31/24.
+//  Created by 이현우 on 11/3/24.
 //
 
 #include "Material.h"

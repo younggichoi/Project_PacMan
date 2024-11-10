@@ -1,9 +1,10 @@
 //
 //  Vector3f.cpp
-//  PacMan
+//  Mission10
 //
-//  Created by 이현우 on 10/31/24.
+//  Created by 이현우 on 11/3/24.
 //
+
 #include "Vector3f.h"
 
 Vector3f::Vector3f(){
@@ -36,6 +37,9 @@ float& Vector3f::operator[](const int i){
 }
 float Vector3f::operator[](const int i) const{
     return pos[i];
+}
+Vector3f Vector3f::operator-(const Vector3f& v) {
+    return Vector3f(this->getX() - v.getX(), this->getY() - v.getY(), this->getZ() - v.getZ());
 }
 
 void Vector3f::setPos(float a, float b, float c) {
