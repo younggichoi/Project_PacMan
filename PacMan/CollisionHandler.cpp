@@ -16,4 +16,16 @@ void CollisionHandler::operator()(PacMan& pacman, const Map& map){
 }
 void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
     //TODO
+    if ()
+}
+void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
+    //TODO
+    if (dot.isLarge()) {
+        // 큰 dot 먹은 경우 ghost들 상태 바꾸기
+
+    }
+    else {
+        // 작은 dot 먹은 경우 점수올리기?
+
+    }
 }

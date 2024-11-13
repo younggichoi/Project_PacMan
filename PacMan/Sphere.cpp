@@ -175,3 +175,12 @@ Dot::Dot(float r, int sl, int st, DOTSIZE ds) : Sphere(r, sl, st){
 void Dot::setEaten(bool iE){
     isEaten = iE;
 }
+
+bool Dot::isLarge() {
+    if (dotSize == LARGE) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

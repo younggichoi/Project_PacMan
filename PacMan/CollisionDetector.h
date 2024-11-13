@@ -17,4 +17,5 @@ class CollisionDetector
 public:
     bool operator()(const PacMan& pacman, const Map& map);
     bool operator()(const PacMan& pacman, const Ghost& ghost);
+    bool operator()(const PacMan& pacman, const Dot& dot);
 };

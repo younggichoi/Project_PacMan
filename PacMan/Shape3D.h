@@ -9,9 +9,7 @@
 #include "Vector3f.h"
 #include "Material.h"
 #include "Constants.h"
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+#include <GL/freeglut.h>
 
 
 class Shape3D{

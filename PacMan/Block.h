@@ -10,9 +10,7 @@
 #include "Shape3D.h"
 #include "Constants.h"
 
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+#include <GL/freeglut.h>
 
 
 class Block : public Shape3D {
