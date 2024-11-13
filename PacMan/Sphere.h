@@ -114,6 +114,8 @@ public:
     Dot(float r, int sl, int st, DOTSIZE ds);
     
     void setEaten(bool iE);
+
+    bool isLarge();
     
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
