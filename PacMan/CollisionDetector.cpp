@@ -48,3 +48,14 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Ghost& ghost){
     }
     else return false;
 }
+
+bool CollisionDetector::operator()(const PacMan& pacman, const Dot& dot) {
+    if ( (pacman.getRadius() + dot.getRadius()) < (pacman.getCenter() - dot.getCenter()).getAbs()) {
+        // if 반지름 합 < 둘 사이 거리
+        // not yet
+        return false;
+    }
+    else {
+        return true;
+    }
+}

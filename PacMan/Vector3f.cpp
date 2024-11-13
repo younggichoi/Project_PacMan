@@ -48,3 +48,7 @@ void Vector3f::setPos(float a, float b, float c) {
 void Vector3f::setPos(const Vector3f& v){
     this->pos[0] = v.pos[0]; this->pos[1] = v.pos[1]; this->pos[2] = v.pos[2];
 }
+
+float Vector3f::getAbs() {
+    return sqrt(pow(pos[0], 2) + pow(pos[1], 2) + pow(pos[2], 2));
+}

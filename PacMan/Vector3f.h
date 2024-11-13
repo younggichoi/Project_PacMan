@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Constants.h"
+#include <cmath>
 
 class Vector3f {
 public:
@@ -26,6 +27,8 @@ public:
     
     void setPos(float a, float b, float c);
     void setPos(const Vector3f& v);
+
+    float getAbs();
     
 
     float pos[3];
