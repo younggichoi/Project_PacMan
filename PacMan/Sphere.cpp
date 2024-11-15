@@ -165,6 +165,13 @@ void PacMan::decreaseLife() {
 int PacMan::getLife() {
     return life;
 }
+void PacMan::addScore(int sc) {
+    score += sc;
+}
+int PacMan::getScore() {
+    return score;
+}
+
 
 //******************************************************//
 // Ghost

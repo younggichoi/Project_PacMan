@@ -72,6 +72,9 @@ public:
     void decreaseLife();
     int getLife();
 
+    void addScore(int sc);
+    int getScore();
+
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
         glPushMatrix();
@@ -88,6 +91,7 @@ public:
 
 private:
     bool bCollided;
+    int score;
     int life;
 };
 
