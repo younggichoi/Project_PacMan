@@ -142,9 +142,12 @@ void Sphere::move(){
     center = center + velocity;
     
     //updateIndexPosition();
-    
     //cout << "[" << this->getXIndex() << ", " << this->getYIndex() << "]"  << " (" << xFromIdx << ", " << yFromIdx << ")" << endl;
 }
+
+//******************************************************//
+// PacMan
+//******************************************************//
 
 PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
     bCollided = bCol;
@@ -153,7 +156,19 @@ PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
 void PacMan::setCollided(bool bCol){
     bCollided = bCol;
 }
+void PacMan::setLife(int l) {
+    life = l;
+}
+void PacMan::decreaseLife() {
+    life -= 1;
+}
+int PacMan::getLife() {
+    return life;
+}
 
+//******************************************************//
+// Ghost
+//******************************************************//
 
 Ghost::Ghost(float r, int sl, int st, STATE s) : Sphere(r, sl, st){
     state = s;
@@ -165,7 +180,9 @@ Ghost::STATE Ghost::getState() const{
     return state;
 }
 
-
+//******************************************************//
+// Dot
+//******************************************************//
 
 Dot::Dot(float r, int sl, int st, DOTSIZE ds) : Sphere(r, sl, st){
     dotSize = ds;

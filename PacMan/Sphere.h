@@ -68,6 +68,10 @@ public:
 
     void setCollided(bool bCol);
 
+    void setLife(int l);
+    void decreaseLife();
+    int getLife();
+
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
         glPushMatrix();
