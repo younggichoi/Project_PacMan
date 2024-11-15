@@ -15,12 +15,22 @@ const float WINDOW_HEIGHT = 640.f;
 
 WINDOW_STATE windowState;
 
+std::list<std::string> ranker_name{};
+std::list<int> ranker_score{};
+
 void initialize()
 {
 	windowState = MAIN;
+	// windowState = SCORE_BOARD;
+	score = 1155;
 	PLAY_MENU.centeredText();
 	SCOREBOARD_MENU.centeredText();
 	QUIT_MENU.centeredText();
+	SAVE_YES_MENU.centeredText();
+	SAVE_NO_MENU.centeredText();
+	SAVE_BUTTON.centeredText();
+	GOTO_MAIN.centeredText();
+	read_score(ranker_name, ranker_score);
 }
 
 void display()

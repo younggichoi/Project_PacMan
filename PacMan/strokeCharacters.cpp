@@ -31,3 +31,13 @@ float strokeCharacters::getTextWidth() const
 		width += glutStrokeWidth(font, s);
 	return width;
 }
+
+void strokeCharacters::centeredText()
+{
+	setPos( -getTextWidth() * scale / FONT_BASEHEIGHT / 2.0, posy);
+}
+
+float strokeCharacters::getScale() const
+{
+	return scale;
+}
