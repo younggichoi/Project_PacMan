@@ -122,17 +122,20 @@ public:
     bool isLarge();
     
     virtual void draw() const{
-        GLfloat sh = mtl.getShininess();
-        glPushMatrix();
-        glTranslatef(center[0], center[1], center[2]);
-        glShadeModel(GL_SMOOTH);
-        glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
-        glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
-        glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
-        glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
-        glutSolidSphere(radius, slice, stack);
-        glPopMatrix();
+        // isEaten == false (= not eaten yet) 이면 show
+        if (!isEaten) {
+            GLfloat sh = mtl.getShininess();
+            glPushMatrix();
+            glTranslatef(center[0], center[1], center[2]);
+            glShadeModel(GL_SMOOTH);
+            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
+            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
+            glutSolidSphere(radius, slice, stack);
+            glPopMatrix();
+        }
     }
     
 private:
