@@ -177,8 +177,15 @@ int PacMan::getScore() {
 // Ghost
 //******************************************************//
 
-Ghost::Ghost(float r, int sl, int st, STATE s) : Sphere(r, sl, st){
+Ghost::Ghost(float r, int sl, int st, NAME n, STATE s) : Sphere(r, sl, st){
+    name = n;
     state = s;
+}
+void Ghost::setName(NAME n) {
+    name = n;
+}
+Ghost::NAME Ghost::getName() const {
+    return name;
 }
 void Ghost::setState(STATE s){
     state = s;

@@ -99,14 +99,19 @@ private:
 class Ghost : public Sphere
 {
 public:
+    enum NAME {BLINKY, PINKY, INKY, CLYDE};
     enum STATE { CHASE, SCATTER, FRIGHTENED, EATEN };
 
-    Ghost(float r, int sl, int st, STATE s);
+    Ghost(float r, int sl, int st, NAME n, STATE s);
+
+    void setName(NAME n);
+    NAME getName() const;
 
     void setState(STATE s);
     STATE getState() const;
 
 private:
+    NAME name;
     STATE state;
 };
 
