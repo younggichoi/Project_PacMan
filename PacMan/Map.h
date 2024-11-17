@@ -9,14 +9,15 @@
 
 #include "Block.h"
 #include <array>
-#include "Constants.h"
+#include <string>
+#include "constant.h"
 
 using namespace std;
 
 class Map{
 public:
     Map();
-    void createMap();
+    void createMap(const std::string&);
     const Block& getBlock(int r, int c) const;
     void draw() const;
 private:

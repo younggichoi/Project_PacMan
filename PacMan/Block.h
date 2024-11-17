@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Shape3D.h"
-#include "Constants.h"
+#include "constant.h"
 
 #include <GL/freeglut.h>
 

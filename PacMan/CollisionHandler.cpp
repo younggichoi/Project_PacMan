@@ -16,7 +16,6 @@ void CollisionHandler::operator()(PacMan& pacman, const Map& map){
 }
 void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
     //TODO
-    if ()
 }
 void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
     //TODO

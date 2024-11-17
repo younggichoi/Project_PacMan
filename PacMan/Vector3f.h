@@ -6,7 +6,6 @@
 //
 
 #pragma once
-#include "Constants.h"
 #include <cmath>
 
 class Vector3f {

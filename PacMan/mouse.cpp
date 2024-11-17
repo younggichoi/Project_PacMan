@@ -99,6 +99,7 @@ void mouse_savescore(int button, int state, int x, int y)
 		{
 			if (SAVE_BUTTON.checkMousePtr(x, y))
 			{
+				// player name을 빈칸으로 할 경우 저장이 안되게 해야함
 				save_score(player_name, score);
 				player_name = "";
 				score = 0;

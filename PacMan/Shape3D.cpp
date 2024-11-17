@@ -7,9 +7,7 @@
 
 #include "Shape3D.h"
 
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+#include <GL/freeglut.h>
 
 Shape3D::Shape3D(){
     setCenter(0.0f, 0.0f, 0.0f);
