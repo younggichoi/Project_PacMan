@@ -4,6 +4,7 @@
 #include <cmath>
 #include "strokeCharacters.h"
 #include "menubox.h"
+#include "Map.h"
 
 /* constants in main display */
 
@@ -37,6 +38,12 @@ MENUBOX_MAIN_RADIUS, MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGME
 /* constants in ingame state */
 
 unsigned int score;
+
+// variable that represents present stage
+int stage_num = 0;
+
+// constant.h에서 해당 변수를 정의하면 순환참조 문제가 발생하기 때문에 이곳에서 선언
+extern std::array<Map, STAGE_NUM> maps;
 
 /* constants in end display */
 
@@ -199,6 +206,10 @@ void display_ingame()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glColor3f(0.0f, 1.0f, 0.0f);
+
+	maps[stage_num].draw();
+
+	
 	glutSwapBuffers();
 }
 

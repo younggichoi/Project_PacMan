@@ -6,8 +6,6 @@
 //
 
 #pragma once
-#include "Constants.h"
-#include "Vector3f.h"
 #include "Vector4f.h"
 
 class Material{
@@ -32,4 +30,3 @@ private:
     Vector4f specular;
     float shininess;
 };
-
