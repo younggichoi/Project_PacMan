@@ -193,6 +193,9 @@ void Ghost::setState(STATE s){
 Ghost::STATE Ghost::getState() const{
     return state;
 }
+void Ghost::setTargetPosition(int x, int y) {
+    targetPos[0] = x; targetPos[1] = y;
+}
 
 //******************************************************//
 // Dot

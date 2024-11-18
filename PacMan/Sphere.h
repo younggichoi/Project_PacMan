@@ -110,9 +110,12 @@ public:
     void setState(STATE s);
     STATE getState() const;
 
+    void setTargetPosition(int x, int y);
+
 private:
     NAME name;
     STATE state;
+    int targetPos[2];
 };
 
 
