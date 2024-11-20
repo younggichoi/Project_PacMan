@@ -1,26 +1,40 @@
 #include <GL/freeglut.h>
+#include <array>
 #include "display.h"
 #include "idle.h"
 #include "keyboard.h"
 #include "mouse.h"
 #include "specialkey.h"
 #include "constant.h"
+#include "Map.h"
 
-// can be modified if needed
 const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
 
-const float WINDOW_WIDTH = 640.f;
-const float WINDOW_HEIGHT = 640.f;
-
 WINDOW_STATE windowState;
+
+std::list<std::string> ranker_name{};
+std::list<int> ranker_score{};
+
+// map container
+std::array<Map, STAGE_NUM> maps;
 
 void initialize()
 {
 	windowState = MAIN;
+	// windowState = SCORE_BOARD;
+	// score = 1155;
 	PLAY_MENU.centeredText();
 	SCOREBOARD_MENU.centeredText();
 	QUIT_MENU.centeredText();
+	SAVE_YES_MENU.centeredText();
+	SAVE_NO_MENU.centeredText();
+	SAVE_BUTTON.centeredText();
+	GOTO_MAIN.centeredText();
+	read_score(ranker_name, ranker_score);
+
+	// create stage1
+	maps[0].createMap("stage1_layout.txt");
 }
 
 void display()
