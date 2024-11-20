@@ -44,3 +44,10 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
     // 점수올리기
     pacman.addScore(10);
 }
+void CollisionHandler::operator()(Ghost& ghost, const Map& map) {
+    CollisionDetector cd2;
+    if (cd2(ghost, map)) {
+        ghost.setCurrentDirection(Sphere::NONE);
+        ghost.setNextDirection(Sphere::NONE);
+    }
+}
