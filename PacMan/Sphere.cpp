@@ -142,9 +142,12 @@ void Sphere::move(){
     center = center + velocity;
     
     //updateIndexPosition();
-    
     //cout << "[" << this->getXIndex() << ", " << this->getYIndex() << "]"  << " (" << xFromIdx << ", " << yFromIdx << ")" << endl;
 }
+
+//******************************************************//
+// PacMan
+//******************************************************//
 
 PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
     bCollided = bCol;
@@ -153,10 +156,36 @@ PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
 void PacMan::setCollided(bool bCol){
     bCollided = bCol;
 }
+void PacMan::setLife(int l) {
+    life = l;
+}
+void PacMan::decreaseLife() {
+    life -= 1;
+}
+int PacMan::getLife() {
+    return life;
+}
+void PacMan::addScore(int sc) {
+    score += sc;
+}
+int PacMan::getScore() {
+    return score;
+}
 
 
-Ghost::Ghost(float r, int sl, int st, STATE s) : Sphere(r, sl, st){
+//******************************************************//
+// Ghost
+//******************************************************//
+
+Ghost::Ghost(float r, int sl, int st, NAME n, STATE s) : Sphere(r, sl, st){
+    name = n;
     state = s;
+}
+void Ghost::setName(NAME n) {
+    name = n;
+}
+Ghost::NAME Ghost::getName() const {
+    return name;
 }
 void Ghost::setState(STATE s){
     state = s;
@@ -164,8 +193,14 @@ void Ghost::setState(STATE s){
 Ghost::STATE Ghost::getState() const{
     return state;
 }
+void Ghost::setTargetPosition(int x, int y) {
+    targetPos[0] = x; targetPos[1] = y;
+}
 
 
+//******************************************************//
+// Dot
+//******************************************************//
 
 Dot::Dot(float r, int sl, int st, DOTSIZE ds) : Sphere(r, sl, st){
     dotSize = ds;

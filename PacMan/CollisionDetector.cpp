@@ -44,7 +44,12 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Map& map){
 
 bool CollisionDetector::operator()(const PacMan& pacman, const Ghost& ghost){
     if (  ( pacman.getRadius() + ghost.getRadius() ) >= sqrt(pow(pacman.getCenter()[0] - ghost.getCenter()[0],2) + pow(pacman.getCenter()[1] - ghost.getCenter()[1], 2))) {
-        return true;
+        if (ghost.getState() == Ghost::EATEN) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
     else return false;
 }
@@ -57,5 +62,36 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Dot& dot) {
     }
     else {
         return true;
+    }
+}
+bool CollisionDetector::operator()(const Ghost& ghost, const Map& map) {
+    switch (ghost.getCurrentDirection()) {
+    case Sphere::LEFT:
+        if (!map.getBlock(ghost.getXIndex() - 1, ghost.getYIndex()).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::RIGHT:
+        if (!map.getBlock(ghost.getXIndex() + 1, ghost.getYIndex()).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::UP:
+        if (!map.getBlock(ghost.getXIndex(), ghost.getYIndex() - 1).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::DOWN:
+        if (!map.getBlock(ghost.getXIndex(), ghost.getYIndex() + 1).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    default:
+        return false;
+        break;
     }
 }

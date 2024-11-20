@@ -68,6 +68,13 @@ public:
 
     void setCollided(bool bCol);
 
+    void setLife(int l);
+    void decreaseLife();
+    int getLife();
+
+    void addScore(int sc);
+    int getScore();
+
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
         glPushMatrix();
@@ -84,6 +91,7 @@ public:
 
 private:
     bool bCollided;
+    int score;
     int life;
 };
 
@@ -91,15 +99,23 @@ private:
 class Ghost : public Sphere
 {
 public:
+    enum NAME {BLINKY, PINKY, INKY, CLYDE};
     enum STATE { CHASE, SCATTER, FRIGHTENED, EATEN };
 
-    Ghost(float r, int sl, int st, STATE s);
+    Ghost(float r, int sl, int st, NAME n, STATE s);
+
+    void setName(NAME n);
+    NAME getName() const;
 
     void setState(STATE s);
     STATE getState() const;
 
+    void setTargetPosition(int x, int y);
+
 private:
+    NAME name;
     STATE state;
+    int targetPos[2];
 };
 
 
@@ -118,17 +134,20 @@ public:
     bool isLarge();
     
     virtual void draw() const{
-        GLfloat sh = mtl.getShininess();
-        glPushMatrix();
-        glTranslatef(center[0], center[1], center[2]);
-        glShadeModel(GL_SMOOTH);
-        glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
-        glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
-        glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
-        glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
-        glutSolidSphere(radius, slice, stack);
-        glPopMatrix();
+        // isEaten == false (= not eaten yet) 이면 show
+        if (!isEaten) {
+            GLfloat sh = mtl.getShininess();
+            glPushMatrix();
+            glTranslatef(center[0], center[1], center[2]);
+            glShadeModel(GL_SMOOTH);
+            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
+            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
+            glutSolidSphere(radius, slice, stack);
+            glPopMatrix();
+        }
     }
     
 private:
