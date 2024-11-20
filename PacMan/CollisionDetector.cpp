@@ -44,7 +44,12 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Map& map){
 
 bool CollisionDetector::operator()(const PacMan& pacman, const Ghost& ghost){
     if (  ( pacman.getRadius() + ghost.getRadius() ) >= sqrt(pow(pacman.getCenter()[0] - ghost.getCenter()[0],2) + pow(pacman.getCenter()[1] - ghost.getCenter()[1], 2))) {
-        return true;
+        if (ghost.getState() == Ghost::EATEN) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
     else return false;
 }
