@@ -59,3 +59,34 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Dot& dot) {
         return true;
     }
 }
+bool CollisionDetector::operator()(const Ghost& ghost, const Map& map) {
+    switch (ghost.getCurrentDirection()) {
+    case Sphere::LEFT:
+        if (!map.getBlock(ghost.getXIndex() - 1, ghost.getYIndex()).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::RIGHT:
+        if (!map.getBlock(ghost.getXIndex() + 1, ghost.getYIndex()).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::UP:
+        if (!map.getBlock(ghost.getXIndex(), ghost.getYIndex() - 1).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    case Sphere::DOWN:
+        if (!map.getBlock(ghost.getXIndex(), ghost.getYIndex() + 1).isPassable()) {
+            return true;
+        }
+        else return false;
+        break;
+    default:
+        return false;
+        break;
+    }
+}
