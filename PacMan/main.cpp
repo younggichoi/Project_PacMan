@@ -7,6 +7,7 @@
 #include "specialkey.h"
 #include "constant.h"
 #include "Map.h"
+#include "Sphere.h"
 
 const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
@@ -18,6 +19,8 @@ std::list<int> ranker_score{};
 
 // map container
 std::array<Map, STAGE_NUM> maps;
+
+PacMan pacman(BLOCK_SIZE/2, 10, 10, 0);
 
 void initialize()
 {

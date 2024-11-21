@@ -5,3 +5,5 @@ void idle_ingame();
 void idle_end();
 void idle_savescore();
 void idle_scoreboard();
+
+void updateDirection();

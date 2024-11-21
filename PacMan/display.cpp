@@ -5,6 +5,7 @@
 #include "strokeCharacters.h"
 #include "menubox.h"
 #include "Map.h"
+#include "Sphere.h"
 
 /* constants in main display */
 
@@ -44,6 +45,8 @@ int stage_num = 0;
 
 // constant.h에서 해당 변수를 정의하면 순환참조 문제가 발생하기 때문에 이곳에서 선언
 extern std::array<Map, STAGE_NUM> maps;
+
+extern PacMan pacman;
 
 /* constants in end display */
 
@@ -208,7 +211,7 @@ void display_ingame()
 	glColor3f(0.0f, 1.0f, 0.0f);
 
 	maps[stage_num].draw();
-
+	pacman.draw();
 	
 	glutSwapBuffers();
 }

@@ -152,6 +152,8 @@ void Sphere::move(){
 PacMan::PacMan(float r, int sl, int st, bool bCol) : Sphere(r, sl, st){
     bCollided = bCol;
     life = 3;
+    idxPos[0] = 14;
+    idxPos[1] = 14;
 }
 void PacMan::setCollided(bool bCol){
     bCollided = bCol;
