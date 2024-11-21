@@ -11,8 +11,8 @@ inline const float WINDOW_HEIGHT = 750.f;
 inline const float BOUNDARY_X = WINDOW_WIDTH / 2;
 inline const float BOUNDARY_Y = WINDOW_HEIGHT / 2;
 
-inline const int NUM_ROW = 30;
-inline const int NUM_COL = 28;
+inline const int NUM_ROW = 28;
+inline const int NUM_COL = 30;
 
 inline const float BLOCK_SIZE = 20.f;
 inline const float MOVE_SPEED = 1.f;
