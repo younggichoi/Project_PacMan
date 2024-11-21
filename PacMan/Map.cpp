@@ -24,7 +24,7 @@ Map::Map(){
     for (int i = 0; i < blocks.size(); i++) {
         for (int j = 0; j < blocks[i].size(); j++) {
 
-            blocks[i][j].setCenter(x + j * BLOCK_SIZE, y - i * BLOCK_SIZE, 0.0f);
+            blocks[i][j].setCenter(x + i * BLOCK_SIZE, y - j * BLOCK_SIZE, 0.0f);
             blocks[i][j].setWidth(BLOCK_SIZE);
             blocks[i][j].setHeight(BLOCK_SIZE);
             blocks[i][j].setMTL(block_mtl);
