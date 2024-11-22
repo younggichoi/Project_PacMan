@@ -21,5 +21,5 @@ public:
     const Block& getBlock(int r, int c) const;
     void draw() const;
 private:
-    array<array<Block, NUM_COL>, NUM_ROW> blocks;
+    array<array<Block, NUM_ROW>, NUM_COL> blocks;
 };
