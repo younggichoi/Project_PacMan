@@ -61,13 +61,13 @@ void Map::createMap(const std::string& filename) {
         switch (param)
         {
         case '0':
-            blocks[row][col].setPassable(false);
+            blocks[col][row].setPassable(false);
             col++;
             break;
         case '1':
         case '2':
         case '3':
-            blocks[row][col].setPassable(true);
+            blocks[col][row].setPassable(true);
             col++;
             break;
         case '\n':
