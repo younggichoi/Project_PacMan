@@ -1,4 +1,5 @@
 #pragma once
+#include "Sphere.h"
 
 void idle_main();
 void idle_ingame();

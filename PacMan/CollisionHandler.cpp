@@ -6,6 +6,7 @@
 //
 
 #include "CollisionHandler.h"
+extern Ghost blinky, pinky, inky, clyde;
 
 void CollisionHandler::operator()(PacMan& pacman, const Map& map){
     CollisionDetector cd;
