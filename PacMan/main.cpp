@@ -14,6 +14,7 @@ const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
 
 const float PACMAN_RADIUS = BLOCK_SIZE / 2;
+const float GHOST_RADIUS = BLOCK_SIZE / 2;
 
 WINDOW_STATE windowState;
 
@@ -34,6 +35,12 @@ const float DOT_COLOR_B = 0.8;
 
 // pacman
 PacMan pacman(PACMAN_RADIUS, 10, 10, 0);
+
+// ghosts
+Ghost blinky(GHOST_RADIUS, 10, 10, Ghost::BLINKY, Ghost::CHASE);
+Ghost pinky(GHOST_RADIUS, 10, 10, Ghost::PINKY, Ghost::CHASE);
+Ghost inky(GHOST_RADIUS, 10, 10, Ghost::INKY, Ghost::CHASE);
+Ghost clyde(GHOST_RADIUS, 10, 10, Ghost::CLYDE, Ghost::CHASE);
 
 // light
 extern Light light;

@@ -6,4 +6,7 @@ void idle_end();
 void idle_savescore();
 void idle_scoreboard();
 
-void updateDirection();
+void updateDirectionOfPacMan();
+void updateDirectionOfGhost();
+void updatePacMan();
+void updateGhost();

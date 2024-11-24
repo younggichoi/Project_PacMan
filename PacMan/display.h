@@ -14,3 +14,5 @@ void display_scoreboard();
 extern std::array<Map, STAGE_NUM> maps;
 
 extern PacMan pacman;
+
+extern Ghost blinky, pinky, inky, clyde;

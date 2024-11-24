@@ -266,7 +266,13 @@ void display_ingame()
 	// 3D
 	glEnable(GL_LIGHTING);
 	light.draw();
+
 	pacman.draw();
+	blinky.draw();
+	pinky.draw();
+	inky.draw();
+	clyde.draw();
+
 	glDisable(GL_LIGHTING);
 	
 	glutSwapBuffers();
