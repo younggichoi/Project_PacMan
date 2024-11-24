@@ -35,22 +35,25 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
 void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
     //TODO
     // dot 지우기
-    dot.setEaten(true);
-    if (dot.isLarge()) {
-        // 큰 dot 먹은 경우 ghost들 상태 frightened로 바꾸기 (eaten이 아니라면.)
-        // ghost들 전역변수로 선언하고 constants.h에 넣은 후에 아래 주석표시 풀기
-        /*
-        if (ghost.getState() != Ghost::EATEN) {
-            ghost.setState(Ghost::FRIGHTENED);
+    CollisionDetector cd;
+    if (cd(pacman, dot)) {
+        dot.setEaten(true);
+        if (dot.isLarge()) {
+            // 큰 dot 먹은 경우 ghost들 상태 frightened로 바꾸기 (eaten이 아니라면.)
+            // ghost들 전역변수로 선언하고 constants.h에 넣은 후에 아래 주석표시 풀기
+            /*
+            if (ghost.getState() != Ghost::EATEN) {
+                ghost.setState(Ghost::FRIGHTENED);
+            }
+            */
         }
-        */
+        // 점수올리기
+        pacman.addScore(10);
     }
-    // 점수올리기
-    pacman.addScore(10);
 }
 void CollisionHandler::operator()(Ghost& ghost, const Map& map) {
-    CollisionDetector cd2;
-    if (cd2(ghost, map)) {
+    CollisionDetector cd;
+    if (cd(ghost, map)) {
         ghost.setCurrentDirection(Sphere::NONE);
         ghost.setNextDirection(Sphere::NONE);
     }
