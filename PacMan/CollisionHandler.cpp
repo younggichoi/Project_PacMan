@@ -25,7 +25,9 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
             pacman.addScore(100);
         }
         else {
-            pacman.decreaseLife();
+            if (ghost.getState() != Ghost::EATEN) {
+                pacman.decreaseLife();
+            }
             // pacman, ghost들 모두 각각 처음 위치로.
             // TODO
 
@@ -40,6 +42,18 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
         dot.setEaten(true);
         if (dot.isLarge()) {
             // 큰 dot 먹은 경우 ghost들 상태 frightened로 바꾸기 (eaten이 아니라면.)
+            if (blinky.getState() != Ghost::EATEN) {
+                blinky.setState(Ghost::FRIGHTENED);
+            }
+            if (pinky.getState() != Ghost::EATEN) {
+                pinky.setState(Ghost::FRIGHTENED);
+            }
+            if (inky.getState() != Ghost::EATEN) {
+                inky.setState(Ghost::FRIGHTENED);
+            }
+            if (clyde.getState() != Ghost::EATEN) {
+                clyde.setState(Ghost::FRIGHTENED);
+            }
             // ghost들 전역변수로 선언하고 constants.h에 넣은 후에 아래 주석표시 풀기
             /*
             if (ghost.getState() != Ghost::EATEN) {

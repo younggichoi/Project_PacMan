@@ -184,7 +184,69 @@ void updateGhost(Ghost& ghost) {
                 }
             }
             else if (ghost.getName() == Ghost::INKY) {
-                // TODO
+                int bx = blinky.getXIndex();
+                int by = blinky.getYIndex();
+                int cx = 0;
+                int cy = 0;
+                if (pacman.getCurrentDirection() == Sphere::DIRECTION::UP) {
+                    if (pacman.getYIndex() - 2 >= 0) {
+                        cx = pacman.getXIndex();
+                        cy = pacman.getYIndex() - 2;
+                    }
+                    else {
+                        cx = pacman.getXIndex();
+                        cy = 0;
+                    }
+                }
+                else if (pacman.getCurrentDirection() == Sphere::DIRECTION::DOWN) {
+                    if (pacman.getYIndex() + 2 < NUM_ROW) {
+                        cx = pacman.getXIndex();
+                        cy = pacman.getYIndex() + 2;
+                    }
+                    else {
+                        cx = pacman.getXIndex();
+                        cy = NUM_ROW - 1;
+                    }
+                }
+                else if (pacman.getCurrentDirection() == Sphere::DIRECTION::LEFT) {
+                    if (pacman.getXIndex() - 2 >= 0) {
+                        cx = pacman.getXIndex() - 2;
+                        cy = pacman.getYIndex();
+                    }
+                    else {
+                        cx = 0;
+                        cy = pacman.getYIndex();
+                    }
+                }
+                else if (pacman.getCurrentDirection() == Sphere::DIRECTION::RIGHT) {
+                    if (pacman.getYIndex() + 2 < NUM_COL) {
+                        cx = pacman.getXIndex() + 2;
+                        cy = pacman.getYIndex();
+                    }
+                    else {
+                        cx = NUM_COL - 1;
+                        cy = pacman.getYIndex();
+                    }
+                }
+                else if (pacman.getCurrentDirection() == Sphere::DIRECTION::NONE) {
+                    cx = pacman.getXIndex();
+                    cy = pacman.getYIndex();
+                }
+
+                targetX = (bx - cx) * (-1) + cx;
+                if (targetX < 0) {
+                    targetX = 0;
+                }
+                else if (targetX >= NUM_COL) {
+                    targetX = NUM_COL - 1;
+                }
+                targetY = (by - cy) * (-1) + cy;
+                if (targetY < 0) {
+                    targetY = 0;
+                }
+                else if (targetY >= NUM_ROW) {
+                    targetY = NUM_ROW - 1;
+                }
             }
             else if (ghost.getName() == Ghost::CLYDE) {
                 int dist = (ghost.getXIndex() - pacman.getXIndex()) * (ghost.getXIndex() - pacman.getXIndex()) + (ghost.getYIndex() - pacman.getYIndex()) * (ghost.getYIndex() - pacman.getYIndex());
@@ -250,17 +312,18 @@ void updateGhost(Ghost& ghost) {
             }
         }
         else if (ghost.getState() == Ghost::EATEN) {
+            // TODO: 초기위치 확정나면 바꾸기
             if (ghost.getName() == Ghost::BLINKY) {
-
+                ghost.setCenter(0.0f, 0.0f, 0.0f);
             }
             else if (ghost.getName() == Ghost::PINKY) {
-
+                ghost.setCenter(0.0f, 0.0f, 0.0f);
             }
             else if (ghost.getName() == Ghost::INKY) {
-
+                ghost.setCenter(0.0f, 0.0f, 0.0f);
             }
             else if (ghost.getName() == Ghost::CLYDE) {
-
+                ghost.setCenter(0.0f, 0.0f, 0.0f);
             }
         }
 
@@ -291,6 +354,7 @@ void idle_ingame()
         colHandler(pacman, inky);
         updateGhost(clyde);
         colHandler(pacman, clyde);
+        // Dot colHandler 호출
 
         sTime = eTime;
         glutPostRedisplay();

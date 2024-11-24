@@ -7,6 +7,6 @@ void idle_savescore();
 void idle_scoreboard();
 
 void updateDirectionOfPacMan();
-void updateDirectionOfGhost();
+void updateDirectionOfGhost(Ghost& ghost, int targetX, int targetY);
 void updatePacMan();
-void updateGhost();
+void updateGhost(Ghost& ghost);

@@ -59,3 +59,8 @@ extern int high_score;
 // declaration is at main.cpp
 extern std::list<std::string> ranker_name;
 extern std::list<int> ranker_score;
+
+extern Ghost blinky(GHOST_RADIUS, 10, 10, Ghost::BLINKY, Ghost::CHASE);
+extern Ghost pinky(GHOST_RADIUS, 10, 10, Ghost::PINKY, Ghost::CHASE);
+extern Ghost inky(GHOST_RADIUS, 10, 10, Ghost::INKY, Ghost::CHASE);
+extern Ghost clyde(GHOST_RADIUS, 10, 10, Ghost::CLYDE, Ghost::CHASE);

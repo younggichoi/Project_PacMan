@@ -8,6 +8,7 @@
 #pragma once
 
 #include "CollisionDetector.h"
+#include "constant.h"
 
 class CollisionHandler
 {
