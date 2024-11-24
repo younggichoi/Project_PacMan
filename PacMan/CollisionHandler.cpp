@@ -18,15 +18,18 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
 
     // 만난 ghost가 frightened 상태라면 ghost->eaten, ghostroom으로, 점수 올리기
     // else: life 줄이고 pacman, ghost들 처음 위치로.
-    if (ghost.getState() == Ghost::FRIGHTENED) {
-        ghost.setState(Ghost::EATEN);
-        pacman.addScore(100);
-    }
-    else {
-        pacman.decreaseLife();
-        // pacman, ghost들 모두 각각 처음 위치로.
-        // TODO
-        
+    CollisionDetector cd;
+    if (cd(pacman, ghost)) {
+        if (ghost.getState() == Ghost::FRIGHTENED) {
+            ghost.setState(Ghost::EATEN);
+            pacman.addScore(100);
+        }
+        else {
+            pacman.decreaseLife();
+            // pacman, ghost들 모두 각각 처음 위치로.
+            // TODO
+
+        }
     }
 }
 void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
