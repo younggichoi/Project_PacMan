@@ -11,23 +11,16 @@
 #include "Map.h"
 
 Map::Map(){
-    // Blue Plastic
-    Material block_mtl;
-    block_mtl.setEmission(0.0f, 0.0f, 0.2f, 1.0f);
-    block_mtl.setAmbient(0.0f, 0.0f, 0.2f, 1.0f);
-    block_mtl.setDiffuse(0.0f, 0.0f, 0.6f, 1.0f);
-    block_mtl.setSpecular(0.6f, 0.6f, 0.6f, 1.0f);
-    block_mtl.setShininess(30.0f);
-
     float x = LEFT_BOUNDARY;
     float y = TOP_BOUNDARY;
     for (int i = 0; i < blocks.size(); i++) {
         for (int j = 0; j < blocks[i].size(); j++) {
-
             blocks[i][j].setCenter(x + i * BLOCK_SIZE, y - j * BLOCK_SIZE, 0.0f);
             blocks[i][j].setWidth(BLOCK_SIZE);
             blocks[i][j].setHeight(BLOCK_SIZE);
-            blocks[i][j].setMTL(block_mtl);
+            blocks[i][j].setColor(block_color);
+            dots[i][j].setCenter(x + i * BLOCK_SIZE, y - j * BLOCK_SIZE, 0.0f);
+            dots[i][j].setColor(dot_color);
         }
     }
 }
@@ -62,12 +55,23 @@ void Map::createMap(const std::string& filename) {
         {
         case '0':
             blocks[col][row].setPassable(false);
+            dots[col][row].setEaten(true);
             col++;
             break;
         case '1':
+            blocks[col][row].setPassable(true);
+            dots[col][row].setEaten(true);
+            col++;
+            break;
         case '2':
+            blocks[col][row].setPassable(true);
+            dots[col][row].setEaten(false);
+            col++;
+            break;
         case '3':
             blocks[col][row].setPassable(true);
+            dots[col][row].setEaten(false);
+            dots[col][row].setDotsize(Dot::DOTSIZE::LARGE);
             col++;
             break;
         case '\n':
@@ -80,14 +84,36 @@ void Map::createMap(const std::string& filename) {
 }
 
 
-const Block& Map::getBlock(int r, int c) const{
-    return blocks[r][c];
+const Block& Map::getBlock(int c, int r) const{
+    return blocks[c][r];
+}
+
+const Dot& Map::getDot(int c, int r) const
+{
+    return dots[c][r];
 }
 
 void Map::draw() const{
     for (int i = 0; i < blocks.size(); i++) {
         for (int j = 0; j < blocks[i].size(); j++) {
             getBlock(i, j).draw();
+            getDot(i, j).draw();
         }
+    }
+}
+
+void Map::setBlockColor(float r, float g, float b) {
+    block_color.setPos(r, g, b);
+    for (int i = 0; i < blocks.size(); i++) {
+        for (int j = 0; j < blocks[i].size(); j++) 
+            blocks[i][j].setColor(block_color);
+    }
+}
+
+void Map::setDotColor(float r, float g, float b) {
+    dot_color.setPos(r, g, b);
+    for (int i = 0; i < blocks.size(); i++) {
+        for (int j = 0; j < blocks[i].size(); j++)
+            dots[i][j].setColor(dot_color);
     }
 }

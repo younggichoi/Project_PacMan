@@ -7,6 +7,10 @@
 
 #include "Sphere.h"
 
+
+Sphere::Sphere()
+    : radius(0), slice(10), stack(10), currDirection(NONE) {};
+
 Sphere::Sphere(float r, int sl, int st){
     radius = r; slice = sl; stack = st;
     center[0] = 0.0f; center[1] = 0.0f; center[2] = 0.0f;
@@ -174,6 +178,13 @@ int PacMan::getScore() {
     return score;
 }
 
+void PacMan::initialize()
+{
+    bCollided = false;
+    score = 0;
+    life = INIT_LIFE;
+}
+
 
 //******************************************************//
 // Ghost
@@ -204,6 +215,11 @@ void Ghost::setTargetPosition(int x, int y) {
 // Dot
 //******************************************************//
 
+Dot::Dot()
+    : dotSize(SMALL), isEaten(false) {
+    radius = PACMAN_RADIUS / dotSize;
+};
+
 Dot::Dot(float r, int sl, int st, DOTSIZE ds) : Sphere(r, sl, st){
     dotSize = ds;
     isEaten = false;
@@ -213,11 +229,21 @@ void Dot::setEaten(bool iE){
     isEaten = iE;
 }
 
-bool Dot::isLarge() {
+void Dot::setDotsize(DOTSIZE ds)
+{
+    dotSize = ds;
+    radius = PACMAN_RADIUS / dotSize;
+}
+
+bool Dot::isLarge() const{
     if (dotSize == LARGE) {
         return true;
     }
     else {
         return false;
     }
+}
+
+bool Dot::getEaten() const{
+    return isEaten;
 }

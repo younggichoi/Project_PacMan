@@ -9,6 +9,7 @@
 
 #include "Shape3D.h"
 #include "constant.h"
+#include "Vector3f.h"
 
 #include <GL/freeglut.h>
 
@@ -22,44 +23,28 @@ public:
     void setWidth(float w);
     void setHeight(float h);
     void setPassable(bool v);
+    void setColor(float r, float g, float b);
+    void setColor(Vector3f& v);
     
     float getWidth() const;
     float getHeight() const;
     bool isPassable() const;
     
     virtual void draw() const{
-        // /*
         if (!isPassable()){
-            GLfloat sh = mtl.getShininess();
-            glPushMatrix();
-            glColor3f(0.0f, 0.0f, 1.0f);
-            glTranslatef(center[0], center[1], center[2]);
-            glShadeModel(GL_SMOOTH);
-            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
-            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
-            glutSolidCube(BLOCK_SIZE);
-            glPopMatrix();
+            glColor3f(color[0], color[1], color[2]);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glBegin(GL_POLYGON);
+            glVertex2f(getCenter()[0] - width / 2, getCenter()[1] + height / 2);
+            glVertex2f(getCenter()[0] - width / 2, getCenter()[1] - height / 2);
+            glVertex2f(getCenter()[0] + width / 2, getCenter()[1] - height / 2);
+            glVertex2f(getCenter()[0] + width / 2, getCenter()[1] + height / 2);
+            glEnd();
         }
-         // */
-        //glPushMatrix();
-        /*
-        glColor3f(1.0f, 1.0f, 1.0f);
-        glLineWidth(2.5f);
-        glBegin(GL_LINE_LOOP);
-            glVertex2f(getCenter()[0] -width/2, getCenter()[1] +width/2);
-            glVertex2f(getCenter()[0] -width/2, getCenter()[1] -width/2);
-            glVertex2f(getCenter()[0] + width/2, getCenter()[1] -width/2);
-            glVertex2f(getCenter()[0] + width/2, getCenter()[1] +width/2);
-        glEnd();
-         */
-        //glPopMatrix();
-         
     };
     
 private:
     float width, height;
     bool bPassable;
+    Vector3f color;
 };

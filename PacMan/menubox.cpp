@@ -4,9 +4,9 @@
 #include "constant.h"
 #include <cmath>
 
-menubox::menubox(float x, float y, float r, float w, float h, unsigned int n, strokeCharacters s)
+menubox::menubox(float x, float y, float r, float w, float h, unsigned int n, Vector3f color_v, strokeCharacters s)
 	: posx{ x }, posy{ y }, radius{ r }, width{ w }, height{ h },
-	segment_num{ n }, name{ s } {}
+	segment_num{ n }, color{ color_v }, name{ s } {}
 
 void menubox::centeredText()
 {
@@ -14,12 +14,22 @@ void menubox::centeredText()
 		posy - height + (height - name.getScale()) / 2.0);
 }
 
+void menubox::setColor(float r, float g, float b)
+{
+	color.setPos(r, g, b);
+}
+
+void menubox::setColor(Vector3f& v)
+{
+	color = v;
+}
+
 void menubox::drawMenubox(bool fill) const
 {
 	if (fill)
 	{
+		glColor3f(0, 0, 0);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glColor3f(0.0f, 0.0f, 0.0f);
 		glBegin(GL_POLYGON);
 		for (int i = 0; i <= segment_num; i++)
 			glVertex2f(posx + width - radius + radius * sin(M_PI / (2 * segment_num) * i),
@@ -36,6 +46,7 @@ void menubox::drawMenubox(bool fill) const
 		glEnd();
 		glColor3f(0.0f, 1.0f, 0.0f);
 	}
+	glColor3f(color[0], color[1], color[2]);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i <= segment_num; i++)

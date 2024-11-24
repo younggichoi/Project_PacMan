@@ -4,8 +4,18 @@
 
 const float strokeCharacters::FONT_BASEHEIGHT = 119.05;
 
-strokeCharacters::strokeCharacters(void* Font, std::string s, float Scale, float lnw, float x, float y)
-	: font{ Font }, name{ s }, scale{ Scale }, lnWidth{ lnw }, posx{ x }, posy{ y } {}
+strokeCharacters::strokeCharacters(void* Font, std::string s, Vector3f color_v, float Scale, float lnw, float x, float y)
+	: font{ Font }, name{ s }, scale{ Scale }, lnWidth{ lnw }, posx{ x }, posy{ y }, color{ color_v } {}
+
+void strokeCharacters::setColor(float r, float g, float b)
+{
+	color.setPos(r, g, b);
+}
+
+void strokeCharacters::setColor(Vector3f& v)
+{
+	color = v;
+}
 
 void strokeCharacters::setPos(float x, float y)
 {
@@ -16,6 +26,7 @@ void strokeCharacters::setPos(float x, float y)
 void strokeCharacters::displayStrokeCharacters() const
 {
 	glPushMatrix();
+	glColor3f(color[0], color[1], color[2]);
 	glLineWidth(lnWidth);
 	glTranslatef(posx, posy, 0.0f);
 	glScalef(scale / FONT_BASEHEIGHT, scale / FONT_BASEHEIGHT, scale / FONT_BASEHEIGHT);

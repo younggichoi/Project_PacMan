@@ -60,6 +60,7 @@ void read_score(std::list<std::string>& str, std::list<int>& scr)
 		}
 	}
 	readFile.close();
+	high_score = *scr.begin(); // high_score update
 }
 
 void mouse_main(int button, int state, int x, int y)
@@ -100,9 +101,9 @@ void mouse_savescore(int button, int state, int x, int y)
 			if (SAVE_BUTTON.checkMousePtr(x, y))
 			{
 				// player name을 빈칸으로 할 경우 저장이 안되게 해야함
-				save_score(player_name, score);
+				save_score(player_name, pacman.getScore());
 				player_name = "";
-				score = 0;
+				pacman.initialize();
 				savingState = false;
 				windowState = SCORE_BOARD;
 				read_score(ranker_name, ranker_score);
@@ -115,7 +116,7 @@ void mouse_savescore(int button, int state, int x, int y)
 			if (SAVE_NO_MENU.checkMousePtr(x, y))
 			{
 				windowState = MAIN;
-				score = 0;
+				pacman.initialize();
 			}
 		}
 	}
