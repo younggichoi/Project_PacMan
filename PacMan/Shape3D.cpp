@@ -21,6 +21,16 @@ Shape3D::Shape3D(){
 Shape3D::Shape3D(float x, float y, float z){
     setCenter(x,y,z);
 }
+
+void Shape3D::setColor(float r, float g, float b)
+{
+    color.setPos(r, g, b);
+}
+
+void Shape3D::setColor(Vector3f& v)
+{
+    color = v;
+}
 void Shape3D::setCenter(float x, float y, float z){
     center.setPos(x, y, z);
 }

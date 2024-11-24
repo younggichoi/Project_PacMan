@@ -36,10 +36,9 @@ int Light::getID() const{
 }
 
 void Light::draw() const{
-    //glEnable(lightID);
+    glEnable(lightID);
     glLightfv(lightID, GL_AMBIENT, ambient.pos);
     glLightfv(lightID, GL_DIFFUSE, diffuse.pos);
     glLightfv(lightID, GL_SPECULAR, specular.pos);
     glLightfv(lightID, GL_POSITION, pos.pos);
-    //glDisable(lightID);
 }

@@ -42,8 +42,6 @@ extern menubox QUIT_MENU;
 extern menubox SAVE_YES_MENU;
 extern menubox SAVE_NO_MENU;
 
-extern unsigned int score;
-
 extern bool savingState;
 
 extern std::string player_name;
@@ -56,8 +54,8 @@ extern menubox GOTO_MAIN;
 
 extern int stage_num;
 
+extern int high_score;
+
 // declaration is at main.cpp
 extern std::list<std::string> ranker_name;
 extern std::list<int> ranker_score;
-
-//extern std::array<Map, STAGE_NUM> maps;

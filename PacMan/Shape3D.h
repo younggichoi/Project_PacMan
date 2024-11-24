@@ -16,6 +16,9 @@ class Shape3D{
 public:
     Shape3D();
     Shape3D(float x, float y, float z);
+
+    void setColor(float r, float g, float b);
+    void setColor(Vector3f& v);
     
     void setCenter(float x, float y, float z);
     void setCenter(const Vector3f& c);
@@ -36,5 +39,5 @@ protected:
     Vector3f center;
     Vector3f velocity;
     Material mtl;
-
+    Vector3f color;
 };

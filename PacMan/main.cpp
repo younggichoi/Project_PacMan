@@ -8,9 +8,12 @@
 #include "constant.h"
 #include "Map.h"
 #include "Sphere.h"
+#include "Light.h"
 
 const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
+
+const float PACMAN_RADIUS = BLOCK_SIZE / 2;
 
 WINDOW_STATE windowState;
 
@@ -20,13 +23,28 @@ std::list<int> ranker_score{};
 // map container
 std::array<Map, STAGE_NUM> maps;
 
-PacMan pacman(BLOCK_SIZE/2, 10, 10, 0);
+// map color
+const float BLOCK_COLOR_R = 0.098;
+const float BLOCK_COLOR_G = 0.098;
+const float BLOCK_COLOR_B = 0.439;
+
+const float DOT_COLOR_R = 1.0;
+const float DOT_COLOR_G = 0.95;
+const float DOT_COLOR_B = 0.8;
+
+// pacman
+PacMan pacman(PACMAN_RADIUS, 10, 10, 0);
+
+// light
+extern Light light;
+
+// text for centered
+extern strokeCharacters HIGH_SCORE_TEXT;
 
 void initialize()
 {
 	windowState = MAIN;
-	// windowState = SCORE_BOARD;
-	// score = 1155;
+	//windowState = SAVE_SCORE;
 	PLAY_MENU.centeredText();
 	SCOREBOARD_MENU.centeredText();
 	QUIT_MENU.centeredText();
@@ -34,10 +52,27 @@ void initialize()
 	SAVE_NO_MENU.centeredText();
 	SAVE_BUTTON.centeredText();
 	GOTO_MAIN.centeredText();
+	HIGH_SCORE_TEXT.centeredText();
 	read_score(ranker_name, ranker_score);
+
+	// light setting
+	light.setAmbient(0.3, 0.3, 0.3, 1.0);
+	light.setDiffuse(0.8, 0.8, 0.7, 1.0);
+	light.setSpecular(0.5, 0.5, 0.5, 1.0);
+
+	// pacman setting
+	Material pacman_mtl;
+	pacman_mtl.setAmbient(1.0, 1.0, 0.4, 1.0);
+	pacman_mtl.setDiffuse(1.0, 1.0, 0.0, 1.0);
+	pacman_mtl.setSpecular(0.3, 0.3, 0.0, 1.0);
+	pacman_mtl.setShininess(10.0);
+	pacman_mtl.setEmission(1.0, 1.0, 0.2, 1.0);
+	pacman.setMTL(pacman_mtl);
 
 	// create stage1
 	maps[0].createMap("stage1_layout.txt");
+	maps[0].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
+	maps[0].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 }
 
 void display()

@@ -4,10 +4,9 @@
 #include <cmath>
 #include "strokeCharacters.h"
 #include "menubox.h"
-#include "Map.h"
-#include "Sphere.h"
+#include "Light.h"
 
-/* constants in main display */
+/* --------- constants in main display ------------- */
 
 // dimension of title text in main display
 const float TITLE_SCALE = 80.0;
@@ -25,33 +24,57 @@ const unsigned int MENUBOX_MAIN_SEGMENT_NUM = 10;
 
 // menubox initialization for main display
 // define as global variable for interacting with mouse.cpp
-strokeCharacters PLAY{ GLUT_STROKE_ROMAN, "PLAY", MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH, 0, 0 };
-strokeCharacters SCOREBOARD{ GLUT_STROKE_ROMAN, "SCOREBOARD", MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH, 0, 0 };
-strokeCharacters QUIT{ GLUT_STROKE_ROMAN, "QUIT", MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH, 0, 0 };
+Vector3f MAINMENU_COLOR{ 0.6, 1.0, 0.8 };
+strokeCharacters PLAY{ GLUT_STROKE_ROMAN, "PLAY", MAINMENU_COLOR, MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH };
+strokeCharacters SCOREBOARD{ GLUT_STROKE_ROMAN, "SCOREBOARD", MAINMENU_COLOR, MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH };
+strokeCharacters QUIT{ GLUT_STROKE_ROMAN, "QUIT", MAINMENU_COLOR, MENU_MAIN_SCALE, MENU_MAIN_lnWIDTH };
 
 menubox PLAY_MENU{ -MENUBOX_MAIN_WIDTH / 2, 0, MENUBOX_MAIN_RADIUS,
-MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, PLAY };
+MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, MAINMENU_COLOR, PLAY };
 menubox SCOREBOARD_MENU{ -MENUBOX_MAIN_WIDTH / 2, -MENUBOX_MAIN_HEIGHT - MENUBOX_MAIN_GAP,
-MENUBOX_MAIN_RADIUS, MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, SCOREBOARD };
+MENUBOX_MAIN_RADIUS, MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, MAINMENU_COLOR, SCOREBOARD };
 menubox QUIT_MENU{ -MENUBOX_MAIN_WIDTH / 2, -(MENUBOX_MAIN_HEIGHT + MENUBOX_MAIN_GAP) * 2 ,
-MENUBOX_MAIN_RADIUS, MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, QUIT };
+MENUBOX_MAIN_RADIUS, MENUBOX_MAIN_WIDTH, MENUBOX_MAIN_HEIGHT, MENUBOX_MAIN_SEGMENT_NUM, MAINMENU_COLOR, QUIT };
 
-/* constants in ingame state */
+/* ------------- constants in ingame state ------------------- */
 
-unsigned int score;
+Light light(100, 100, 100, GL_LIGHT0);
+
+int high_score;
 
 // variable that represents present stage
 int stage_num = 0;
 
-// constant.h에서 해당 변수를 정의하면 순환참조 문제가 발생하기 때문에 이곳에서 선언
-extern std::array<Map, STAGE_NUM> maps;
+// dimension of text at upper part
+const float INGAME_TEXT_SCALE = 20.0f;
+const float INGAME_TEXT_lnWIDTH = 1.5f;
+const float INGAME_TEXT_HEIGHT_POS = WINDOW_HEIGHT * 0.05;
+const float INGAME_SCORE_WIDTH_POS = WINDOW_WIDTH * (-0.45);
+const float INGAME_LEVEL_WIDTH_POS = WINDOW_WIDTH * 0.3;
 
-extern PacMan pacman;
+// distance between ingame text and ingame number
+const float INGAME_TEXT_GAP = 10.f;
 
-/* constants in end display */
+// text at upper part
+Vector3f INGAME_TEXT_COLOR{ 1.0, 1.0, 1.0 };
+strokeCharacters CURRENT_SCORE_TEXT{ GLUT_STROKE_ROMAN, "SCORE",INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+INGAME_SCORE_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS};
+strokeCharacters HIGH_SCORE_TEXT{ GLUT_STROKE_ROMAN, "HIGH SCORE",INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+0, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS};
+strokeCharacters CURRENT_LEVEL_TEXT{ GLUT_STROKE_ROMAN, "LEVEL",INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+INGAME_LEVEL_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS};
+
+// dimension of life printed
+const float LIFE_RADIUS = 20.f;
+const float LIFE_MAP_GAP = WINDOW_HEIGHT * 0.055;
+const float LIFE_LIFE_GAP = 10.f;
+const float LIFE_BOUNDARY_X = LEFT_BOUNDARY;
+Vector3f LIFE_COLOR{ 1.0f, 1.0f, 0.0f };
+
+/* --------------- constants in end display ------------------- */
 
 
-/* constants in save_score display */
+/* --------------- constants in save_score display ------------------ */
 
 // dimension of text in save_score display
 const float SCORE_SHOW_SCALE = 40;
@@ -74,13 +97,14 @@ const float MENU_SAVESCORE_SCALE = 30.0;
 
 // menubox initialization in save_score display
 // define as global variable for interacting with mouse.cpp
-strokeCharacters YES_SAVING{ GLUT_STROKE_ROMAN, "Yes", MENU_SAVESCORE_SCALE, MENU_SAVESCORE_lnWIDTH, 0, 0 };
-strokeCharacters NO_SAVING{ GLUT_STROKE_ROMAN, "No", MENU_SAVESCORE_SCALE, MENU_SAVESCORE_lnWIDTH, 0, 0 };
+Vector3f SAVEMENU_COLOR{ 0.6, 1.0, 0.8 };
+strokeCharacters YES_SAVING{ GLUT_STROKE_ROMAN, "Yes", SAVEMENU_COLOR, MENU_SAVESCORE_SCALE, MENU_SAVESCORE_lnWIDTH };
+strokeCharacters NO_SAVING{ GLUT_STROKE_ROMAN, "No", SAVEMENU_COLOR, MENU_SAVESCORE_SCALE, MENU_SAVESCORE_lnWIDTH };
 
 menubox SAVE_YES_MENU{ -MENUBOX_SAVESCORE_WIDTH - MENUBOX_SAVESCORE_GAP / 2, MENUBOX_SAVESCORE_HEIGHT_POS, MENUBOX_SAVESCORE_RADIUS,
-MENUBOX_SAVESCORE_WIDTH, MENUBOX_SAVESCORE_HEIGHT, MENUBOX_SAVESCORE_SEGMENT_NUM, YES_SAVING };
+MENUBOX_SAVESCORE_WIDTH, MENUBOX_SAVESCORE_HEIGHT, MENUBOX_SAVESCORE_SEGMENT_NUM, SAVEMENU_COLOR, YES_SAVING };
 menubox SAVE_NO_MENU{ MENUBOX_SAVESCORE_GAP / 2, MENUBOX_SAVESCORE_HEIGHT_POS, MENUBOX_SAVESCORE_RADIUS,
-MENUBOX_SAVESCORE_WIDTH, MENUBOX_SAVESCORE_HEIGHT, MENUBOX_SAVESCORE_SEGMENT_NUM, NO_SAVING };
+MENUBOX_SAVESCORE_WIDTH, MENUBOX_SAVESCORE_HEIGHT, MENUBOX_SAVESCORE_SEGMENT_NUM, SAVEMENU_COLOR, NO_SAVING };
 
 // flag for saving state
 bool savingState = false;
@@ -130,12 +154,12 @@ const float ENTER_LINE_HEIGHT_POS = SAVING_WINDOW_HEIGHT_POS - SAVING_WINDOW_HEI
 
 // save button initialization in save window
 // define as global variable for interacting with mouse.cpp
-strokeCharacters SAVE_TEXT{ GLUT_STROKE_ROMAN, "SAVE", SAVE_BUTTON_SCALE, SAVE_BUTTON_lnWIDTH };
+strokeCharacters SAVE_TEXT{ GLUT_STROKE_ROMAN, "SAVE", SAVEMENU_COLOR, SAVE_BUTTON_SCALE, SAVE_BUTTON_lnWIDTH };
 
 menubox SAVE_BUTTON{ -SAVE_BUTTON_WIDTH / 2, SAVING_WINDOW_HEIGHT_POS - SAVING_WINDOW_HEIGHT + SAVE_BUTTON_GAP + SAVE_BUTTON_HEIGHT,
-SAVE_BUTTON_RADIUS, SAVE_BUTTON_WIDTH, SAVE_BUTTON_HEIGHT, SAVE_BUTTON_SEGMENT_NUM, SAVE_TEXT };
+SAVE_BUTTON_RADIUS, SAVE_BUTTON_WIDTH, SAVE_BUTTON_HEIGHT, SAVE_BUTTON_SEGMENT_NUM, SAVEMENU_COLOR, SAVE_TEXT };
 
-/* constants for scoreboard display */
+/* ----------------- constants for scoreboard display -------------------- */
 
 // dimension of scoreboard title text
 const float SCOREBOARD_TITLE_SCALE = 60.0;
@@ -171,14 +195,16 @@ const unsigned int MENUBOX_SCOREBOARD_SEGMENT_NUM = 20;
 const float MENU_SCOREBOARD_SCALE = 30.0;
 const float MENU_SCOREBOARD_lnWIDTH = 1.2;
 
-strokeCharacters GOTO_MAIN_TEXT{ GLUT_STROKE_ROMAN, "Main", MENU_SCOREBOARD_SCALE, MENU_SCOREBOARD_lnWIDTH };
+Vector3f GOTO_MAIN_COLOR{ 0.6, 1.0, 0.8 };
+strokeCharacters GOTO_MAIN_TEXT{ GLUT_STROKE_ROMAN, "Main", GOTO_MAIN_COLOR, MENU_SCOREBOARD_SCALE, MENU_SCOREBOARD_lnWIDTH };
 menubox GOTO_MAIN{ -MENUBOX_SCOREBOARD_WIDTH / 2.0f, MENUBOX_SCOREBOARD_HEIGHT_POS, MENUBOX_SCOREBOARD_RADIUS,
-MENUBOX_SCOREBOARD_WIDTH, MENUBOX_SCOREBOARD_HEIGHT, MENUBOX_SCOREBOARD_SEGMENT_NUM, GOTO_MAIN_TEXT };
+MENUBOX_SCOREBOARD_WIDTH, MENUBOX_SCOREBOARD_HEIGHT, MENUBOX_SCOREBOARD_SEGMENT_NUM, GOTO_MAIN_COLOR, GOTO_MAIN_TEXT };
 
 
 void display_main()
 {
-	strokeCharacters TITLE_CHAR{ GLUT_STROKE_ROMAN, "Pac Man", TITLE_SCALE, TITLE_lnWIDTH, 0, TITLE_HEIGHT_POS};
+	Vector3f TITLE_COLOR{ 1.0, 0.84, 0.0 };
+	strokeCharacters TITLE_CHAR{ GLUT_STROKE_ROMAN, "Pac Man", TITLE_COLOR, TITLE_SCALE, TITLE_lnWIDTH, 0, TITLE_HEIGHT_POS};
 	TITLE_CHAR.centeredText();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -210,8 +236,38 @@ void display_ingame()
 	glLoadIdentity();
 	glColor3f(0.0f, 1.0f, 0.0f);
 
+	// 2D
 	maps[stage_num].draw();
+	CURRENT_SCORE_TEXT.displayStrokeCharacters();
+	HIGH_SCORE_TEXT.displayStrokeCharacters();
+	CURRENT_LEVEL_TEXT.displayStrokeCharacters();
+
+	strokeCharacters CURRENT_SCORE{ GLUT_STROKE_ROMAN, std::to_string(pacman.getScore()),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+	INGAME_SCORE_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
+	strokeCharacters HIGH_SCORE{ GLUT_STROKE_ROMAN, std::to_string(high_score),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+	0, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
+	HIGH_SCORE.centeredText();
+	strokeCharacters CURRENT_LEVEL{ GLUT_STROKE_ROMAN, "00" + std::to_string(stage_num + 1),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+	INGAME_LEVEL_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
+	
+	CURRENT_SCORE.displayStrokeCharacters();
+	HIGH_SCORE.displayStrokeCharacters();
+	CURRENT_LEVEL.displayStrokeCharacters();
+
+	Sphere life_print{ LIFE_RADIUS, 15, 15 };
+	for (int i = 0; i < pacman.getLife(); i++)
+	{
+		life_print.setCenter(LIFE_BOUNDARY_X + LIFE_RADIUS + (2 * LIFE_RADIUS + LIFE_LIFE_GAP) * i, BOTTOM_BOUNDARY - LIFE_MAP_GAP - LIFE_RADIUS, 0);
+		life_print.setColor(LIFE_COLOR);
+		life_print.draw();
+	}
+	
+
+	// 3D
+	glEnable(GL_LIGHTING);
+	light.draw();
 	pacman.draw();
+	glDisable(GL_LIGHTING);
 	
 	glutSwapBuffers();
 }
@@ -223,12 +279,13 @@ void display_end()
 
 void display_savescore()
 {
-	std::string SCORE_SHOW_TEXT = "Your score is " + std::to_string(score);
-	strokeCharacters SCORE_SHOW(GLUT_STROKE_ROMAN, SCORE_SHOW_TEXT, SCORE_SHOW_SCALE, SCORE_SHOW_lnWIDTH, 0, SCORE_SHOW_HEIGHT_POS);
+	Vector3f SCORE_SHOW_COLOR{ 0.4, 0.8, 1.0 };
+	std::string SCORE_SHOW_TEXT = "Your score is " + std::to_string(pacman.getScore());
+	strokeCharacters SCORE_SHOW(GLUT_STROKE_ROMAN, SCORE_SHOW_TEXT, SCORE_SHOW_COLOR, SCORE_SHOW_SCALE, SCORE_SHOW_lnWIDTH, 0, SCORE_SHOW_HEIGHT_POS);
 	SCORE_SHOW.centeredText();
 
 	std::string ASK_SAVING_TEXT = "Do you want to save?";
-	strokeCharacters ASK_SAVING(GLUT_STROKE_ROMAN, ASK_SAVING_TEXT, ASK_SAVING_SCALE, ASK_SAVING_lnWIDTH, 0, ASK_SAVING_HEIGHT_POS);
+	strokeCharacters ASK_SAVING(GLUT_STROKE_ROMAN, ASK_SAVING_TEXT, SCORE_SHOW_COLOR, ASK_SAVING_SCALE, ASK_SAVING_lnWIDTH, 0, ASK_SAVING_HEIGHT_POS);
 	ASK_SAVING.centeredText();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -250,13 +307,14 @@ void display_savescore()
 
 	glColor3f(0.0f, 1.0f, 0.0f);
 
+	Vector3f SAVING_WINDOW_COLOR{ 0.4, 0.8, 1.0 };
 	if (savingState)
 	{
 		menubox SAVING_WINDOW{ -SAVING_WINDOW_WIDTH / 2, SAVING_WINDOW_HEIGHT_POS, SAVING_WINDOW_RADIUS,
-			SAVING_WINDOW_WIDTH, SAVING_WINDOW_HEIGHT, SAVING_WINDOW_SEGMENT_NUM };
-		strokeCharacters ENTER_NAME{ GLUT_STROKE_ROMAN, "Enter your name.",
+			SAVING_WINDOW_WIDTH, SAVING_WINDOW_HEIGHT, SAVING_WINDOW_SEGMENT_NUM, SAVING_WINDOW_COLOR };
+		strokeCharacters ENTER_NAME{ GLUT_STROKE_ROMAN, "Enter your name.", SAVING_WINDOW_COLOR,
 			ENTER_NAME_SCALE, ENTER_NAME_lnWIDTH, 0, SAVING_WINDOW_HEIGHT_POS - ENTER_NAME_HEIGHT_POS };
-		strokeCharacters PLAYER_NAME{ GLUT_STROKE_ROMAN, player_name, PLAYER_NAME_SCALE, PLAYER_NAME_lnWIDTH,
+		strokeCharacters PLAYER_NAME{ GLUT_STROKE_ROMAN, player_name, SAVING_WINDOW_COLOR, PLAYER_NAME_SCALE, PLAYER_NAME_lnWIDTH,
 			0, ENTER_LINE_HEIGHT_POS + PLAYER_NAME_GAP + PLAYER_NAME_SCALE / strokeCharacters::FONT_BASEHEIGHT };
 		ENTER_NAME.centeredText();
 		PLAYER_NAME.centeredText();
@@ -286,15 +344,16 @@ void display_scoreboard()
 	glLoadIdentity();
 	glColor3f(0.0f, 1.0f, 0.0f);
 
-	strokeCharacters SCOREBOARD_TITLE{ GLUT_STROKE_ROMAN, "Score Board", SCOREBOARD_TITLE_SCALE, SCOREBOARD_TITLE_lnWIDTH, 0, SCOREBOARD_TITLE_HEIGHT_POS };
+	Vector3f SCOREBOARD_TITLE_COLOR{ 1.0, 1.0, 1.0 };
+	strokeCharacters SCOREBOARD_TITLE{ GLUT_STROKE_ROMAN, "Score Board", SCOREBOARD_TITLE_COLOR, SCOREBOARD_TITLE_SCALE, SCOREBOARD_TITLE_lnWIDTH, 0, SCOREBOARD_TITLE_HEIGHT_POS };
 	SCOREBOARD_TITLE.centeredText();
-	strokeCharacters RANK_TEXT{ GLUT_STROKE_ROMAN, "Rank", ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
+	strokeCharacters RANK_TEXT{ GLUT_STROKE_ROMAN, "Rank", SCOREBOARD_TITLE_COLOR, ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
 	RANK_TEXT.setPos(RANK_WIDTH_POS - RANK_TEXT.getTextWidth() * ATTRIBUTE_NAME_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 		SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE);
-	strokeCharacters NAME_TEXT{ GLUT_STROKE_ROMAN, "Name", ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
+	strokeCharacters NAME_TEXT{ GLUT_STROKE_ROMAN, "Name", SCOREBOARD_TITLE_COLOR, ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
 	NAME_TEXT.setPos(NAME_WIDTH_POS - NAME_TEXT.getTextWidth() * ATTRIBUTE_NAME_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 		SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE);
-	strokeCharacters SCORE_TEXT{ GLUT_STROKE_ROMAN, "Score", ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
+	strokeCharacters SCORE_TEXT{ GLUT_STROKE_ROMAN, "Score", SCOREBOARD_TITLE_COLOR, ATTRIBUTE_NAME_SCALE, ATTRIBUTE_NAME_lnWIDTH };
 	SCORE_TEXT.setPos(SCORE_WIDTH_POS - SCORE_TEXT.getTextWidth() * ATTRIBUTE_NAME_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 		SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE);
 
@@ -305,20 +364,45 @@ void display_scoreboard()
 	auto itr_name = ranker_name.begin();
 	auto itr_score = ranker_score.begin();
 
+	Vector3f FIRST_COLOR{ 1.0, 0.843, 0.0 };
+	Vector3f SECOND_COLOR{ 0.753, 0.753, 0.753 };
+	Vector3f THIRD_COLOR{ 0.804, 0.498, 0.196 };
+	Vector3f ELSE_COLOR{ 0.502, 0.502, 0.502 };
+
 	for (int i = 0; i < ranker_name.size(); i++)
 	{
-		RANK_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, std::to_string(i + 1), DATA_SCALE, DATA_lnWIDTH };
+		Vector3f COLOR;
+		float lnWIDTH;
+		switch (i)
+		{
+		case 0:
+			COLOR = FIRST_COLOR;
+			lnWIDTH = DATA_lnWIDTH * 1.5;
+			break;
+		case 1:
+			COLOR = SECOND_COLOR;
+			lnWIDTH = DATA_lnWIDTH * 1.5;
+			break;
+		case 2:
+			COLOR = THIRD_COLOR;
+			lnWIDTH = DATA_lnWIDTH * 1.5;
+			break;
+		default:
+			COLOR = ELSE_COLOR;
+			lnWIDTH = DATA_lnWIDTH;
+		}
+		RANK_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, std::to_string(i + 1), COLOR, DATA_SCALE, lnWIDTH };
 		RANK_DATA.setPos(RANK_WIDTH_POS - RANK_DATA.getTextWidth() * DATA_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 			SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE - DATA_HEIGHT_POS - DATA_SCALE - (DATA_GAP + DATA_SCALE) * i);
 		RANK_DATA.displayStrokeCharacters();
 
-		NAME_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, *itr_name, DATA_SCALE, DATA_lnWIDTH};
+		NAME_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, *itr_name, COLOR, DATA_SCALE, lnWIDTH};
 		NAME_DATA.setPos(NAME_WIDTH_POS - NAME_DATA.getTextWidth() * DATA_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 			SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE - DATA_HEIGHT_POS - DATA_SCALE - (DATA_GAP + DATA_SCALE) * i);
 		NAME_DATA.displayStrokeCharacters();
 		itr_name++;
 
-		SCORE_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, std::to_string(*itr_score), DATA_SCALE, DATA_lnWIDTH};
+		SCORE_DATA = strokeCharacters{ GLUT_STROKE_ROMAN, std::to_string(*itr_score), COLOR, DATA_SCALE, lnWIDTH};
 		SCORE_DATA.setPos(SCORE_WIDTH_POS - SCORE_DATA.getTextWidth() * DATA_SCALE / strokeCharacters::FONT_BASEHEIGHT / 2.0,
 			SCOREBOARD_TITLE_HEIGHT_POS - ATTRIBUTE_NAME_HEIGHT_POS - ATTRIBUTE_NAME_SCALE - DATA_HEIGHT_POS - DATA_SCALE - (DATA_GAP + DATA_SCALE) * i);
 		SCORE_DATA.displayStrokeCharacters();

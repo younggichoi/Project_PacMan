@@ -11,6 +11,8 @@
 #include "constant.h"
 #include <iostream>
 
+extern const float PACMAN_RADIUS;
+
 using namespace std;
 
 
@@ -18,6 +20,7 @@ class Sphere : public Shape3D {
 public:
     enum DIRECTION { NONE, LEFT, UP, RIGHT, DOWN };
     
+    Sphere();
     Sphere(float r, int sl, int st);
     
     void setRadius(float r);
@@ -42,6 +45,7 @@ public:
         GLfloat sh = mtl.getShininess();
         glPushMatrix();
         glTranslatef(center[0], center[1], center[2]);
+        glColor3f(color[0], color[1], color[2]);
         glShadeModel(GL_SMOOTH);
         glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
         glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
@@ -64,6 +68,8 @@ protected:
 class PacMan : public Sphere
 {
 public:
+    static const int INIT_LIFE = 3;
+
     PacMan(float r, int sl, int st, bool bCol);
 
     void setCollided(bool bCol);
@@ -74,6 +80,8 @@ public:
 
     void addScore(int sc);
     int getScore();
+    
+    void initialize();
 
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
@@ -90,9 +98,9 @@ public:
     }
 
 private:
-    bool bCollided;
-    int score;
-    int life;
+    bool bCollided = false;
+    int score = 0;
+    int life = INIT_LIFE;
 };
 
 /* Ghost class */
@@ -127,11 +135,14 @@ public:
     //main에서 dot의 radius 설정해서 선언할 때 radius = (pacman radius) / dotSize 식으로 사용
     //CollisionDetector, CollisionHandler에 pacman과 dot 충돌 관련 내용 추가해야.
     
+    Dot();
     Dot(float r, int sl, int st, DOTSIZE ds);
     
     void setEaten(bool iE);
+    void setDotsize(DOTSIZE ds);
 
-    bool isLarge();
+    bool isLarge() const;
+    bool getEaten() const;
     
     virtual void draw() const{
         // isEaten == false (= not eaten yet) 이면 show
@@ -139,12 +150,13 @@ public:
             GLfloat sh = mtl.getShininess();
             glPushMatrix();
             glTranslatef(center[0], center[1], center[2]);
-            glShadeModel(GL_SMOOTH);
+            /*glShadeModel(GL_SMOOTH);
             glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
             glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
             glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
             glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
-            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);
+            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);*/
+            glColor3f(color[0], color[1], color[2]);
             glutSolidSphere(radius, slice, stack);
             glPopMatrix();
         }

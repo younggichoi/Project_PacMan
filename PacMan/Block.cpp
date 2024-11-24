@@ -24,6 +24,14 @@ void Block::setPassable(bool v){
     bPassable = v;
 }
 
+void Block::setColor(float r, float g, float b) {
+    color = Vector3f(r, g, b);
+}
+
+void Block::setColor(Vector3f& v) {
+    color = v;
+}
+
 
 float Block::getWidth() const{
     return width;
