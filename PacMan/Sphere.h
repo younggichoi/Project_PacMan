@@ -131,7 +131,7 @@ private:
 
 class Dot : public Sphere{
 public:
-    enum DOTSIZE { SMALL = 5, LARGE = 2 };
+    enum DOTSIZE { SMALL = 5, LARGE = 2, ITEM1 = 6, ITEM2, ITEM3 };
     //main에서 dot의 radius 설정해서 선언할 때 radius = (pacman radius) / dotSize 식으로 사용
     //CollisionDetector, CollisionHandler에 pacman과 dot 충돌 관련 내용 추가해야.
     
@@ -142,20 +142,14 @@ public:
     void setDotsize(DOTSIZE ds);
 
     bool isLarge() const;
+    DOTSIZE getSize() const;
     bool getEaten() const;
     
     virtual void draw() const{
         // isEaten == false (= not eaten yet) 이면 show
         if (!isEaten) {
-            GLfloat sh = mtl.getShininess();
             glPushMatrix();
             glTranslatef(center[0], center[1], center[2]);
-            /*glShadeModel(GL_SMOOTH);
-            glMaterialfv(GL_FRONT, GL_EMISSION, mtl.getEmission().pos);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mtl.getAmbient().pos);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, mtl.getDiffuse().pos);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, mtl.getSpecular().pos);
-            glMaterialfv(GL_FRONT, GL_SHININESS, &sh);*/
             glColor3f(color[0], color[1], color[2]);
             glutSolidSphere(radius, slice, stack);
             glPopMatrix();

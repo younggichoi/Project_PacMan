@@ -59,3 +59,6 @@ extern int high_score;
 // declaration is at main.cpp
 extern std::list<std::string> ranker_name;
 extern std::list<int> ranker_score;
+
+// declaration is at idle.cpp
+extern float chase_scatter_sTime;

@@ -232,7 +232,26 @@ void Dot::setEaten(bool iE){
 void Dot::setDotsize(DOTSIZE ds)
 {
     dotSize = ds;
-    radius = PACMAN_RADIUS / dotSize;
+    if (dotSize == LARGE || dotSize == SMALL)
+        radius = PACMAN_RADIUS / dotSize;
+    else
+    {
+        radius = PACMAN_RADIUS / 2;
+        switch (dotSize)
+        {
+        case ITEM1:
+            color.setPos(0.0, 1.0, 0.0);
+            break;
+
+        case ITEM2:
+            color.setPos(0.0, 0.0, 1.0);
+            break;
+
+        case ITEM3:
+            color.setPos(1.0, 0.0, 0.0);
+            break;
+        }
+    }
 }
 
 bool Dot::isLarge() const{
@@ -242,6 +261,11 @@ bool Dot::isLarge() const{
     else {
         return false;
     }
+}
+
+Dot::DOTSIZE Dot::getSize() const
+{
+    return dotSize;
 }
 
 bool Dot::getEaten() const{
