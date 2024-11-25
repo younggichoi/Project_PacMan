@@ -10,7 +10,22 @@
 
 bool CollisionDetector::operator()(const PacMan& pacman, const Map& map){
     //if (map.getBlock(sphere.getXIndex()-1, sphere.getYIndex()).isPassable())
-    
+    int lx = pacman.getXIndex() - 1; int ly = pacman.getYIndex();
+    int rx = pacman.getXIndex() + 1; int ry = pacman.getYIndex();
+    int tx = pacman.getXIndex(); int ty = pacman.getYIndex() - 1;
+    int bx = pacman.getXIndex(); int by = pacman.getYIndex() + 1;
+    if (lx == -1) {
+        lx = NUM_COL - 1;
+    }
+    if (rx == NUM_COL) {
+        rx = 0;
+    }
+    if (ty == -1) {
+        ty = NUM_ROW - 1;
+    }
+    if (by == NUM_ROW) {
+        by = 0;
+    }
     switch (pacman.getCurrentDirection()){
         case Sphere::LEFT:
             if (!map.getBlock(pacman.getXIndex()-1, pacman.getYIndex()).isPassable()){
