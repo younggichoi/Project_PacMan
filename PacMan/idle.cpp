@@ -19,31 +19,44 @@ CollisionHandler colHandler;
 void updateDirectionOfPacMan() {
     int xIdx = pacman.getXIndex();
     int yIdx = pacman.getYIndex();
-
+    int lx, ly, rx, ry, tx, ty, bx, by;
+    
     if (xIdx - 1 != -1) {
-        const Block& lBlock = maps[0].getBlock(xIdx - 1, yIdx);    // left
+        lx = xIdx - 1;
+        ly = yIdx;
     }
     else {
-        const Block& lBlock = maps[0].getBlock(NUM_COL - 1, yIdx);
+        lx = NUM_COL - 1;
+        ly = yIdx;
     }
     if (xIdx + 1 != NUM_COL) {
-        const Block& rBlock = maps[0].getBlock(xIdx + 1, yIdx);    // right
+        rx = xIdx + 1;
+        ry = yIdx;
     }
     else {
-        const Block& rBlock = maps[0].getBlock(0, yIdx);
+        rx = 0;
+        ry = yIdx;
     }
     if (yIdx - 1 != -1) {
-        const Block& tBlock = maps[0].getBlock(xIdx, yIdx - 1);    // top
+        tx = xIdx;
+        ty = yIdx - 1;    // top
     }
     else {
-        const Block& tBlock = maps[0].getBlock(xIdx, NUM_ROW -1);
+        tx = xIdx;
+        ty = NUM_ROW - 1;
     }
     if (yIdx + 1 != NUM_ROW) {
-        const Block& bBlock = maps[0].getBlock(xIdx, yIdx + 1);    // bottom
+        bx = xIdx;
+        by = yIdx + 1;
     }
     else {
-        const Block& bBlock = maps[0].getBlock(xIdx, 0);
+        bx = xIdx;
+        by = 0;
     }
+    const Block& lBlock = maps[0].getBlock(lx, ly);    // left
+    const Block& rBlock = maps[0].getBlock(rx, ry);    // right
+    const Block& tBlock = maps[0].getBlock(tx, ty);    // top
+    const Block& bBlock = maps[0].getBlock(bx, by);    // bottom
 
     // update direction
     Sphere::DIRECTION nextDir = pacman.getNextDirection();
