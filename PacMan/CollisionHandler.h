@@ -13,8 +13,8 @@
 class CollisionHandler
 {
 public:
-    void operator()(PacMan& pacman, const Map& map);
+    void operator()(PacMan& pacman, Map& map);
     void operator()(PacMan& pacman, Ghost& ghost);
     void operator()(PacMan& pacman, Dot& dot);
-    void operator()(Ghost& ghost, const Map& map);
+    void operator()(Ghost& ghost, Map& map);
 };

@@ -8,7 +8,7 @@
 #include "CollisionHandler.h"
 extern Ghost blinky, pinky, inky, clyde;
 
-void CollisionHandler::operator()(PacMan& pacman, const Map& map){
+void CollisionHandler::operator()(PacMan& pacman, Map& map){
     CollisionDetector cd;
     if (cd(pacman, map)){
         pacman.setCurrentDirection(Sphere::NONE);
@@ -66,7 +66,7 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
         pacman.addScore(10);
     }
 }
-void CollisionHandler::operator()(Ghost& ghost, const Map& map) {
+void CollisionHandler::operator()(Ghost& ghost, Map& map) {
     CollisionDetector cd;
     if (cd(ghost, map)) {
         ghost.setCurrentDirection(Sphere::NONE);

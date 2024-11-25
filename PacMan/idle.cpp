@@ -62,10 +62,10 @@ void updateDirectionOfGhost(Ghost& ghost, int targetX, int targetY) {
     int rIdx[2] = { idx[0] + 1, idx[1] };   // right
     int bIdx[2] = { idx[0], idx[1] + 1 };   // bottom
 
-    const Block& lBlock = maps[0].getBlock(lIdx[1], lIdx[0]);// left
-    const Block& tBlock = maps[0].getBlock(tIdx[1], tIdx[0]);// top
-    const Block& rBlock = maps[0].getBlock(rIdx[1], rIdx[0]);// right
-    const Block& bBlock = maps[0].getBlock(bIdx[1], bIdx[0]);// bottom
+    const Block& lBlock = maps[0].getBlock(lIdx[0], lIdx[1]);// left
+    const Block& tBlock = maps[0].getBlock(tIdx[0], tIdx[1]);// top
+    const Block& rBlock = maps[0].getBlock(rIdx[0], rIdx[1]);// right
+    const Block& bBlock = maps[0].getBlock(bIdx[0], bIdx[1]);// bottom
 
     Sphere::DIRECTION currDir = ghost.getCurrentDirection();
     Sphere::DIRECTION newDir = Sphere::DIRECTION::NONE;
