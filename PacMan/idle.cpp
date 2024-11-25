@@ -20,10 +20,30 @@ void updateDirectionOfPacMan() {
     int xIdx = pacman.getXIndex();
     int yIdx = pacman.getYIndex();
 
-    const Block& lBlock = maps[0].getBlock(xIdx - 1, yIdx);    // left
-    const Block& rBlock = maps[0].getBlock(xIdx + 1, yIdx);    // right
-    const Block& tBlock = maps[0].getBlock(xIdx, yIdx - 1);    // top
-    const Block& bBlock = maps[0].getBlock(xIdx, yIdx + 1);    // bottom
+    if (xIdx - 1 != -1) {
+        const Block& lBlock = maps[0].getBlock(xIdx - 1, yIdx);    // left
+    }
+    else {
+        const Block& lBlock = maps[0].getBlock(NUM_COL - 1, yIdx);
+    }
+    if (xIdx + 1 != NUM_COL) {
+        const Block& rBlock = maps[0].getBlock(xIdx + 1, yIdx);    // right
+    }
+    else {
+        const Block& rBlock = maps[0].getBlock(0, yIdx);
+    }
+    if (yIdx - 1 != -1) {
+        const Block& tBlock = maps[0].getBlock(xIdx, yIdx - 1);    // top
+    }
+    else {
+        const Block& tBlock = maps[0].getBlock(xIdx, NUM_ROW -1);
+    }
+    if (yIdx + 1 != NUM_ROW) {
+        const Block& bBlock = maps[0].getBlock(xIdx, yIdx + 1);    // bottom
+    }
+    else {
+        const Block& bBlock = maps[0].getBlock(xIdx, 0);
+    }
 
     // update direction
     Sphere::DIRECTION nextDir = pacman.getNextDirection();
@@ -61,6 +81,19 @@ void updateDirectionOfGhost(Ghost& ghost, int targetX, int targetY) {
     int tIdx[2] = { idx[0], idx[1] - 1 };   // top
     int rIdx[2] = { idx[0] + 1, idx[1] };   // right
     int bIdx[2] = { idx[0], idx[1] + 1 };   // bottom
+    
+    if (lIdx[0] == -1) {
+        lIdx[0] = NUM_COL - 1;
+    }
+    if (tIdx[1] == -1) {
+        tIdx[1] = NUM_ROW - 1;
+    }
+    if (rIdx[0] == NUM_COL) {
+        rIdx[0] = 0;
+    }
+    if (bIdx[1] == NUM_ROW) {
+        bIdx[1] = 0;
+    }
 
     const Block& lBlock = maps[0].getBlock(lIdx[0], lIdx[1]);// left
     const Block& tBlock = maps[0].getBlock(tIdx[0], tIdx[1]);// top
