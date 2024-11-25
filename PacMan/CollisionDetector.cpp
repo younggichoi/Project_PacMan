@@ -28,25 +28,25 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Map& map){
     }
     switch (pacman.getCurrentDirection()){
         case Sphere::LEFT:
-            if (!map.getBlock(pacman.getXIndex()-1, pacman.getYIndex()).isPassable()){
+            if (!map.getBlock(lx, ly).isPassable()){
                 return true;
             }
             else return false;
             break;
         case Sphere::RIGHT:
-            if (!map.getBlock(pacman.getXIndex()+1, pacman.getYIndex()).isPassable()){
+            if (!map.getBlock(rx, ry).isPassable()){
                 return true;
             }
             else return false;
             break;
         case Sphere::UP:
-            if (!map.getBlock(pacman.getXIndex(), pacman.getYIndex()-1).isPassable()){
+            if (!map.getBlock(tx, ty).isPassable()){
                 return true;
             }
             else return false;
             break;
         case Sphere::DOWN:
-            if (!map.getBlock(pacman.getXIndex(), pacman.getYIndex()+1).isPassable()){
+            if (!map.getBlock(bx, by).isPassable()){
                 return true;
             }
             else return false;
