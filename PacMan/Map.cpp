@@ -88,7 +88,16 @@ const Block& Map::getBlock(int c, int r) const{
     return blocks[c][r];
 }
 
+Block& Map::getBlock(int c, int r) {
+    return blocks[c][r];
+}
+
 const Dot& Map::getDot(int c, int r) const
+{
+    return dots[c][r];
+}
+
+Dot& Map::getDot(int c, int r)
 {
     return dots[c][r];
 }

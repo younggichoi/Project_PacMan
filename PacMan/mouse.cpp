@@ -70,7 +70,15 @@ void mouse_main(int button, int state, int x, int y)
 		x = changeCorX(x);
 		y = changeCorY(y);
 		if (PLAY_MENU.checkMousePtr(x, y))
+		{
 			windowState = INGAME;
+			chase_scatter_sTime = glutGet(GLUT_ELAPSED_TIME);
+			ghost_state = Ghost::STATE::CHASE;
+			// ghost를 모두 chase로 설정
+			deleteItem(maps[stage_num]);
+			createItem(maps[stage_num]);
+		}
+			
 		if (SCOREBOARD_MENU.checkMousePtr(x, y))
 			windowState = SCORE_BOARD;
 		if (QUIT_MENU.checkMousePtr(x, y))

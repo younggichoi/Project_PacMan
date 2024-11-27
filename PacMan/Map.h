@@ -21,7 +21,9 @@ public:
     Map();
     void createMap(const std::string&);
     const Block& getBlock(int c, int r) const;
+    Block& getBlock(int c, int r);
     const Dot& getDot(int c, int r) const;
+    Dot& getDot(int c, int r);
     void draw() const;
     void setBlockColor(float r, float g, float b);
     void setDotColor(float r, float g, float b);
