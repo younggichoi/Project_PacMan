@@ -1,8 +1,6 @@
 #pragma once
 #include <list>
 #include "menubox.h"
-#include "Sphere.h"
-//#include "Map.h"
 
 # define M_PI 3.141592653589793238462643383279502884L
 
@@ -17,6 +15,8 @@ inline const int NUM_COL = 28;
 
 inline const float BLOCK_SIZE = 20.f;
 inline const float MOVE_SPEED = 1.f;
+// frightened state, slow item
+inline const float SLOW_SPEED = 0.5f;
 
 // map boundary
 inline const float LEFT_BOUNDARY = -(NUM_COL / 2) * BLOCK_SIZE;

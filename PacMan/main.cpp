@@ -48,6 +48,15 @@ extern Light light;
 // text for centered
 extern strokeCharacters HIGH_SCORE_TEXT;
 
+// pacman, ghost material
+Material pacman_mtl, blinky_mtl, pinky_mtl, inky_mtl, clyde_mtl;
+
+// declaration is at idle.cpp
+extern Material frightened_mtl, frightened_blink_mtl;
+
+// declaration is at CollisionHandler.cpp
+extern Material eaten_mtl;
+
 void initialize()
 {
 	windowState = MAIN;
@@ -67,7 +76,6 @@ void initialize()
 	light.setSpecular(0.5, 0.5, 0.5, 1.0);
 
 	// pacman setting
-	Material pacman_mtl;
 	pacman_mtl.setAmbient(1.0, 1.0, 0.4, 1.0);
 	pacman_mtl.setDiffuse(1.0, 1.0, 0.0, 1.0);
 	pacman_mtl.setSpecular(0.3, 0.3, 0.0, 1.0);
@@ -76,7 +84,6 @@ void initialize()
 	pacman.setMTL(pacman_mtl);
 
 	// ghost setting
-	Material blinky_mtl;
 	blinky_mtl.setEmission(0.3f, 0.0f, 0.0f, 1.0f);
 	blinky_mtl.setAmbient(0.6f, 0.1f, 0.1f, 1.0f);
 	blinky_mtl.setDiffuse(0.8f, 0.0f, 0.0f, 1.0f);
@@ -84,7 +91,6 @@ void initialize()
 	blinky_mtl.setShininess(50.0f);
 	blinky.setMTL(blinky_mtl);
 
-	Material pinky_mtl;
 	pinky_mtl.setEmission(0.2f, 0.1f, 0.2f, 1.0f);
 	pinky_mtl.setAmbient(0.8f, 0.4f, 0.8f, 1.0f);
 	pinky_mtl.setDiffuse(0.9f, 0.5f, 0.9f, 1.0f);
@@ -92,7 +98,6 @@ void initialize()
 	pinky_mtl.setShininess(40.0f);
 	pinky.setMTL(pinky_mtl);
 
-	Material inky_mtl;
 	inky_mtl.setEmission(0.0f, 0.0f, 0.3f, 1.0f);
 	inky_mtl.setAmbient(0.2f, 0.2f, 0.6f, 1.0f);
 	inky_mtl.setDiffuse(0.4f, 0.4f, 0.9f, 1.0f);
@@ -100,13 +105,33 @@ void initialize()
 	inky_mtl.setShininess(60.0f);
 	inky.setMTL(inky_mtl);
 
-	Material clyde_mtl;
 	clyde_mtl.setEmission(0.3f, 0.2f, 0.0f, 1.0f);
 	clyde_mtl.setAmbient(0.7f, 0.4f, 0.1f, 1.0f);
 	clyde_mtl.setDiffuse(1.0f, 0.5f, 0.2f, 1.0f);
 	clyde_mtl.setSpecular(0.8f, 0.5f, 0.3f, 1.0f);
 	clyde_mtl.setShininess(30.0f);
 	clyde.setMTL(clyde_mtl);
+
+	// frightened_mtl initialize
+	frightened_mtl.setAmbient(0.0f, 0.0f, 0.3f, 1.0f);
+	frightened_mtl.setDiffuse(0.0f, 0.0f, 1.0f, 1.0f);
+	frightened_mtl.setEmission(0.0f, 0.0f, 0.2f, 1.0f);
+	frightened_mtl.setSpecular(0.5f, 0.5f, 0.5f, 1.0f);
+	frightened_mtl.setShininess(32.0f);
+
+	// frightened_blink_mtl initialize
+	frightened_blink_mtl.setAmbient(0.8f, 0.8f, 0.8f, 1.0f);
+	frightened_blink_mtl.setDiffuse(1.0f, 1.0f, 1.0f, 1.0f);
+	frightened_blink_mtl.setEmission(0.2f, 0.2f, 0.2f, 1.0f);
+	frightened_blink_mtl.setSpecular(1.0f, 1.0f, 1.0f, 1.0f);
+	frightened_blink_mtl.setShininess(64.0f);
+
+	// eaten_mtl initialize
+	eaten_mtl.setAmbient(0.2f, 0.2f, 0.2f, 1.0f);
+	eaten_mtl.setDiffuse(0.4f, 0.4f, 0.4f, 1.0f);
+	eaten_mtl.setSpecular(0.2f, 0.2f, 0.2f, 1.0f);
+	eaten_mtl.setEmission(0.1f, 0.1f, 0.1f, 1.0f);
+	eaten_mtl.setShininess(16.0f);
 
 	// create stage1
 	maps[0].createMap("stage1_layout.txt");
