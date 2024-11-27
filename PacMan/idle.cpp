@@ -366,18 +366,18 @@ void updateGhost(Ghost& ghost) {
             }
         }
         else if (ghost.getState() == Ghost::EATEN) {
-            // TODO: 초기위치 확정나면 바꾸기
+            // TODO: 초기위치로 setTargetPosition
             if (ghost.getName() == Ghost::BLINKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 1; targetY = 2;
             }
             else if (ghost.getName() == Ghost::PINKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 1; targetY = 27;
             }
             else if (ghost.getName() == Ghost::INKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 26; targetY = 27;
             }
             else if (ghost.getName() == Ghost::CLYDE) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 26; targetY = 2;
             }
         }
 
@@ -485,7 +485,31 @@ void idle_ingame()
         colHandler(pacman, inky);
         updateGhost(clyde);
         colHandler(pacman, clyde);
-        // Dot colHandler 호출
+        colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex()));
+        if (pacman.getXIndex() + 1 != NUM_COL) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex() + 1, pacman.getYIndex()));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(0, pacman.getYIndex()));
+        }
+        if (pacman.getYIndex() + 1 != NUM_ROW) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex() + 1));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), 0));
+        }
+        if (pacman.getXIndex() - 1 != -1) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex() - 1, pacman.getYIndex()));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(NUM_COL - 1, pacman.getYIndex()));
+        }
+        if (pacman.getYIndex() - 1 != -1) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex() - 1));
+        }
+        else{
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), NUM_ROW - 1));
+        }
 
         sTime = eTime;
         glutPostRedisplay();
