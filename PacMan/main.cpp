@@ -14,6 +14,7 @@ const float WINDOW_POS_X = 300.f;
 const float WINDOW_POS_Y = 40.f;
 
 const float PACMAN_RADIUS = BLOCK_SIZE / 2;
+const float GHOST_RADIUS = BLOCK_SIZE / 2;
 
 WINDOW_STATE windowState;
 
@@ -35,6 +36,12 @@ const float DOT_COLOR_B = 0.8;
 // pacman
 PacMan pacman(PACMAN_RADIUS, 10, 10, 0);
 
+// ghosts
+Ghost blinky(GHOST_RADIUS, 10, 10, Ghost::BLINKY, Ghost::CHASE);
+Ghost pinky(GHOST_RADIUS, 10, 10, Ghost::PINKY, Ghost::CHASE);
+Ghost inky(GHOST_RADIUS, 10, 10, Ghost::INKY, Ghost::CHASE);
+Ghost clyde(GHOST_RADIUS, 10, 10, Ghost::CLYDE, Ghost::CHASE);
+
 // light
 extern Light light;
 
@@ -44,7 +51,6 @@ extern strokeCharacters HIGH_SCORE_TEXT;
 void initialize()
 {
 	windowState = MAIN;
-	stage_num = 0;
 	PLAY_MENU.centeredText();
 	SCOREBOARD_MENU.centeredText();
 	QUIT_MENU.centeredText();
@@ -68,6 +74,39 @@ void initialize()
 	pacman_mtl.setShininess(10.0);
 	pacman_mtl.setEmission(1.0, 1.0, 0.2, 1.0);
 	pacman.setMTL(pacman_mtl);
+
+	// ghost setting
+	Material blinky_mtl;
+	blinky_mtl.setEmission(0.3f, 0.0f, 0.0f, 1.0f);
+	blinky_mtl.setAmbient(0.6f, 0.1f, 0.1f, 1.0f);
+	blinky_mtl.setDiffuse(0.8f, 0.0f, 0.0f, 1.0f);
+	blinky_mtl.setSpecular(0.5f, 0.1f, 0.1f, 1.0f);
+	blinky_mtl.setShininess(50.0f);
+	blinky.setMTL(blinky_mtl);
+
+	Material pinky_mtl;
+	pinky_mtl.setEmission(0.2f, 0.1f, 0.2f, 1.0f);
+	pinky_mtl.setAmbient(0.8f, 0.4f, 0.8f, 1.0f);
+	pinky_mtl.setDiffuse(0.9f, 0.5f, 0.9f, 1.0f);
+	pinky_mtl.setSpecular(0.6f, 0.3f, 0.6f, 1.0f);
+	pinky_mtl.setShininess(40.0f);
+	pinky.setMTL(pinky_mtl);
+
+	Material inky_mtl;
+	inky_mtl.setEmission(0.0f, 0.0f, 0.3f, 1.0f);
+	inky_mtl.setAmbient(0.2f, 0.2f, 0.6f, 1.0f);
+	inky_mtl.setDiffuse(0.4f, 0.4f, 0.9f, 1.0f);
+	inky_mtl.setSpecular(0.5f, 0.5f, 0.7f, 1.0f);
+	inky_mtl.setShininess(60.0f);
+	inky.setMTL(inky_mtl);
+
+	Material clyde_mtl;
+	clyde_mtl.setEmission(0.3f, 0.2f, 0.0f, 1.0f);
+	clyde_mtl.setAmbient(0.7f, 0.4f, 0.1f, 1.0f);
+	clyde_mtl.setDiffuse(1.0f, 0.5f, 0.2f, 1.0f);
+	clyde_mtl.setSpecular(0.8f, 0.5f, 0.3f, 1.0f);
+	clyde_mtl.setShininess(30.0f);
+	clyde.setMTL(clyde_mtl);
 
 	// create stage1
 	maps[0].createMap("stage1_layout.txt");
