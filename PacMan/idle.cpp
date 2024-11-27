@@ -497,12 +497,29 @@ void idle_ingame()
         {
             ghost_state = Ghost::STATE::SCATTER;
             // 고스트들의 state를 SCATTER로 변경
+            if (blinky.getState() == Ghost::STATE::CHASE)
+                blinky.setState(Ghost::STATE::SCATTER);
+            if (pinky.getState() == Ghost::STATE::CHASE)
+                pinky.setState(Ghost::STATE::SCATTER);
+            if (inky.getState() == Ghost::STATE::CHASE)
+                inky.setState(Ghost::STATE::SCATTER);
+            if (clyde.getState() == Ghost::STATE::CHASE)
+                clyde.setState(Ghost::STATE::SCATTER);
         }
         else if (ghost_state == Ghost::STATE::SCATTER)
         {
             ghost_state = Ghost::STATE::CHASE;
             // 고스트들의 state를 CHASE로 변경
+            if (blinky.getState() == Ghost::STATE::SCATTER)
+                blinky.setState(Ghost::STATE::CHASE);
+            if (pinky.getState() == Ghost::STATE::SCATTER)
+                pinky.setState(Ghost::STATE::CHASE);
+            if (inky.getState() == Ghost::STATE::SCATTER)
+                inky.setState(Ghost::STATE::CHASE);
+            if (clyde.getState() == Ghost::STATE::SCATTER)
+                clyde.setState(Ghost::STATE::CHASE);
         }
+        chase_scatter_sTime = eTime;
     }
 }
 
