@@ -1,5 +1,6 @@
 #include <GL/freeglut.h>
 #include <random>
+#include <iostream>
 #include "idle.h"
 #include "Sphere.h"
 #include "Map.h"
@@ -19,10 +20,30 @@ CollisionHandler colHandler;
 
 Ghost::STATE ghost_state = Ghost::STATE::CHASE;
 
+// chase, scatter 지속시간
 const float CHASE_SCATTER_TIME = 15000.f;
-const float FRIGHTENED_TIME = 15000.f;
+// frightened state 지속시간
+const float FRIGHTENED_TIME = 20000.f;
+// frightened state의 후반 ghost 점등 시간
 const float FRIGHTENED_NORMAL_TIME = 5000.f;
+// ghost 점등 주기
+const float BLINK_TIME = 100.f;
 float chase_scatter_sTime;
+float frightened_sTime;
+float blink_sTime;
+// ghost가 점등하는 동안만 true로 설정
+bool BLINK = false;
+// large dot을 먹으면 true, FRIGHTENED_TIME이 지나면 false
+bool FRIGHTENED = false;
+
+// frightened material
+Material frightened_mtl;
+
+// blink material
+Material frightened_blink_mtl;
+
+// ghost material
+extern Material blinky_mtl, pinky_mtl, inky_mtl, clyde_mtl;
 
 void updateDirectionOfPacMan() {
     int xIdx = pacman.getXIndex();
@@ -384,6 +405,26 @@ void updateGhost(Ghost& ghost) {
         updateDirectionOfGhost(ghost, targetX, targetY);
     }
     ghost.move();
+
+    // eaten state에서 초기 위치 도달시 normal state로 전환
+    if (ghost.getState() == Ghost::EATEN) {
+        if (ghost.getName() == Ghost::BLINKY && ghost.getXIndex() == 1 && ghost.getYIndex() == 2) {
+            ghost.setState(ghost_state);
+            ghost.setMTL(blinky_mtl);
+        }
+        if (ghost.getName() == Ghost::PINKY && ghost.getXIndex() == 1 && ghost.getYIndex() == 27) {
+            ghost.setState(ghost_state);
+            ghost.setMTL(pinky_mtl);
+        }
+        if (ghost.getName() == Ghost::INKY && ghost.getXIndex() == 26 && ghost.getYIndex() == 27) {
+            ghost.setState(ghost_state);
+            ghost.setMTL(inky_mtl);
+        }
+        if (ghost.getName() == Ghost::CLYDE && ghost.getXIndex() == 26 && ghost.getYIndex() == 2) {
+            ghost.setState(ghost_state);
+            ghost.setMTL(clyde_mtl);
+        }
+    }
 }
 
 bool checkClear(Map& map)
@@ -513,6 +554,9 @@ void idle_ingame()
 
         sTime = eTime;
         glutPostRedisplay();
+        // for debugging
+        std::cout << "Blinky: " << blinky.stateToString() << " Pinky: " << pinky.stateToString()
+            << " Inky: " << inky.stateToString() << " Clyde: " << clyde.stateToString() << std::endl;
     }
     
     if (eTime - chase_scatter_sTime > CHASE_SCATTER_TIME)
@@ -521,13 +565,92 @@ void idle_ingame()
         {
             ghost_state = Ghost::STATE::SCATTER;
             // 고스트들의 state를 SCATTER로 변경
+            if (blinky.getState() == Ghost::STATE::CHASE)
+                blinky.setState(Ghost::STATE::SCATTER);
+            if (pinky.getState() == Ghost::STATE::CHASE)
+                pinky.setState(Ghost::STATE::SCATTER);
+            if (inky.getState() == Ghost::STATE::CHASE)
+                inky.setState(Ghost::STATE::SCATTER);
+            if (clyde.getState() == Ghost::STATE::CHASE)
+                clyde.setState(Ghost::STATE::SCATTER);
         }
         else if (ghost_state == Ghost::STATE::SCATTER)
         {
             ghost_state = Ghost::STATE::CHASE;
             // 고스트들의 state를 CHASE로 변경
+            if (blinky.getState() == Ghost::STATE::SCATTER)
+                blinky.setState(Ghost::STATE::CHASE);
+            if (pinky.getState() == Ghost::STATE::SCATTER)
+                pinky.setState(Ghost::STATE::CHASE);
+            if (inky.getState() == Ghost::STATE::SCATTER)
+                inky.setState(Ghost::STATE::CHASE);
+            if (clyde.getState() == Ghost::STATE::SCATTER)
+                clyde.setState(Ghost::STATE::CHASE);
         }
+        chase_scatter_sTime = eTime;
     }
+
+    if (FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME - FRIGHTENED_NORMAL_TIME && !BLINK) {
+        // ghost 점멸 상태 진입
+        BLINK = true;
+        blink_sTime = glutGet(GLUT_ELAPSED_TIME);
+    }
+
+    if (BLINK && eTime - blink_sTime > BLINK_TIME) {
+        // ghost 점멸
+        if (blinky.getState() == Ghost::FRIGHTENED) {
+            if (blinky.getMTL() == frightened_mtl)
+                blinky.setMTL(frightened_blink_mtl);
+            else
+                blinky.setMTL(frightened_mtl);
+        }
+        if (pinky.getState() == Ghost::FRIGHTENED) {
+            if (pinky.getMTL() == frightened_mtl)
+                pinky.setMTL(frightened_blink_mtl);
+            else
+                pinky.setMTL(frightened_mtl);
+        }
+        if (inky.getState() == Ghost::FRIGHTENED) {
+            if (inky.getMTL() == frightened_mtl)
+                inky.setMTL(frightened_blink_mtl);
+            else
+                inky.setMTL(frightened_mtl);
+        }
+        if (clyde.getState() == Ghost::FRIGHTENED) {
+            if (clyde.getMTL() == frightened_mtl)
+                clyde.setMTL(frightened_blink_mtl);
+            else
+                clyde.setMTL(frightened_mtl);
+        }
+        blink_sTime = eTime;
+    }
+
+    if (FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME) {
+        // frightened state 종료
+        FRIGHTENED = false;
+        BLINK = false;
+        if (blinky.getState() == Ghost::FRIGHTENED) {
+            blinky.setState(ghost_state);
+            blinky.setMTL(blinky_mtl);
+            blinky.speedUp();
+        }
+        if (pinky.getState() == Ghost::FRIGHTENED) {
+            pinky.setState(ghost_state);
+            pinky.setMTL(pinky_mtl);
+            pinky.speedUp();
+        }
+        if (inky.getState() == Ghost::FRIGHTENED) {
+            inky.setState(ghost_state);
+            inky.setMTL(pinky_mtl);
+            inky.speedUp();
+        }
+        if (clyde.getState() == Ghost::FRIGHTENED) {
+            clyde.setState(ghost_state);
+            clyde.setMTL(clyde_mtl);
+            clyde.speedUp();
+        }  
+    }
+
     if (pacman.getLife() == 0) {
     	windowState = END;
     }

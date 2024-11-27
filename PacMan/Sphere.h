@@ -10,6 +10,7 @@
 #include "Shape3D.h"
 #include "constant.h"
 #include <iostream>
+#include <string>
 
 extern const float PACMAN_RADIUS;
 
@@ -39,6 +40,11 @@ public:
     DIRECTION getNextDirection() const;
     void updateDirection();
     void updateIndexPosition();
+
+    // MOVE_SPEED->SLOW_SPEED
+    void slowDown();
+    // SLOW_SPEED->MOVE_SPEED
+    void speedUp();
     
     void move();
     virtual void draw() const{
@@ -62,6 +68,7 @@ protected:
     int idxPos[2];
     bool bInxPosUpdated;
     DIRECTION currDirection, nextDirection;
+    float speed = MOVE_SPEED;
 };
 
 /* Pacman class */
@@ -122,6 +129,8 @@ public:
 
     bool getEaten();
     void setEaten(bool v);
+
+    std::string stateToString() const;
 
 private:
     NAME name;
