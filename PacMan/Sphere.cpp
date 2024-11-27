@@ -68,7 +68,7 @@ void Sphere::updateIndexPosition(){
             else {
                 setIndexPosition(0, idxPos[1]);
                 this->setCenter(LEFT_BOUNDARY + idxPos[0] * BLOCK_SIZE, yFromIdx, 0.0f);
-                cout << xFromIdx << endl;
+                //cout << xFromIdx << endl;
             }
             bInxPosUpdated = true;
         }
