@@ -485,7 +485,31 @@ void idle_ingame()
         colHandler(pacman, inky);
         updateGhost(clyde);
         colHandler(pacman, clyde);
-        // Dot colHandler 호출
+        colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex()));
+        if (pacman.getXIndex() + 1 != NUM_COL) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex() + 1, pacman.getYIndex()));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(0, pacman.getYIndex()));
+        }
+        if (pacman.getYIndex() + 1 != NUM_ROW) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex() + 1));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), 0));
+        }
+        if (pacman.getXIndex() - 1 != -1) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex() - 1, pacman.getYIndex()));
+        }
+        else {
+            colHandler(pacman, maps[stage_num].getDot(NUM_COL - 1, pacman.getYIndex()));
+        }
+        if (pacman.getYIndex() - 1 != -1) {
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), pacman.getYIndex() - 1));
+        }
+        else{
+            colHandler(pacman, maps[stage_num].getDot(pacman.getXIndex(), NUM_ROW - 1));
+        }
 
         sTime = eTime;
         glutPostRedisplay();
