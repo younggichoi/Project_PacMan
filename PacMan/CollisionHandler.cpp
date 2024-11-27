@@ -28,6 +28,17 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
         else {
             if (ghost.getState() != Ghost::EATEN) {
                 pacman.decreaseLife();
+                // pacman, ghost들 모두 각각 처음 위치로.
+                pacman.setCenter(0.0f, 0.0f, 0.0f);
+                pacman.setIndexPosition(14, 14);
+                blinky.setCenter(-250.0f, 270.0f, 0.0f);
+                blinky.setIndexPosition(1, 2);
+                pinky.setCenter(-260.0f, -240.0f, 0.0f);
+                pinky.setIndexPosition(1, 27);
+                inky.setCenter(240.0f, -240.0f, 0.0f);
+                inky.setIndexPosition(26, 27);
+                clyde.setCenter(240.0f, 240.0f, 0.0f);
+                clyde.setIndexPosition(26, 2);
             }
             // pacman, ghost들 모두 각각 처음 위치로.
             // TODO
