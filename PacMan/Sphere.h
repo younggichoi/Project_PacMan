@@ -120,10 +120,14 @@ public:
 
     void setTargetPosition(int x, int y);
 
+    bool getEaten();
+    void setEaten(bool v);
+
 private:
     NAME name;
     STATE state;
     int targetPos[2];
+    bool isEaten;
 };
 
 

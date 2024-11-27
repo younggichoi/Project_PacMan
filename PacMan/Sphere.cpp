@@ -193,6 +193,20 @@ void PacMan::initialize()
 Ghost::Ghost(float r, int sl, int st, NAME n, STATE s) : Sphere(r, sl, st){
     name = n;
     state = s;
+    isEaten = false;
+    // TODO : 이름 별 초기위치 세팅
+    if (name == Ghost::BLINKY) {
+        center[0] = -250.0f; center[1] = 270.0f; center[2] = 0.0f; idxPos[0] = 1; idxPos[1] = 2;
+    }
+    else if (name == Ghost::PINKY) {
+        center[0] = 0.0f; center[1] = 0.0f; center[2] = 0.0f; idxPos[0] = 14; idxPos[1] = 14;
+    }
+    else if (name == Ghost::INKY) {
+        center[0] = 0.0f; center[1] = 0.0f; center[2] = 0.0f; idxPos[0] = 14; idxPos[1] = 14;
+    }
+    else if (name == Ghost::CLYDE) {
+        center[0] = 0.0f; center[1] = 0.0f; center[2] = 0.0f; idxPos[0] = 14; idxPos[1] = 14;
+    }
 }
 void Ghost::setName(NAME n) {
     name = n;
@@ -209,7 +223,12 @@ Ghost::STATE Ghost::getState() const{
 void Ghost::setTargetPosition(int x, int y) {
     targetPos[0] = x; targetPos[1] = y;
 }
-
+bool Ghost::getEaten() {
+    return isEaten;
+}
+void Ghost::setEaten(bool v) {
+    isEaten = v;
+}
 
 //******************************************************//
 // Dot
