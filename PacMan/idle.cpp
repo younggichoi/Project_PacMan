@@ -528,6 +528,9 @@ void idle_ingame()
             // 고스트들의 state를 CHASE로 변경
         }
     }
+    if (pacman.getLife() == 0) {
+    	windowState = END;
+    }
 }
 
 void idle_end()
