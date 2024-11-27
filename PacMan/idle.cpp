@@ -366,18 +366,18 @@ void updateGhost(Ghost& ghost) {
             }
         }
         else if (ghost.getState() == Ghost::EATEN) {
-            // TODO: 초기위치 확정나면 바꾸기
+            // TODO: 초기위치로 setTargetPosition
             if (ghost.getName() == Ghost::BLINKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 1; targetY = 2;
             }
             else if (ghost.getName() == Ghost::PINKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 1; targetY = 27;
             }
             else if (ghost.getName() == Ghost::INKY) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 26; targetY = 27;
             }
             else if (ghost.getName() == Ghost::CLYDE) {
-                ghost.setCenter(0.0f, 0.0f, 0.0f);
+                targetX = 26; targetY = 2;
             }
         }
 
