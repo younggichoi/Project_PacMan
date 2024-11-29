@@ -205,6 +205,9 @@ void PacMan::setCollided(bool bCol){
 void PacMan::setLife(int l) {
     life = l;
 }
+void PacMan::increaseLife() {
+    life += 1;
+}
 void PacMan::decreaseLife() {
     life -= 1;
 }

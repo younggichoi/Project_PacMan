@@ -82,6 +82,7 @@ public:
     void setCollided(bool bCol);
 
     void setLife(int l);
+    void increaseLife();
     void decreaseLife();
     int getLife();
 
