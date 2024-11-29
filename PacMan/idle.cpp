@@ -659,33 +659,35 @@ void idle_ingame()
         }  
     }
 
-    // HELP, CHATGPT
+    
     if (pBLINK) {
-        pblink_sTime = glutGet(GLUT_ELAPSED_TIME); // 현재 시간 가져오기
-        if (eTime - pblink_sTime > BLINK_TIME) {
-            pBLINK = false; // 10초 경과 시 깜박임 종료
-            pacman.setMTL(pacman_mtl); // pacman의 재질을 기본값으로 복구
+        // pBLINK가 true이면 처음으로 pblink_sTime 설정
+        if (pblink_sTime == 0) {
+            pblink_sTime = glutGet(GLUT_ELAPSED_TIME); // 시작 시간 기록
+        }
+
+        // 현재 시간 가져오기
+        float currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+        // 깜박이는 상태 유지: 일정 시간 간격으로 material 교체
+        if (int(currentTime - pblink_sTime) % int(BLINK_TIME) < (BLINK_TIME / 2)) {
+            pacman.setMTL(frightened_blink_mtl); // 깜박임 material 적용
+            pacman.speedDouble();
         }
         else {
-            // 깜박임 상태 유지
-            float blinkPhase = fmod(pblink_sTime, 0.5f); // 0.5초마다 토글
-            if (blinkPhase < 0.25f) {
-                pacman.setMTL(frightened_blink_mtl); // 깜박임 재질 적용
-            }
-            else {
-                pacman.setMTL(pacman_mtl);         // 기본 재질로 복구
-            }
+            pacman.setMTL(pacman_mtl); // 원래 material 적용
+            pacman.speedUp();
+        }
+
+        // 총 BLINK_TIME이 지나면 pBLINK 종료
+        if (currentTime - pblink_sTime > PACMAN_BLINK_TIME) {
+            pBLINK = false;
+            pblink_sTime = 0; // 초기화
+            pacman.setMTL(pacman_mtl); // material 복구
+            pacman.speedUp();
         }
     }
-    /*
-    else {
-        // pBLINK 활성화 조건을 확인하고 설정
-        if (shouldActivateBlink()) { // 깜박임 조건 확인 (임의의 함수)
-            pBLINK = true;
-            pblink_sTime = getElapsedTime(); // 시작 시간 기록
-        }
-    }
-    */
+    
 
     if (pacman.getLife() == 0) {
     	windowState = END;
