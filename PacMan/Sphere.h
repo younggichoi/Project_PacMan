@@ -45,7 +45,9 @@ public:
     void slowDown();
     // SLOW_SPEED->MOVE_SPEED
     void speedUp();
-    
+    // Pacman item1 : speed double
+    void speedDouble();
+
     void move();
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
@@ -82,6 +84,7 @@ public:
     void setCollided(bool bCol);
 
     void setLife(int l);
+    void increaseLife();
     void decreaseLife();
     int getLife();
 

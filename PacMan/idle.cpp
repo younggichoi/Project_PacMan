@@ -31,8 +31,13 @@ const float BLINK_TIME = 100.f;
 float chase_scatter_sTime;
 float frightened_sTime;
 float blink_sTime;
+float pblink_sTime;
 // ghost가 점등하는 동안만 true로 설정
 bool BLINK = false;
+// pacman blink 지속시간
+const float PACMAN_BLINK_TIME = 10000.f;
+// pacman blink
+bool pBLINK = false;
 // large dot을 먹으면 true, FRIGHTENED_TIME이 지나면 false
 bool FRIGHTENED = false;
 
@@ -44,6 +49,9 @@ Material frightened_blink_mtl;
 
 // ghost material
 extern Material blinky_mtl, pinky_mtl, inky_mtl, clyde_mtl;
+
+// pacman material
+extern Material pacman_mtl;
 
 void updateDirectionOfPacMan() {
     int xIdx = pacman.getXIndex();
@@ -650,6 +658,36 @@ void idle_ingame()
             clyde.speedUp();
         }  
     }
+
+    
+    if (pBLINK) {
+        // pBLINK가 true이면 처음으로 pblink_sTime 설정
+        if (pblink_sTime == 0) {
+            pblink_sTime = glutGet(GLUT_ELAPSED_TIME); // 시작 시간 기록
+        }
+
+        // 현재 시간 가져오기
+        float currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+        // 깜박이는 상태 유지: 일정 시간 간격으로 material 교체
+        if (int(currentTime - pblink_sTime) % int(BLINK_TIME) < (BLINK_TIME / 2)) {
+            pacman.setMTL(frightened_blink_mtl); // 깜박임 material 적용
+            pacman.speedDouble();
+        }
+        else {
+            pacman.setMTL(pacman_mtl); // 원래 material 적용
+            pacman.speedUp();
+        }
+
+        // 총 BLINK_TIME이 지나면 pBLINK 종료
+        if (currentTime - pblink_sTime > PACMAN_BLINK_TIME) {
+            pBLINK = false;
+            pblink_sTime = 0; // 초기화
+            pacman.setMTL(pacman_mtl); // material 복구
+            pacman.speedUp();
+        }
+    }
+    
 
     if (pacman.getLife() == 0) {
     	windowState = END;
