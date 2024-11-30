@@ -54,9 +54,11 @@ void Map::createMap(const std::string& filename) {
         switch (param)
         {
         case '0':
-            blocks[col][row].setPassable(false);
-            dots[col][row].setEaten(true);
-            col++;
+            if (col >= 0 && col<NUM_COL && row >= 0 && row<NUM_ROW) {
+                blocks[col][row].setPassable(false);
+                dots[col][row].setEaten(true);
+                col++;
+            }
             break;
         case '1':
             blocks[col][row].setPassable(true);

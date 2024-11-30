@@ -13,7 +13,10 @@ extern Ghost blinky, pinky, inky, clyde;
 // from idle.cpp
 extern float frightened_sTime;
 extern  bool FRIGHTENED;
+extern Material pacman_mtl;
 extern Material frightened_mtl;
+extern Material frightened_blink_mtl;
+extern bool pBLINK;
 
 Material eaten_mtl;
 
@@ -38,18 +41,22 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
         }
         else {
             if (ghost.getState() != Ghost::EATEN) {
-                STOPFLAG = true;
-                if (pacman.getLife() != 1) {
+                if (!pBLINK && pacman.getLife() != 1) {
                     respone = true;
                     respone_sTime = glutGet(GLUT_ELAPSED_TIME);
                 }
-                else {
+                else if (!pBLINK) {
                     stageFail = true;
                     stageFail_sTime = glutGet(GLUT_ELAPSED_TIME);
                 }
+                else {
+                    ghost.setState(Ghost::EATEN);
+                    ghost.setMTL(eaten_mtl);
+                    ghost.speedUp();
+                    pacman.addScore(100);
+                }
             }
-            // pacman, ghost들 모두 각각 처음 위치로.
-            // TODO
+            
 
         }
     }
@@ -59,34 +66,52 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
     // dot 지우기
     CollisionDetector cd;
     if (cd(pacman, dot)) {
-        dot.setEaten(true);
-        if (dot.isLarge()) {
-            // 큰 dot 먹은 경우 ghost들 상태 frightened로 바꾸기 (eaten이 아니라면.)
-            if (blinky.getState() != Ghost::EATEN) {
-                blinky.setState(Ghost::FRIGHTENED);
-                blinky.setMTL(frightened_mtl);
-                blinky.slowDown();
+        // Item은 아니고 그냥 large/small dot인 경우
+        if (dot.getSize() < 6) {
+            dot.setEaten(true);
+            if (dot.isLarge()) {
+                // 큰 dot 먹은 경우 ghost들 상태 frightened로 바꾸기 (eaten이 아니라면.)
+                if (blinky.getState() != Ghost::EATEN) {
+                    blinky.setState(Ghost::FRIGHTENED);
+                    blinky.setMTL(frightened_mtl);
+                    blinky.slowDown();
+                }
+                if (pinky.getState() != Ghost::EATEN) {
+                    pinky.setState(Ghost::FRIGHTENED);
+                    pinky.setMTL(frightened_mtl);
+                    pinky.slowDown();
+                }
+                if (inky.getState() != Ghost::EATEN) {
+                    inky.setState(Ghost::FRIGHTENED);
+                    inky.setMTL(frightened_mtl);
+                    inky.slowDown();
+                }
+                if (clyde.getState() != Ghost::EATEN) {
+                    clyde.setState(Ghost::FRIGHTENED);
+                    clyde.setMTL(frightened_mtl);
+                    clyde.slowDown();
+                }
+                frightened_sTime = glutGet(GLUT_ELAPSED_TIME);
+                FRIGHTENED = true;
             }
-            if (pinky.getState() != Ghost::EATEN) {
-                pinky.setState(Ghost::FRIGHTENED);
-                pinky.setMTL(frightened_mtl);
-                pinky.slowDown();
-            }
-            if (inky.getState() != Ghost::EATEN) {
-                inky.setState(Ghost::FRIGHTENED);
-                inky.setMTL(frightened_mtl);
-                inky.slowDown();
-            }
-            if (clyde.getState() != Ghost::EATEN) {
-                clyde.setState(Ghost::FRIGHTENED);
-                clyde.setMTL(frightened_mtl);
-                clyde.slowDown();
-            }
-            frightened_sTime = glutGet(GLUT_ELAPSED_TIME);
-            FRIGHTENED = true;
+            // 점수올리기
+            pacman.addScore(10);
         }
-        // 점수올리기
-        pacman.addScore(10);
+        else {
+            dot.setEaten(true);
+            if (dot.getSize() == Dot::DOTSIZE::ITEM1) {
+                // pacman 블링킹, 스피드업, ghost와 collide시 ghost gets eaten
+                pBLINK = true;
+            }
+            else if(dot.getSize() == Dot::DOTSIZE::ITEM2){
+                // 점수 추가 + 이펙트
+                pacman.addScore(100);
+            }
+            else if (dot.getSize() == Dot::DOTSIZE::ITEM3) {
+                // 라이프 추가 + 이펙트
+                pacman.increaseLife();
+            }
+        }
     }
 }
 void CollisionHandler::operator()(Ghost& ghost, Map& map) {

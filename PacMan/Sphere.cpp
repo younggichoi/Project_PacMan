@@ -163,6 +163,26 @@ void Sphere::speedUp() {
     }
 }
 
+void Sphere::speedDouble() {
+    speed = 2 * MOVE_SPEED;
+    switch (currDirection) {
+    case LEFT:
+        velocity.setPos(-MOVE_SPEED, 0, 0);
+        break;
+    case RIGHT:
+        velocity.setPos(MOVE_SPEED, 0, 0);
+        break;
+    case UP:
+        velocity.setPos(0, MOVE_SPEED, 0);
+        break;
+    case DOWN:
+        velocity.setPos(0, -MOVE_SPEED, 0);
+        break;
+    default:
+        velocity.setPos(0, 0, 0);
+    }
+}
+
 void Sphere::move(){
     
     updateIndexPosition();
@@ -204,6 +224,9 @@ void PacMan::setCollided(bool bCol){
 }
 void PacMan::setLife(int l) {
     life = l;
+}
+void PacMan::increaseLife() {
+    life += 1;
 }
 void PacMan::decreaseLife() {
     life -= 1;
