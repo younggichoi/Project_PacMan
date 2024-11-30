@@ -24,3 +24,15 @@ float& Vector4f::operator[](const int i){
 float Vector4f::operator[](const int i) const{
     return pos[i];
 }
+
+bool Vector4f::operator==(const Vector4f& v) const {
+    if (pos[0] != v.pos[0]) return false;
+    if (pos[1] != v.pos[1]) return false;
+    if (pos[2] != v.pos[2]) return false;
+    if (pos[3] != v.pos[3]) return false;
+    return true;
+}
+
+bool Vector4f::operator!=(const Vector4f& v) const {
+    return !(*this == v);
+}

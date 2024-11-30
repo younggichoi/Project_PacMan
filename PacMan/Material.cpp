@@ -47,3 +47,12 @@ Vector4f Material::getSpecular() const{
 float Material::getShininess() const{
     return shininess;
 }
+
+bool Material::operator==(const Material& m) const {
+    if (emission != m.getEmission()) return false;
+    if (ambient != m.getAmbient()) return false;
+    if (diffuse != m.getDiffuse()) return false;
+    if (specular != m.getSpecular()) return false;
+    if (shininess != m.getShininess()) return false;
+    return true;
+}

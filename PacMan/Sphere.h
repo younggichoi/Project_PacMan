@@ -10,6 +10,7 @@
 #include "Shape3D.h"
 #include "constant.h"
 #include <iostream>
+#include <string>
 
 extern const float PACMAN_RADIUS;
 
@@ -39,7 +40,14 @@ public:
     DIRECTION getNextDirection() const;
     void updateDirection();
     void updateIndexPosition();
-    
+
+    // MOVE_SPEED->SLOW_SPEED
+    void slowDown();
+    // SLOW_SPEED->MOVE_SPEED
+    void speedUp();
+    // Pacman item1 : speed double
+    void speedDouble();
+
     void move();
     virtual void draw() const{
         GLfloat sh = mtl.getShininess();
@@ -62,6 +70,7 @@ protected:
     int idxPos[2];
     bool bInxPosUpdated;
     DIRECTION currDirection, nextDirection;
+    float speed = MOVE_SPEED;
 };
 
 /* Pacman class */
@@ -75,6 +84,7 @@ public:
     void setCollided(bool bCol);
 
     void setLife(int l);
+    void increaseLife();
     void decreaseLife();
     int getLife();
 
@@ -122,6 +132,8 @@ public:
 
     bool getEaten();
     void setEaten(bool v);
+
+    std::string stateToString() const;
 
 private:
     NAME name;

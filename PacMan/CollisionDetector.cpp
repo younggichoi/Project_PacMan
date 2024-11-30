@@ -70,13 +70,13 @@ bool CollisionDetector::operator()(const PacMan& pacman, const Ghost& ghost){
 }
 
 bool CollisionDetector::operator()(const PacMan& pacman, const Dot& dot) {
-    if ( (pacman.getRadius() + dot.getRadius()) < (pacman.getCenter() - dot.getCenter()).getAbs()) {
+    if (!dot.getEaten() && (pacman.getRadius() + dot.getRadius()) > (pacman.getCenter() - dot.getCenter()).getAbs()) {
         // if 반지름 합 < 둘 사이 거리
         // not yet
-        return false;
+        return true;
     }
     else {
-        return true;
+        return false;
     }
 }
 bool CollisionDetector::operator()(const Ghost& ghost, const Map& map) {

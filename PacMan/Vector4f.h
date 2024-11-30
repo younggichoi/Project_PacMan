@@ -17,6 +17,8 @@ public:
     float& operator[](const int i);
     float operator[](const int i) const;
 
+    bool operator==(const Vector4f& v) const;
+    bool operator!=(const Vector4f& v) const;
 
     float pos[4];
 };

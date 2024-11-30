@@ -68,7 +68,7 @@ void Sphere::updateIndexPosition(){
             else {
                 setIndexPosition(0, idxPos[1]);
                 this->setCenter(LEFT_BOUNDARY + idxPos[0] * BLOCK_SIZE, yFromIdx, 0.0f);
-                cout << xFromIdx << endl;
+                //cout << xFromIdx << endl;
             }
             bInxPosUpdated = true;
         }
@@ -123,21 +123,81 @@ void Sphere::updateIndexPosition(){
     }
 }
 
+void Sphere::slowDown() {
+    speed = SLOW_SPEED;
+    switch (currDirection) {
+    case LEFT:
+        velocity.setPos(-SLOW_SPEED, 0, 0);
+        break;
+    case RIGHT:
+        velocity.setPos(SLOW_SPEED, 0, 0);
+        break;
+    case UP:
+        velocity.setPos(0, SLOW_SPEED, 0);
+        break;
+    case DOWN:
+        velocity.setPos(0, -SLOW_SPEED, 0);
+        break;
+    default:
+        velocity.setPos(0, 0, 0);
+    }
+}
+
+void Sphere::speedUp() {
+    speed = MOVE_SPEED;
+    switch (currDirection) {
+    case LEFT:
+        velocity.setPos(-MOVE_SPEED, 0, 0);
+        break;
+    case RIGHT:
+        velocity.setPos(MOVE_SPEED, 0, 0);
+        break;
+    case UP:
+        velocity.setPos(0, MOVE_SPEED, 0);
+        break;
+    case DOWN:
+        velocity.setPos(0, -MOVE_SPEED, 0);
+        break;
+    default:
+        velocity.setPos(0, 0, 0);
+    }
+}
+
+void Sphere::speedDouble() {
+    speed = 2 * MOVE_SPEED;
+    switch (currDirection) {
+    case LEFT:
+        velocity.setPos(-MOVE_SPEED, 0, 0);
+        break;
+    case RIGHT:
+        velocity.setPos(MOVE_SPEED, 0, 0);
+        break;
+    case UP:
+        velocity.setPos(0, MOVE_SPEED, 0);
+        break;
+    case DOWN:
+        velocity.setPos(0, -MOVE_SPEED, 0);
+        break;
+    default:
+        velocity.setPos(0, 0, 0);
+    }
+}
+
 void Sphere::move(){
     
     updateIndexPosition();
     
     if (currDirection == LEFT){
-        this->setVelocity(-MOVE_SPEED, 0.0f, 0.0f);
+        this->setVelocity(-speed, 0.0f, 0.0f);
     }
     else if (currDirection == RIGHT){
-        this->setVelocity(MOVE_SPEED, 0.0f, 0.0f);
+        this->setVelocity(speed, 0.0f, 0.0f);
     }
     else if (currDirection == UP){
-        this->setVelocity(0.0f, MOVE_SPEED, 0.0f);
+        this->setVelocity(0.0f, speed, 0.0f);
     }
     else if (currDirection == DOWN){
-        this->setVelocity(0.0f, -MOVE_SPEED, 0.0f);
+        this->setVelocity(0.0f, -speed, 0.0f);
     }
     else{
         this->setVelocity(0.0f, 0.0f, 0.0f);
@@ -164,6 +224,9 @@ void PacMan::setCollided(bool bCol){
 }
 void PacMan::setLife(int l) {
     life = l;
+}
+void PacMan::increaseLife() {
+    life += 1;
 }
 void PacMan::decreaseLife() {
     life -= 1;
@@ -230,6 +293,19 @@ void Ghost::setEaten(bool v) {
     isEaten = v;
 }
 
+std::string Ghost::stateToString() const {
+    switch (state) {
+    case CHASE:
+        return "CHASE";
+    case SCATTER:
+        return "SCATTER";
+    case FRIGHTENED:
+        return "FRIGHTENED";
+    case EATEN:
+        return "EATEN";
+    }
+}
+
 //******************************************************//
 // Dot
 //******************************************************//
@@ -251,8 +327,10 @@ void Dot::setEaten(bool iE){
 void Dot::setDotsize(DOTSIZE ds)
 {
     dotSize = ds;
-    if (dotSize == LARGE || dotSize == SMALL)
+    if (dotSize == LARGE || dotSize == SMALL) {
         radius = PACMAN_RADIUS / dotSize;
+        color.setPos(1.f, 1.f, 1.f);
+    }
     else
     {
         radius = PACMAN_RADIUS / 2;

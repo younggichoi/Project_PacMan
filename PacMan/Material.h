@@ -22,6 +22,8 @@ public:
     Vector4f getDiffuse() const;
     Vector4f getSpecular() const;
     float getShininess() const;
+
+    bool operator==(const Material& m) const;
     
 private:
     Vector4f emission;
