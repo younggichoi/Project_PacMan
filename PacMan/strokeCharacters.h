@@ -10,6 +10,7 @@ public:
 	strokeCharacters(void* Font = GLUT_STROKE_ROMAN, std::string s = std::string{}, Vector3f color_v = Vector3f{}, float Scale = 0, float lnw = 0, float x = 0, float y = 0);
 	void setColor(float r, float g, float b);
 	void setColor(Vector3f& v);
+	void setlnWidth(const float lnw);
 	void setPos(float x, float y);
 	void displayStrokeCharacters() const;
 	float getTextWidth() const;

@@ -5,6 +5,7 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "specialkey.h"
+#include "motionCallback.h"
 #include "constant.h"
 #include "Map.h"
 #include "Sphere.h"
@@ -68,6 +69,7 @@ void initialize()
 	SAVE_BUTTON.centeredText();
 	GOTO_MAIN.centeredText();
 	HIGH_SCORE_TEXT.centeredText();
+	READY_TEXT.centeredText();
 	read_score(ranker_name, ranker_score);
 
 	// light setting
@@ -134,17 +136,20 @@ void initialize()
 	eaten_mtl.setShininess(16.0f);
 
 	// create stage1
-	maps[0].createMap("stage1_layout.txt");
+	//maps[0].createMap("stage1_layout.txt");
+	maps[0].createMap("stage1_layout_debug.txt");
 	maps[0].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[0].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 
 	// create stage2
-	maps[1].createMap("stage2_layout.txt");
+	//maps[1].createMap("stage2_layout.txt");
+	maps[1].createMap("stage2_layout_debug.txt");
 	maps[1].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[1].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 
 	// create stage3
-	maps[2].createMap("stage3_layout.txt");
+	//maps[2].createMap("stage3_layout.txt");
+	maps[2].createMap("stage3_layout_debug.txt");
 	maps[2].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[2].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 }
@@ -269,6 +274,24 @@ void idle()
 	}
 }
 
+void motionCallback(int x, int y) {
+	if (windowState == MAIN) {
+		motionCallback_main(x, y);
+	}
+	else if (windowState == INGAME) {
+		motionCallback_ingame(x, y);
+	}
+	else if (windowState == END) {
+		motionCallback_end(x, y);
+	}
+	else if (windowState == SAVE_SCORE) {
+		motionCallback_savescore(x, y);
+	}
+	else if (windowState == SCORE_BOARD) {
+		motionCallback_scoreboard(x, y);
+	}
+}
+
 int main(int argc, char** argv)
 {
 	// init GLUT and create Window
@@ -287,6 +310,7 @@ int main(int argc, char** argv)
 	glutSpecialFunc(specialkey);
 	glutMouseFunc(mouse);
 	glutIdleFunc(idle);
+	glutPassiveMotionFunc(motionCallback);
 
 	// enter GLUT event processing cycle
 	glutMainLoop();

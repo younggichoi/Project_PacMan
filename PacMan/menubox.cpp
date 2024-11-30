@@ -24,12 +24,33 @@ void menubox::setColor(Vector3f& v)
 	color = v;
 }
 
+void menubox::setTextColor(float r, float g, float b)
+{
+	name.setColor(r, g, b);
+}
+
+void menubox::setTextColor(Vector3f& v)
+{
+	name.setColor(v);
+}
+
+void menubox::setlnWidth(const float lnw)
+{
+	lnWidth = lnw;
+}
+
+void menubox::setTextlnWidth(const float lnw)
+{
+	name.setlnWidth(lnw);
+}
+
 void menubox::drawMenubox(bool fill) const
 {
 	if (fill)
 	{
 		glColor3f(0, 0, 0);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glLineWidth(lnWidth);
 		glBegin(GL_POLYGON);
 		for (int i = 0; i <= segment_num; i++)
 			glVertex2f(posx + width - radius + radius * sin(M_PI / (2 * segment_num) * i),
@@ -48,6 +69,7 @@ void menubox::drawMenubox(bool fill) const
 	}
 	glColor3f(color[0], color[1], color[2]);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(lnWidth);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i <= segment_num; i++)
 		glVertex2f(posx + width - radius + radius * sin(M_PI / (2 * segment_num) * i),

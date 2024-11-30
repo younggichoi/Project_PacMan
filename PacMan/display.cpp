@@ -18,7 +18,7 @@ const float	MENUBOX_MAIN_HEIGHT = WINDOW_HEIGHT / 9.0;
 const float MENUBOX_MAIN_WIDTH = WINDOW_WIDTH / 2.0;
 const float MENUBOX_MAIN_GAP = WINDOW_HEIGHT / 20.0;
 const float MENUBOX_MAIN_RADIUS = 20.0;
-const float MENU_MAIN_lnWIDTH = 1.0;
+//const float MENU_MAIN_lnWIDTH = 1.0; --> move to constant.h
 const float MENU_MAIN_SCALE = 40.0;
 const unsigned int MENUBOX_MAIN_SEGMENT_NUM = 10;
 
@@ -71,6 +71,21 @@ const float LIFE_LIFE_GAP = 10.f;
 const float LIFE_BOUNDARY_X = LEFT_BOUNDARY;
 Vector3f LIFE_COLOR{ 1.0f, 1.0f, 0.0f };
 
+// 고스트 draw 여부
+bool drawGhost = true;
+// pacman draw
+bool drawPacman = true;
+// map and text draw
+bool drawSurroundings = true;
+
+// ready text
+Vector3f READY_TEXT_COLOR{ 1.f, 1.f, 0.f };
+const float READY_TEXT_SCALE = 20.f;
+const float READY_TEXT_lnWIDTH = 2.f;
+const float READY_TEXT_HEIGHT_POS = WINDOW_HEIGHT * (-0.1);
+strokeCharacters READY_TEXT{ GLUT_STROKE_ROMAN, "READY!", READY_TEXT_COLOR, READY_TEXT_SCALE, READY_TEXT_lnWIDTH,
+0, READY_TEXT_HEIGHT_POS };
+
 /* --------------- constants in end display ------------------- */
 
 
@@ -92,7 +107,7 @@ const float MENUBOX_SAVESCORE_GAP = WINDOW_WIDTH * 0.15;
 const float MENUBOX_SAVESCORE_HEIGHT_POS = WINDOW_HEIGHT * (-0.1);
 const float MENUBOX_SAVESCORE_RADIUS = 20;
 const unsigned int MENUBOX_SAVESCORE_SEGMENT_NUM = 10;
-const float MENU_SAVESCORE_lnWIDTH = 1.0;
+// const float MENU_SAVESCORE_lnWIDTH = 1.0;
 const float MENU_SAVESCORE_SCALE = 30.0;
 
 // menubox initialization in save_score display
@@ -137,7 +152,7 @@ const float PLAYER_NAME_GAP = 10.0;
 const float SAVE_BUTTON_WIDTH = SAVING_WINDOW_WIDTH * 0.3;
 const float SAVE_BUTTON_HEIGHT = SAVING_WINDOW_HEIGHT * 0.15;
 const float SAVE_BUTTON_SCALE = 20.0;
-const float SAVE_BUTTON_lnWIDTH = 1.0;
+// const float SAVE_BUTTON_lnWIDTH = 1.0;
 const float SAVE_BUTTON_RADIUS = 10.0;
 const unsigned int SAVE_BUTTON_SEGMENT_NUM = 10;
 
@@ -193,7 +208,7 @@ const float MENUBOX_SCOREBOARD_RADIUS = 20.0;
 const unsigned int MENUBOX_SCOREBOARD_SEGMENT_NUM = 20;
 
 const float MENU_SCOREBOARD_SCALE = 30.0;
-const float MENU_SCOREBOARD_lnWIDTH = 1.2;
+// const float MENU_SCOREBOARD_lnWIDTH = 1.2;
 
 Vector3f GOTO_MAIN_COLOR{ 0.6, 1.0, 0.8 };
 strokeCharacters GOTO_MAIN_TEXT{ GLUT_STROKE_ROMAN, "Main", GOTO_MAIN_COLOR, MENU_SCOREBOARD_SCALE, MENU_SCOREBOARD_lnWIDTH };
@@ -237,41 +252,46 @@ void display_ingame()
 	glColor3f(0.0f, 1.0f, 0.0f);
 
 	// 2D
-	maps[stage_num].draw();
-	CURRENT_SCORE_TEXT.displayStrokeCharacters();
-	HIGH_SCORE_TEXT.displayStrokeCharacters();
-	CURRENT_LEVEL_TEXT.displayStrokeCharacters();
+	if (drawSurroundings) {
+		maps[stage_num].draw();
+		CURRENT_SCORE_TEXT.displayStrokeCharacters();
+		HIGH_SCORE_TEXT.displayStrokeCharacters();
+		CURRENT_LEVEL_TEXT.displayStrokeCharacters();
+		if (stageReady)	READY_TEXT.displayStrokeCharacters();
 
-	strokeCharacters CURRENT_SCORE{ GLUT_STROKE_ROMAN, std::to_string(pacman.getScore()),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
-	INGAME_SCORE_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
-	strokeCharacters HIGH_SCORE{ GLUT_STROKE_ROMAN, std::to_string(high_score),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
-	0, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
-	HIGH_SCORE.centeredText();
-	strokeCharacters CURRENT_LEVEL{ GLUT_STROKE_ROMAN, "00" + std::to_string(stage_num + 1),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
-	INGAME_LEVEL_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
-	
-	CURRENT_SCORE.displayStrokeCharacters();
-	HIGH_SCORE.displayStrokeCharacters();
-	CURRENT_LEVEL.displayStrokeCharacters();
+		strokeCharacters CURRENT_SCORE{ GLUT_STROKE_ROMAN, std::to_string(pacman.getScore()),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+		INGAME_SCORE_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
+		strokeCharacters HIGH_SCORE{ GLUT_STROKE_ROMAN, std::to_string(high_score),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+		0, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
+		HIGH_SCORE.centeredText();
+		strokeCharacters CURRENT_LEVEL{ GLUT_STROKE_ROMAN, "00" + std::to_string(stage_num + 1),INGAME_TEXT_COLOR, INGAME_TEXT_SCALE, INGAME_TEXT_lnWIDTH,
+		INGAME_LEVEL_WIDTH_POS, BOUNDARY_Y - INGAME_TEXT_HEIGHT_POS - INGAME_TEXT_SCALE - INGAME_TEXT_GAP };
 
-	Sphere life_print{ LIFE_RADIUS, 15, 15 };
-	for (int i = 0; i < pacman.getLife(); i++)
-	{
-		life_print.setCenter(LIFE_BOUNDARY_X + LIFE_RADIUS + (2 * LIFE_RADIUS + LIFE_LIFE_GAP) * i, BOTTOM_BOUNDARY - LIFE_MAP_GAP - LIFE_RADIUS, 0);
-		life_print.setColor(LIFE_COLOR);
-		life_print.draw();
+		CURRENT_SCORE.displayStrokeCharacters();
+		HIGH_SCORE.displayStrokeCharacters();
+		CURRENT_LEVEL.displayStrokeCharacters();
+
+		Sphere life_print{ LIFE_RADIUS, 15, 15 };
+		for (int i = 0; i < pacman.getLife(); i++)
+		{
+			life_print.setCenter(LIFE_BOUNDARY_X + LIFE_RADIUS + (2 * LIFE_RADIUS + LIFE_LIFE_GAP) * i, BOTTOM_BOUNDARY - LIFE_MAP_GAP - LIFE_RADIUS, 0);
+			life_print.setColor(LIFE_COLOR);
+			life_print.draw();
+		}
 	}
-	
 
 	// 3D
 	glEnable(GL_LIGHTING);
 	light.draw();
-
-	pacman.draw();
-	blinky.draw();
-	pinky.draw();
-	inky.draw();
-	clyde.draw();
+	
+	if (drawPacman)	pacman.draw();
+	
+	if (drawGhost) {
+		blinky.draw();
+		pinky.draw();
+		inky.draw();
+		clyde.draw();
+	}
 
 	glDisable(GL_LIGHTING);
 	

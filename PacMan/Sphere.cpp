@@ -327,8 +327,10 @@ void Dot::setEaten(bool iE){
 void Dot::setDotsize(DOTSIZE ds)
 {
     dotSize = ds;
-    if (dotSize == LARGE || dotSize == SMALL)
+    if (dotSize == LARGE || dotSize == SMALL) {
         radius = PACMAN_RADIUS / dotSize;
+        color.setPos(1.f, 1.f, 1.f);
+    }
     else
     {
         radius = PACMAN_RADIUS / 2;
