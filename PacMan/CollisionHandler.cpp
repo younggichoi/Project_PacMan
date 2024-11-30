@@ -37,10 +37,15 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
             ghost.setState(Ghost::EATEN);
             ghost.setMTL(eaten_mtl);
             ghost.speedUp();
+            ghost.speedDouble();
             pacman.addScore(100);
+            STOPFLAG = true;
+            eatGhost = true;
+            eatGhost_sTime = glutGet(GLUT_ELAPSED_TIME);
         }
         else {
             if (ghost.getState() != Ghost::EATEN) {
+                STOPFLAG = true;
                 if (!pBLINK && pacman.getLife() != 1) {
                     respone = true;
                     respone_sTime = glutGet(GLUT_ELAPSED_TIME);
@@ -53,7 +58,10 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
                     ghost.setState(Ghost::EATEN);
                     ghost.setMTL(eaten_mtl);
                     ghost.speedUp();
+                    ghost.speedDouble();
                     pacman.addScore(100);
+                    eatGhost = true;
+                    eatGhost_sTime = glutGet(GLUT_ELAPSED_TIME);
                 }
             }
             
@@ -93,12 +101,18 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
                 }
                 frightened_sTime = glutGet(GLUT_ELAPSED_TIME);
                 FRIGHTENED = true;
+                STOPFLAG = true;
+                getItem = true;
+                getItem_sTime = glutGet(GLUT_ELAPSED_TIME);
             }
             // 점수올리기
             pacman.addScore(10);
         }
         else {
             dot.setEaten(true);
+            STOPFLAG = true;
+            getItem = true;
+            getItem_sTime = glutGet(GLUT_ELAPSED_TIME);
             if (dot.getSize() == Dot::DOTSIZE::ITEM1) {
                 // pacman 블링킹, 스피드업, ghost와 collide시 ghost gets eaten
                 pBLINK = true;

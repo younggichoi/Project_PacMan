@@ -136,10 +136,13 @@ const unsigned int SAVING_WINDOW_SEGMENT_NUM = 15;
 
 // distance between enter_name_text and upper boundary of saving window
 const float ENTER_NAME_HEIGHT_POS = SAVING_WINDOW_HEIGHT * 0.1;
+const float NOT_EMPTY_HEIGHT_POS = SAVING_WINDOW_HEIGHT * 0.05;
 
 // dimension of enter_name_text
 const float ENTER_NAME_SCALE = 35.0;
 const float ENTER_NAME_lnWIDTH = 1.5;
+const float NOT_EMPTY_SCALE = 20.f;
+const float NOT_EMPTY_lnWIDTH = 1.f;
 
 // dimension of entered player's name
 const float PLAYER_NAME_SCALE = 30.0;
@@ -340,13 +343,17 @@ void display_savescore()
 			SAVING_WINDOW_WIDTH, SAVING_WINDOW_HEIGHT, SAVING_WINDOW_SEGMENT_NUM, SAVING_WINDOW_COLOR };
 		strokeCharacters ENTER_NAME{ GLUT_STROKE_ROMAN, "Enter your name.", SAVING_WINDOW_COLOR,
 			ENTER_NAME_SCALE, ENTER_NAME_lnWIDTH, 0, SAVING_WINDOW_HEIGHT_POS - ENTER_NAME_HEIGHT_POS };
+		strokeCharacters NOT_EMPTY{ GLUT_STROKE_ROMAN, "(Not allow empty name.)", SAVING_WINDOW_COLOR,
+		NOT_EMPTY_SCALE, NOT_EMPTY_lnWIDTH, 0, SAVING_WINDOW_HEIGHT_POS - ENTER_NAME_HEIGHT_POS - ENTER_NAME_SCALE - NOT_EMPTY_HEIGHT_POS };
 		strokeCharacters PLAYER_NAME{ GLUT_STROKE_ROMAN, player_name, SAVING_WINDOW_COLOR, PLAYER_NAME_SCALE, PLAYER_NAME_lnWIDTH,
 			0, ENTER_LINE_HEIGHT_POS + PLAYER_NAME_GAP + PLAYER_NAME_SCALE / strokeCharacters::FONT_BASEHEIGHT };
 		ENTER_NAME.centeredText();
+		NOT_EMPTY.centeredText();
 		PLAYER_NAME.centeredText();
 
 		SAVING_WINDOW.drawMenubox(true);
 		ENTER_NAME.displayStrokeCharacters();
+		NOT_EMPTY.displayStrokeCharacters();
 		PLAYER_NAME.displayStrokeCharacters();
 		glLineWidth(ENTER_LINE_WIDTH);
 		glBegin(GL_LINES);

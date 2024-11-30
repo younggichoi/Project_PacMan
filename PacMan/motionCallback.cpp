@@ -79,7 +79,7 @@ void motionCallback_savescore(int x, int y) {
 		SAVE_NO_MENU.setTextlnWidth(MENU_SAVESCORE_lnWIDTH);
 	}
 
-	if (SAVE_BUTTON.checkMousePtr(x, y)) {
+	if (SAVE_BUTTON.checkMousePtr(x, y) && player_name != "") {
 		SAVE_BUTTON.setColor(POINTED_COLOR);
 		SAVE_BUTTON.setlnWidth(POINTED_lnWIDTH);
 		SAVE_BUTTON.setTextlnWidth(POINTED_lnWIDTH);

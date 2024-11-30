@@ -63,11 +63,15 @@ extern bool drawSurroundings;
 extern bool stageReady;
 extern bool respone;
 extern bool stageFail;
+extern bool getItem;
+extern bool eatGhost;
 
 extern bool STOPFLAG;
 extern float stageReady_sTime;
 extern float respone_sTime;
 extern float stageFail_sTime;
+extern float getItem_sTime;
+extern float eatGhost_sTime;
 
 // motionCallback.cpp에서 사용하는 const variable
 inline const float MENU_MAIN_lnWIDTH = 1.0;

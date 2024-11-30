@@ -64,6 +64,14 @@ bool respone = false;
 float respone_sTime;
 const float respone_Time1 = 1500.f;
 const float respone_Time2 = 1500.f;
+// item varaibles
+bool getItem = false;
+float getItem_sTime;
+const float getItem_Time = 1500.f;
+// eatGhost varaibles
+bool eatGhost = false;
+float eatGhost_sTime;
+const float eatGhost_Time = 1500.f;
 // frightened material
 Material frightened_mtl;
 
@@ -442,18 +450,22 @@ void updateGhost(Ghost& ghost) {
         if (ghost.getName() == Ghost::BLINKY && ghost.getXIndex() == 1 && ghost.getYIndex() == 2) {
             ghost.setState(ghost_state);
             ghost.setMTL(blinky_mtl);
+            ghost.speedUp();
         }
         if (ghost.getName() == Ghost::PINKY && ghost.getXIndex() == 1 && ghost.getYIndex() == 27) {
             ghost.setState(ghost_state);
             ghost.setMTL(pinky_mtl);
+            ghost.speedUp();
         }
         if (ghost.getName() == Ghost::INKY && ghost.getXIndex() == 26 && ghost.getYIndex() == 27) {
             ghost.setState(ghost_state);
             ghost.setMTL(inky_mtl);
+            ghost.speedUp();
         }
         if (ghost.getName() == Ghost::CLYDE && ghost.getXIndex() == 26 && ghost.getYIndex() == 2) {
             ghost.setState(ghost_state);
             ghost.setMTL(clyde_mtl);
+            ghost.speedUp();
         }
     }
 }
@@ -542,7 +554,6 @@ void ingameInit() {
     maps[1].createMap("stage1_layout_debug.txt");
     //maps[2].createMap("stage3_layout.txt");
     maps[2].createMap("stage1_layout_debug.txt");
-    STOPFLAG = false;
     stageReady = false;
     currStageClear = false;
     allStageClear = false;
@@ -552,6 +563,8 @@ void ingameInit() {
     drawGhost = true;
     FRIGHTENED = false;
     BLINK = false;
+    pBLINK = false;
+    eatGhost = false;
 
     pacman.setCenter(0.0f, 0.0f, 0.0f);
     pacman.setIndexPosition(14, 14);
@@ -587,6 +600,8 @@ void ingameInit() {
     pinky.speedUp();
     inky.speedUp();
     clyde.speedUp();
+    pacman.speedUp();
+    pacman.setMTL(pacman_mtl);
 }
 
 void idle_main()
@@ -667,8 +682,12 @@ void idle_ingame()
         pinky.speedUp();
         inky.speedUp();
         clyde.speedUp();
+        pacman.speedUp();
+        pacman.setMTL(pacman_mtl);
         FRIGHTENED = false;
         BLINK = false;
+        pBLINK = false;
+        eatGhost = false;
 
         deleteItem(maps[stage_num]);
         createItem(maps[stage_num]);
@@ -758,8 +777,16 @@ void idle_ingame()
         pinky.speedUp();
         inky.speedUp();
         clyde.speedUp();
+        pacman.speedUp();
+        pacman.setMTL(pacman_mtl);
+
+        deleteItem(maps[stage_num]);
+        createItem(maps[stage_num]);
+
         FRIGHTENED = false;
         BLINK = false;
+        pBLINK = false;
+        eatGhost = false;
 
         respone = false;
         drawPacman = true;
@@ -772,6 +799,20 @@ void idle_ingame()
     if (stageReady && eTime - stageReady_sTime > stageReady_Time) {
         stageReady = false;
         STOPFLAG = false;
+    }
+
+    // item 획득시 동작
+    if (getItem && eTime - getItem_sTime > getItem_Time) {
+        if (!currStageClear && !allStageClear && !stageFail && !stageReady && !respone && !eatGhost)
+            STOPFLAG = false;
+        getItem = false;
+    }
+
+    // ghost eat 동작
+    if (eatGhost && eTime - eatGhost_sTime > eatGhost_Time) {
+        if (!currStageClear && !allStageClear && !stageFail && !stageReady && !respone && !getItem)
+            STOPFLAG = false;
+        eatGhost = false;
     }
 
     // ghost ai
@@ -911,7 +952,7 @@ void idle_ingame()
 
     glutPostRedisplay();
 
-    if (pBLINK) {
+    if (!STOPFLAG && pBLINK) {
         // pBLINK가 true이면 처음으로 pblink_sTime 설정
         if (pblink_sTime == 0) {
             pblink_sTime = glutGet(GLUT_ELAPSED_TIME); // 시작 시간 기록
