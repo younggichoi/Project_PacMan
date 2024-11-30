@@ -17,6 +17,11 @@ void strokeCharacters::setColor(Vector3f& v)
 	color = v;
 }
 
+void strokeCharacters::setlnWidth(const float lnw)
+{
+	lnWidth = lnw;
+}
+
 void strokeCharacters::setPos(float x, float y)
 {
 	posx = x;

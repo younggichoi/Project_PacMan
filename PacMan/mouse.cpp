@@ -77,6 +77,9 @@ void mouse_main(int button, int state, int x, int y)
 			// ghost를 모두 chase로 설정
 			deleteItem(maps[stage_num]);
 			createItem(maps[stage_num]);
+			STOPFLAG = true;
+			stageReady = true;
+			stageReady_sTime = glutGet(GLUT_ELAPSED_TIME);
 		}
 			
 		if (SCOREBOARD_MENU.checkMousePtr(x, y))

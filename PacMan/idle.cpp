@@ -12,7 +12,7 @@ extern Ghost blinky, pinky, inky, clyde;
 
 extern std::array<Map, STAGE_NUM> maps;
 
-const int FPS = 60;
+const int FPS = 100;
 int sTime = 0;
 int eTime = 0;
 
@@ -35,7 +35,30 @@ float blink_sTime;
 bool BLINK = false;
 // large dot을 먹으면 true, FRIGHTENED_TIME이 지나면 false
 bool FRIGHTENED = false;
-
+// 일시적으로 행동 정지
+bool STOPFLAG = false;
+// 스테이지 클리어시 사용하는 sTime, time constants
+bool currStageClear = false;
+bool allStageClear = false;
+float stageClear_sTime;
+const float stageClear_Time1 = 1500.f;
+const float stageClear_Time2 = 1500.f;
+const float stageClear_Time3 = 1500.f;
+// 스테이지 실패시 사용하는 sTime, time constants
+bool stageFail = false;
+float stageFail_sTime;
+const float stageFail_Time1 = 1500.f;
+const float stageFail_Time2 = 1500.f;
+const float stageFail_Time3 = 1500.f;
+// ready text 출력
+bool stageReady = false;
+float stageReady_sTime;
+const float stageReady_Time = 2000.f;
+// respone variables
+bool respone = false;
+float respone_sTime;
+const float respone_Time1 = 1500.f;
+const float respone_Time2 = 1500.f;
 // frightened material
 Material frightened_mtl;
 
@@ -82,10 +105,10 @@ void updateDirectionOfPacMan() {
         bx = xIdx;
         by = 0;
     }
-    const Block& lBlock = maps[0].getBlock(lx, ly);    // left
-    const Block& rBlock = maps[0].getBlock(rx, ry);    // right
-    const Block& tBlock = maps[0].getBlock(tx, ty);    // top
-    const Block& bBlock = maps[0].getBlock(bx, by);    // bottom
+    const Block& lBlock = maps[stage_num].getBlock(lx, ly);    // left
+    const Block& rBlock = maps[stage_num].getBlock(rx, ry);    // right
+    const Block& tBlock = maps[stage_num].getBlock(tx, ty);    // top
+    const Block& bBlock = maps[stage_num].getBlock(bx, by);    // bottom
 
     // update direction
     Sphere::DIRECTION nextDir = pacman.getNextDirection();
@@ -137,10 +160,10 @@ void updateDirectionOfGhost(Ghost& ghost, int targetX, int targetY) {
         bIdx[1] = 0;
     }
 
-    const Block& lBlock = maps[0].getBlock(lIdx[0], lIdx[1]);// left
-    const Block& tBlock = maps[0].getBlock(tIdx[0], tIdx[1]);// top
-    const Block& rBlock = maps[0].getBlock(rIdx[0], rIdx[1]);// right
-    const Block& bBlock = maps[0].getBlock(bIdx[0], bIdx[1]);// bottom
+    const Block& lBlock = maps[stage_num].getBlock(lIdx[0], lIdx[1]);// left
+    const Block& tBlock = maps[stage_num].getBlock(tIdx[0], tIdx[1]);// top
+    const Block& rBlock = maps[stage_num].getBlock(rIdx[0], rIdx[1]);// right
+    const Block& bBlock = maps[stage_num].getBlock(bIdx[0], bIdx[1]);// bottom
 
     Sphere::DIRECTION currDir = ghost.getCurrentDirection();
     Sphere::DIRECTION newDir = Sphere::DIRECTION::NONE;
@@ -192,7 +215,7 @@ void updatePacMan() {
     bool bIdxPosUpdated = pacman.isIndexPositionUpdated();
     if (bNoDir || bIdxPosUpdated) {
         updateDirectionOfPacMan();
-        colHandler(pacman, maps[0]);
+        colHandler(pacman, maps[stage_num]);
     }
     pacman.move();
 }
@@ -504,6 +527,60 @@ void deleteItem(Map& map)
     }
 }
 
+void ingameInit() {
+    //maps[0].createMap("stage1_layout.txt");
+    maps[0].createMap("stage1_layout_debug.txt");
+    //maps[1].createMap("stage2_layout.txt");
+    maps[1].createMap("stage1_layout_debug.txt");
+    //maps[2].createMap("stage3_layout.txt");
+    maps[2].createMap("stage1_layout_debug.txt");
+    STOPFLAG = false;
+    stageReady = false;
+    currStageClear = false;
+    allStageClear = false;
+    respone = false;
+    drawSurroundings = true;
+    drawPacman = true;
+    drawGhost = true;
+    FRIGHTENED = false;
+    BLINK = false;
+
+    pacman.setCenter(0.0f, 0.0f, 0.0f);
+    pacman.setIndexPosition(14, 14);
+    blinky.setCenter(-260.0f, 240.0f, 0.0f);
+    blinky.setIndexPosition(1, 2);
+    pinky.setCenter(-260.0f, -240.0f, 0.0f);
+    pinky.setIndexPosition(1, 27);
+    inky.setCenter(240.0f, -240.0f, 0.0f);
+    inky.setIndexPosition(26, 27);
+    clyde.setCenter(240.0f, 240.0f, 0.0f);
+    clyde.setIndexPosition(26, 2);
+    // 리스폰 시 시작 위치가 어긋나는 버그 -> currdir, nextdir를 NONE으로 설정
+    blinky.setCurrentDirection(Sphere::NONE);
+    pinky.setCurrentDirection(Sphere::NONE);
+    inky.setCurrentDirection(Sphere::NONE);
+    clyde.setCurrentDirection(Sphere::NONE);
+    pacman.setCurrentDirection(Sphere::NONE);
+    blinky.setNextDirection(Sphere::NONE);
+    pinky.setNextDirection(Sphere::NONE);
+    inky.setNextDirection(Sphere::NONE);
+    clyde.setNextDirection(Sphere::NONE);
+    pacman.setNextDirection(Sphere::NONE);
+    // 리스폰시 state를 모두 normal로
+    blinky.setState(ghost_state);
+    pinky.setState(ghost_state);
+    inky.setState(ghost_state);
+    clyde.setState(ghost_state);
+    blinky.setMTL(blinky_mtl);
+    pinky.setMTL(pinky_mtl);
+    inky.setMTL(inky_mtl);
+    clyde.setMTL(clyde_mtl);
+    blinky.speedUp();
+    pinky.speedUp();
+    inky.speedUp();
+    clyde.speedUp();
+}
+
 void idle_main()
 {
 	// TO DO
@@ -512,11 +589,185 @@ void idle_main()
 
 void idle_ingame()
 {
-	// TO DO
+    // TO DO
     float spf = 1000.0f / FPS;
     eTime = glutGet(GLUT_ELAPSED_TIME);
 
-    if (eTime - sTime > spf) {
+    if (!currStageClear && !allStageClear && checkClear(maps[stage_num])) {  // dot이 다 사라졌는지 확인
+        if (stage_num < 2) {
+            currStageClear = true;
+        }
+        else {
+            allStageClear = true;
+        }
+        STOPFLAG = true;
+        stageClear_sTime = eTime;
+    }
+
+    // 현재 스테이지 클리어시 동작
+    if (currStageClear && eTime - stageClear_sTime > stageClear_Time1)
+        drawGhost = false;
+
+    if (currStageClear && eTime - stageClear_sTime > stageClear_Time1 + stageClear_Time2)
+    {
+        drawPacman = false;
+        drawSurroundings = false;
+    }
+
+    if (currStageClear && eTime - stageClear_sTime > stageClear_Time1 + stageClear_Time2 + stageClear_Time3) {
+        stage_num++;
+        currStageClear = false;
+        drawGhost = true;
+        drawPacman = true;
+        drawSurroundings = true;
+        // STOPFLAG를 풀지 않고 stageReady상태로 진입
+        stageReady = true;
+        stageReady_sTime = eTime;
+
+        // pacman, ghost들 모두 각각 처음 위치로.
+        pacman.setCenter(0.0f, 0.0f, 0.0f);
+        pacman.setIndexPosition(14, 14);
+        blinky.setCenter(-260.0f, 240.0f, 0.0f);
+        blinky.setIndexPosition(1, 2);
+        pinky.setCenter(-260.0f, -240.0f, 0.0f);
+        pinky.setIndexPosition(1, 27);
+        inky.setCenter(240.0f, -240.0f, 0.0f);
+        inky.setIndexPosition(26, 27);
+        clyde.setCenter(240.0f, 240.0f, 0.0f);
+        clyde.setIndexPosition(26, 2);
+        // 리스폰 시 시작 위치가 어긋나는 버그 -> currdir, nextdir를 NONE으로 설정
+        blinky.setCurrentDirection(Sphere::NONE);
+        pinky.setCurrentDirection(Sphere::NONE);
+        inky.setCurrentDirection(Sphere::NONE);
+        clyde.setCurrentDirection(Sphere::NONE);
+        pacman.setCurrentDirection(Sphere::NONE);
+        blinky.setNextDirection(Sphere::NONE);
+        pinky.setNextDirection(Sphere::NONE);
+        inky.setNextDirection(Sphere::NONE);
+        clyde.setNextDirection(Sphere::NONE);
+        pacman.setNextDirection(Sphere::NONE);
+        // 리스폰시 state를 모두 normal로
+        blinky.setState(ghost_state);
+        pinky.setState(ghost_state);
+        inky.setState(ghost_state);
+        clyde.setState(ghost_state);
+        blinky.setMTL(blinky_mtl);
+        pinky.setMTL(pinky_mtl);
+        inky.setMTL(inky_mtl);
+        clyde.setMTL(clyde_mtl);
+        blinky.speedUp();
+        pinky.speedUp();
+        inky.speedUp();
+        clyde.speedUp();
+        FRIGHTENED = false;
+        BLINK = false;
+
+        deleteItem(maps[stage_num]);
+        createItem(maps[stage_num]);
+    }
+
+    // 모든 스테이지 클리어시 동작
+    if (allStageClear && eTime - stageClear_sTime > stageClear_Time1)
+        drawGhost = false;
+
+    if (allStageClear && eTime - stageClear_sTime > stageClear_Time1 + stageClear_Time2)
+    {
+        drawPacman = false;
+        drawSurroundings = false;
+    }
+
+    if (allStageClear && eTime - stageClear_sTime > stageClear_Time1 + stageClear_Time2 + stageClear_Time3) {
+        stage_num = 0;
+        allStageClear = false;
+        STOPFLAG = false;
+        drawGhost = true;
+        drawPacman = true;
+        drawSurroundings = true;
+        windowState = SAVE_SCORE;
+        ingameInit();
+    }
+
+    // 스테이지 실패시 동작
+    if (stageFail && eTime - stageFail_sTime > stageFail_Time1)
+        drawPacman = false;
+
+    if (stageFail && eTime - stageFail_sTime > stageFail_Time1 + stageFail_Time2) {
+        drawGhost = false;
+        drawSurroundings = false;
+    }
+
+    if (stageFail && eTime - stageFail_sTime > stageFail_Time1 + stageFail_Time2 + stageFail_Time3) {
+        stage_num = 0;
+        STOPFLAG = false;
+        stageFail = false;
+        drawPacman = true;
+        drawGhost = true;
+        drawSurroundings = true;
+        windowState = SAVE_SCORE;
+        ingameInit();
+    }
+
+    // respone시 동작
+    if (respone && eTime - respone_sTime > respone_Time1) {
+        drawPacman = false;
+        drawGhost = false;
+    }
+
+    if (respone && eTime - respone_sTime > respone_Time1 + respone_Time2) {
+        pacman.decreaseLife();
+        // pacman, ghost들 모두 각각 처음 위치로.
+        pacman.setCenter(0.0f, 0.0f, 0.0f);
+        pacman.setIndexPosition(14, 14);
+        blinky.setCenter(-260.0f, 240.0f, 0.0f);
+        blinky.setIndexPosition(1, 2);
+        pinky.setCenter(-260.0f, -240.0f, 0.0f);
+        pinky.setIndexPosition(1, 27);
+        inky.setCenter(240.0f, -240.0f, 0.0f);
+        inky.setIndexPosition(26, 27);
+        clyde.setCenter(240.0f, 240.0f, 0.0f);
+        clyde.setIndexPosition(26, 2);
+        // 리스폰 시 시작 위치가 어긋나는 버그 -> currdir, nextdir를 NONE으로 설정
+        blinky.setCurrentDirection(Sphere::NONE);
+        pinky.setCurrentDirection(Sphere::NONE);
+        inky.setCurrentDirection(Sphere::NONE);
+        clyde.setCurrentDirection(Sphere::NONE);
+        pacman.setCurrentDirection(Sphere::NONE);
+        blinky.setNextDirection(Sphere::NONE);
+        pinky.setNextDirection(Sphere::NONE);
+        inky.setNextDirection(Sphere::NONE);
+        clyde.setNextDirection(Sphere::NONE);
+        pacman.setNextDirection(Sphere::NONE);
+        // 리스폰시 state를 모두 normal로
+        blinky.setState(ghost_state);
+        pinky.setState(ghost_state);
+        inky.setState(ghost_state);
+        clyde.setState(ghost_state);
+        blinky.setMTL(blinky_mtl);
+        pinky.setMTL(pinky_mtl);
+        inky.setMTL(inky_mtl);
+        clyde.setMTL(clyde_mtl);
+        blinky.speedUp();
+        pinky.speedUp();
+        inky.speedUp();
+        clyde.speedUp();
+        FRIGHTENED = false;
+        BLINK = false;
+
+        respone = false;
+        drawPacman = true;
+        drawGhost = true;
+        // STOPFLAG를 풀지 않고 ready로 진입
+        stageReady = true;
+        stageReady_sTime = glutGet(GLUT_ELAPSED_TIME);
+    }
+    // 스테이지 시작 시 ready 출력
+    if (stageReady && eTime - stageReady_sTime > stageReady_Time) {
+        stageReady = false;
+        STOPFLAG = false;
+    }
+
+    // ghost ai
+    if (!STOPFLAG && eTime - sTime > spf) {
         updatePacMan();
         updateGhost(blinky);
         colHandler(pacman, blinky);
@@ -553,13 +804,12 @@ void idle_ingame()
         }
 
         sTime = eTime;
-        glutPostRedisplay();
         // for debugging
         std::cout << "Blinky: " << blinky.stateToString() << " Pinky: " << pinky.stateToString()
             << " Inky: " << inky.stateToString() << " Clyde: " << clyde.stateToString() << std::endl;
     }
     
-    if (eTime - chase_scatter_sTime > CHASE_SCATTER_TIME)
+    if (!STOPFLAG && eTime - chase_scatter_sTime > CHASE_SCATTER_TIME)
     {
         if (ghost_state == Ghost::STATE::CHASE)
         {
@@ -590,13 +840,13 @@ void idle_ingame()
         chase_scatter_sTime = eTime;
     }
 
-    if (FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME - FRIGHTENED_NORMAL_TIME && !BLINK) {
+    if (!STOPFLAG && FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME - FRIGHTENED_NORMAL_TIME && !BLINK) {
         // ghost 점멸 상태 진입
         BLINK = true;
         blink_sTime = glutGet(GLUT_ELAPSED_TIME);
     }
 
-    if (BLINK && eTime - blink_sTime > BLINK_TIME) {
+    if (!STOPFLAG && BLINK && eTime - blink_sTime > BLINK_TIME) {
         // ghost 점멸
         if (blinky.getState() == Ghost::FRIGHTENED) {
             if (blinky.getMTL() == frightened_mtl)
@@ -625,7 +875,7 @@ void idle_ingame()
         blink_sTime = eTime;
     }
 
-    if (FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME) {
+    if (!STOPFLAG && FRIGHTENED && eTime - frightened_sTime > FRIGHTENED_TIME) {
         // frightened state 종료
         FRIGHTENED = false;
         BLINK = false;
@@ -641,7 +891,7 @@ void idle_ingame()
         }
         if (inky.getState() == Ghost::FRIGHTENED) {
             inky.setState(ghost_state);
-            inky.setMTL(pinky_mtl);
+            inky.setMTL(inky_mtl);
             inky.speedUp();
         }
         if (clyde.getState() == Ghost::FRIGHTENED) {
@@ -650,23 +900,23 @@ void idle_ingame()
             clyde.speedUp();
         }  
     }
-
-    if (pacman.getLife() == 0) {
-    	windowState = END;
-    }
+    glutPostRedisplay();
 }
 
 void idle_end()
 {
 	// TO DO
+    glutPostRedisplay();
 }
 
 void idle_savescore()
 {
 	// TO DO
+    glutPostRedisplay();
 }
 
 void idle_scoreboard()
 {
 	// TO DO
+    glutPostRedisplay();
 }

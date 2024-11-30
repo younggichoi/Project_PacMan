@@ -17,3 +17,5 @@ void updateDirectionOfPacMan();
 void updateDirectionOfGhost(Ghost& ghost, int targetX, int targetY);
 void updatePacMan();
 void updateGhost(Ghost& ghost);
+
+void ingameInit();

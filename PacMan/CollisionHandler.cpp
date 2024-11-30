@@ -38,24 +38,15 @@ void CollisionHandler::operator()(PacMan& pacman, Ghost& ghost){
         }
         else {
             if (ghost.getState() != Ghost::EATEN) {
-                pacman.decreaseLife();
-                // pacman, ghost들 모두 각각 처음 위치로.
-                pacman.setCenter(0.0f, 0.0f, 0.0f);
-                pacman.setIndexPosition(14, 14);
-                blinky.setCenter(-260.0f, 240.0f, 0.0f);
-                blinky.setIndexPosition(1, 2);
-                pinky.setCenter(-260.0f, -240.0f, 0.0f);
-                pinky.setIndexPosition(1, 27);
-                inky.setCenter(240.0f, -240.0f, 0.0f);
-                inky.setIndexPosition(26, 27);
-                clyde.setCenter(240.0f, 240.0f, 0.0f);
-                clyde.setIndexPosition(26, 2);
-                // 리스폰 시 시작 위치가 어긋나는 버그 -> currdir를 NONE으로 설정
-                blinky.setCurrentDirection(Sphere::NONE);
-                pinky.setCurrentDirection(Sphere::NONE);
-                inky.setCurrentDirection(Sphere::NONE);
-                clyde.setCurrentDirection(Sphere::NONE);
-                pacman.setCurrentDirection(Sphere::NONE);
+                STOPFLAG = true;
+                if (pacman.getLife() != 1) {
+                    respone = true;
+                    respone_sTime = glutGet(GLUT_ELAPSED_TIME);
+                }
+                else {
+                    stageFail = true;
+                    stageFail_sTime = glutGet(GLUT_ELAPSED_TIME);
+                }
             }
             // pacman, ghost들 모두 각각 처음 위치로.
             // TODO

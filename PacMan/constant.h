@@ -57,6 +57,26 @@ extern int stage_num;
 
 extern int high_score;
 
+extern bool drawGhost;
+extern bool drawPacman;
+extern bool drawSurroundings;
+extern bool stageReady;
+extern bool respone;
+extern bool stageFail;
+
+extern bool STOPFLAG;
+extern float stageReady_sTime;
+extern float respone_sTime;
+extern float stageFail_sTime;
+
+// motionCallback.cpp에서 사용하는 const variable
+inline const float MENU_MAIN_lnWIDTH = 1.0;
+inline const float MENU_SAVESCORE_lnWIDTH = 1.0;
+inline const float SAVE_BUTTON_lnWIDTH = 1.0;
+inline const float MENU_SCOREBOARD_lnWIDTH = 1.2;
+
+extern strokeCharacters READY_TEXT;
+
 // declaration is at main.cpp
 extern std::list<std::string> ranker_name;
 extern std::list<int> ranker_score;
