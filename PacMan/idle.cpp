@@ -12,7 +12,7 @@ extern Ghost blinky, pinky, inky, clyde;
 
 extern std::array<Map, STAGE_NUM> maps;
 
-const int FPS = 100;
+const int FPS = 135;
 int sTime = 0;
 int eTime = 0;
 
@@ -58,7 +58,7 @@ const float stageFail_Time3 = 1500.f;
 // ready text 출력
 bool stageReady = false;
 float stageReady_sTime;
-const float stageReady_Time = 2000.f;
+const float stageReady_Time = 1500.f;
 // respone variables
 bool respone = false;
 float respone_sTime;
@@ -67,11 +67,11 @@ const float respone_Time2 = 1500.f;
 // item varaibles
 bool getItem = false;
 float getItem_sTime;
-const float getItem_Time = 1500.f;
+const float getItem_Time = 500.f;
 // eatGhost varaibles
 bool eatGhost = false;
 float eatGhost_sTime;
-const float eatGhost_Time = 1500.f;
+const float eatGhost_Time = 500.f;
 // frightened material
 Material frightened_mtl;
 
