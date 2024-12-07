@@ -851,7 +851,7 @@ void idle_ingame()
 
         sTime = eTime;
         // for debugging
-        std::cout << "Blinky: " << blinky.stateToString() << " Pinky: " << pinky.stateToString()
+        //std::cout << "Blinky: " << blinky.stateToString() << " Pinky: " << pinky.stateToString()
             << " Inky: " << inky.stateToString() << " Clyde: " << clyde.stateToString() << std::endl;
     }
     
