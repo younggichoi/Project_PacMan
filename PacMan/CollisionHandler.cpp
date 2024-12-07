@@ -17,6 +17,7 @@ extern Material pacman_mtl;
 extern Material frightened_mtl;
 extern Material frightened_blink_mtl;
 extern bool pBLINK;
+extern bool BLINK;
 
 Material eaten_mtl;
 
@@ -101,6 +102,7 @@ void CollisionHandler::operator()(PacMan& pacman, Dot& dot) {
                 }
                 frightened_sTime = glutGet(GLUT_ELAPSED_TIME);
                 FRIGHTENED = true;
+                BLINK = false;
                 STOPFLAG = true;
                 getItem = true;
                 getItem_sTime = glutGet(GLUT_ELAPSED_TIME);

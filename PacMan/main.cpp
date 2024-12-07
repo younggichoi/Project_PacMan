@@ -136,20 +136,17 @@ void initialize()
 	eaten_mtl.setShininess(16.0f);
 
 	// create stage1
-	//maps[0].createMap("stage1_layout.txt");
-	maps[0].createMap("stage1_layout_debug.txt");
+	maps[0].createMap("stage1_layout.txt");
 	maps[0].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[0].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 
 	// create stage2
-	//maps[1].createMap("stage2_layout.txt");
-	maps[1].createMap("stage2_layout_debug.txt");
+	maps[1].createMap("stage2_layout.txt");
 	maps[1].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[1].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 
 	// create stage3
-	//maps[2].createMap("stage3_layout.txt");
-	maps[2].createMap("stage3_layout_debug.txt");
+	maps[2].createMap("stage3_layout.txt");
 	maps[2].setBlockColor(BLOCK_COLOR_R, BLOCK_COLOR_G, BLOCK_COLOR_B);
 	maps[2].setDotColor(DOT_COLOR_R, DOT_COLOR_G, DOT_COLOR_B);
 }

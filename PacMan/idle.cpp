@@ -548,12 +548,9 @@ void deleteItem(Map& map)
 }
 
 void ingameInit() {
-    //maps[0].createMap("stage1_layout.txt");
-    maps[0].createMap("stage1_layout_debug.txt");
-    //maps[1].createMap("stage2_layout.txt");
-    maps[1].createMap("stage1_layout_debug.txt");
-    //maps[2].createMap("stage3_layout.txt");
-    maps[2].createMap("stage1_layout_debug.txt");
+    maps[0].createMap("stage1_layout.txt");
+    maps[1].createMap("stage2_layout.txt");
+    maps[2].createMap("stage3_layout.txt");
     stageReady = false;
     currStageClear = false;
     allStageClear = false;
