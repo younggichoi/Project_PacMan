@@ -21,11 +21,11 @@ CollisionHandler colHandler;
 Ghost::STATE ghost_state = Ghost::STATE::CHASE;
 
 // chase, scatter 지속시간
-const float CHASE_SCATTER_TIME = 15000.f;
+const float CHASE_SCATTER_TIME = 8000.f;
 // frightened state 지속시간
-const float FRIGHTENED_TIME = 20000.f;
+const float FRIGHTENED_TIME = 10000.f;
 // frightened state의 후반 ghost 점등 시간
-const float FRIGHTENED_NORMAL_TIME = 5000.f;
+const float FRIGHTENED_NORMAL_TIME = 3000.f;
 // ghost 점등 주기
 const float BLINK_TIME = 100.f;
 float chase_scatter_sTime;
